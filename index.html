@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PeakForm – Treina. Evolui. Chega ao topo.</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Hotmart -->
+<script type="text/javascript">
+  function importHotmart(){
+    var imported = document.createElement('script');
+    imported.src = 'https://static.hotmart.com/checkout/widget.min.js';
+    document.head.appendChild(imported);
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'https://static.hotmart.com/css/hotmart-fb.min.css';
+    document.head.appendChild(link);
+  }
+  importHotmart();
+</script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #111111;
+  --black2: #0d0d0d;
+  --white: #F5F2EE;
+  --gray: #9E9890;
+  --gray2: #6a6560;
+  --orange: #C84B11;
+  --orange-dark: #A33A0A;
+  --orange-light: #E05515;
+  --orange-glow: rgba(200,75,17,0.15);
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--black); color: var(--white); font-family: 'Barlow', sans-serif; overflow-x: hidden; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 4rem;
+  background: rgba(17,17,17,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(200,75,17,0.15);
+  animation: fadeDown 0.8s ease both;
+}
+.nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: 0.02em; }
+.nav-logo span { color: var(--orange); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--orange); color: var(--white);
+  border: none; padding: 0.6rem 1.4rem;
+  font-family: 'Barlow', sans-serif; font-size: 0.8rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s;
+  text-decoration: none; display: inline-block;
+}
+.nav-cta:hover { background: var(--orange-light); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 8rem 4rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(200,75,17,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(200,75,17,0.06) 0%, transparent 60%);
+}
+.hero-lines { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero-lines::before {
+  content: ''; position: absolute; top: -20%; right: -5%;
+  width: 55%; height: 140%;
+  border-left: 1px solid rgba(200,75,17,0.2);
+  transform: rotate(-12deg); transform-origin: top right;
+}
+.hero-lines::after {
+  content: ''; position: absolute; top: -20%; right: 8%;
+  width: 55%; height: 140%;
+  border-left: 1px solid rgba(200,75,17,0.08);
+  transform: rotate(-12deg); transform-origin: top right;
+}
+.hero-tag {
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--orange);
+  margin-bottom: 1.5rem; position: relative; z-index: 1;
+  animation: fadeUp 0.8s 0.2s ease both;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--orange); }
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 900; line-height: 0.92;
+  text-transform: uppercase; letter-spacing: -0.01em;
+  position: relative; z-index: 1;
+  animation: fadeUp 0.8s 0.35s ease both;
+  max-width: 700px;
+}
+.hero-title em { color: var(--orange); font-style: normal; }
+.hero-sub {
+  font-size: 1.05rem; font-weight: 300; color: var(--gray);
+  max-width: 480px; line-height: 1.7;
+  margin-top: 1.8rem; position: relative; z-index: 1;
+  animation: fadeUp 0.8s 0.5s ease both;
+}
+.hero-actions {
+  display: flex; gap: 1rem; margin-top: 2.5rem;
+  position: relative; z-index: 1;
+  animation: fadeUp 0.8s 0.65s ease both;
+}
+.btn-primary {
+  background: var(--orange); color: var(--white);
+  border: none; padding: 1rem 2.2rem;
+  font-family: 'Barlow', sans-serif; font-size: 0.85rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s, transform 0.15s;
+  text-decoration: none; display: inline-block;
+}
+.btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
+.btn-secondary {
+  background: transparent; color: var(--white);
+  border: 1px solid rgba(245,242,238,0.25); padding: 1rem 2.2rem;
+  font-family: 'Barlow', sans-serif; font-size: 0.85rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: border-color 0.2s, transform 0.15s;
+  text-decoration: none; display: inline-block;
+}
+.btn-secondary:hover { border-color: var(--white); transform: translateY(-2px); }
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 4rem;
+  position: relative; z-index: 1;
+  animation: fadeUp 0.8s 0.8s ease both;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(245,242,238,0.08);
+}
+.stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2.4rem; font-weight: 800; color: var(--orange); line-height: 1; }
+.stat-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); margin-top: 0.3rem; }
+
+/* ─── SOBRE ─── */
+.sobre {
+  padding: 7rem 4rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+  align-items: center;
+  border-top: 1px solid rgba(245,242,238,0.06);
+}
+.section-tag {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--orange);
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.section-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--orange); }
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800; text-transform: uppercase;
+  line-height: 1; letter-spacing: 0.01em;
+}
+.section-title em { color: var(--orange); font-style: normal; }
+.sobre-text { font-size: 1rem; font-weight: 300; color: var(--gray); line-height: 1.8; margin-top: 1.5rem; }
+.sobre-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(245,242,238,0.06); }
+.sobre-card { background: var(--black); padding: 2rem 1.8rem; transition: background 0.2s; }
+.sobre-card:hover { background: #1a1a1a; }
+.sobre-card-icon { font-size: 1.4rem; margin-bottom: 1rem; color: var(--orange); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; letter-spacing: 0.05em; }
+.sobre-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.sobre-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+
+/* ─── PROGRAMAS ─── */
+.programas {
+  padding: 7rem 4rem;
+  background: var(--black2);
+  border-top: 1px solid rgba(245,242,238,0.06);
+  border-bottom: 1px solid rgba(245,242,238,0.06);
+}
+.programas-header { margin-bottom: 3.5rem; }
+.programas-header .section-tag { justify-content: flex-start; }
+
+.prog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: rgba(245,242,238,0.06);
+}
+
+.prog-card {
+  background: var(--black2);
+  padding: 2.8rem 2.4rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.25s;
+  display: flex;
+  flex-direction: column;
+}
+.prog-card:hover { background: #131313; }
+
+.prog-card.featured {
+  background: #0f0f0f;
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 0;
+}
+.prog-card.featured:hover { background: #0f0f0f; }
+
+.prog-featured-content {
+  padding: 3rem 3rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgba(245,242,238,0.06);
+}
+
+.prog-featured-visual {
+  background: linear-gradient(135deg, #1a0800 0%, #2d0e00 50%, #1a0800 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.prog-featured-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(200,75,17,0.25) 0%, transparent 70%);
+}
+.prog-visual-number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9rem;
+  font-weight: 900;
+  color: rgba(200,75,17,0.15);
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -0.04em;
+  user-select: none;
+}
+.prog-visual-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--orange);
+  position: relative;
+  z-index: 1;
+  margin-top: 0.5rem;
+}
+
+.prog-badge {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--orange);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.prog-badge-dot {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0;
+}
+
+.prog-nome {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.2rem; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.02em;
+  line-height: 1;
+}
+.prog-nome em { color: var(--orange); font-style: normal; }
+
+.prog-desc {
+  font-size: 0.88rem; font-weight: 300; color: var(--gray);
+  line-height: 1.7; margin-top: 1rem;
+}
+
+.prog-meta {
+  display: flex; gap: 1.5rem;
+  margin-top: 1.5rem; padding-top: 1.5rem;
+  border-top: 1px solid rgba(245,242,238,0.08);
+}
+.prog-meta-item {
+  display: flex; flex-direction: column; gap: 0.2rem;
+}
+.prog-meta-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem; font-weight: 800; color: var(--white);
+}
+.prog-meta-key {
+  font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray2);
+}
+
+.prog-features {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 0.55rem;
+  margin-top: 1.5rem; margin-bottom: 2rem;
+}
+.prog-features li {
+  font-size: 0.82rem; color: var(--gray);
+  display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.4;
+}
+.prog-features li::before { content: '✓'; color: var(--orange); font-weight: 700; flex-shrink: 0; }
+
+.prog-cta-wrap {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.prog-price-row {
+  display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 1rem;
+}
+.prog-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.4rem; font-weight: 900; color: var(--white); line-height: 1;
+}
+.prog-price-label {
+  font-size: 0.78rem; color: var(--gray); font-weight: 400;
+}
+
+.hotmart-custom-btn {
+  display: block; width: 100%;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 1rem 1.5rem;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  text-decoration: none;
+  text-align: center;
+  line-height: 1.4;
+}
+.hotmart-custom-btn:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+  color: var(--white);
+}
+
+.prog-guarantee {
+  font-size: 0.72rem; color: var(--gray2);
+  text-align: center; margin-top: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.prog-card-small { display: flex; flex-direction: column; }
+.prog-coming {
+  flex: 1;
+  display: flex; flex-direction: column; justify-content: center;
+  align-items: center; text-align: center;
+  padding: 3rem 2rem;
+  position: relative;
+}
+.prog-coming-icon {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 4rem; font-weight: 900;
+  color: rgba(245,242,238,0.04);
+  line-height: 1; margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+.prog-coming h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: rgba(245,242,238,0.3);
+  margin-bottom: 0.5rem;
+}
+.prog-coming p {
+  font-size: 0.78rem; color: var(--gray2);
+  line-height: 1.5;
+}
+.prog-coming-badge {
+  display: inline-block;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gray2); border: 1px solid rgba(245,242,238,0.1);
+  padding: 0.3rem 0.8rem; margin-bottom: 1rem;
+}
+
+/* ─── PLANOS ─── */
+.planos {
+  padding: 7rem 4rem;
+  background: var(--black);
+  border-top: 1px solid rgba(245,242,238,0.06);
+}
+.planos-header { text-align: center; margin-bottom: 4rem; }
+.planos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(245,242,238,0.06); max-width: 1000px; margin: 0 auto; }
+.plano { background: var(--black); padding: 2.5rem 2rem; transition: background 0.2s; }
+.plano:hover { background: #141414; }
+.plano.destaque { background: var(--orange); }
+.plano.destaque:hover { background: var(--orange-light); }
+.plano-badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+.plano.destaque .plano-badge { color: rgba(245,242,238,0.7); }
+.plano-nome { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+.plano-preco { font-family: 'Barlow Condensed', sans-serif; font-size: 3rem; font-weight: 900; line-height: 1; margin: 1rem 0 0.3rem; }
+.plano-preco span { font-size: 1rem; font-weight: 400; color: var(--gray); }
+.plano.destaque .plano-preco span { color: rgba(245,242,238,0.7); }
+.plano-desc { font-size: 0.8rem; color: var(--gray); margin-bottom: 1.5rem; line-height: 1.5; }
+.plano.destaque .plano-desc { color: rgba(245,242,238,0.8); }
+.plano-divider { height: 1px; background: rgba(245,242,238,0.1); margin-bottom: 1.5rem; }
+.plano.destaque .plano-divider { background: rgba(245,242,238,0.25); }
+.plano-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+.plano-features li { font-size: 0.82rem; color: var(--gray); display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.4; }
+.plano.destaque .plano-features li { color: rgba(245,242,238,0.9); }
+.plano-features li::before { content: '✓'; color: var(--orange); font-weight: 700; flex-shrink: 0; }
+.plano.destaque .plano-features li::before { color: var(--white); }
+.plano-btn {
+  display: block; width: 100%; margin-top: 2rem; padding: 0.85rem;
+  font-family: 'Barlow', sans-serif; font-size: 0.8rem;
+  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s; border: none;
+  background: rgba(245,242,238,0.08); color: var(--white);
+}
+.plano-btn:hover { background: rgba(245,242,238,0.15); }
+.plano.destaque .plano-btn { background: rgba(17,17,17,0.25); color: var(--white); }
+.plano.destaque .plano-btn:hover { background: rgba(17,17,17,0.4); }
+
+/* ─── ATLETA ─── */
+.atleta {
+  padding: 7rem 4rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+  align-items: start;
+  border-top: 1px solid rgba(245,242,238,0.06);
+}
+.atleta-conquistas { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0; }
+.conquista { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.2rem 0; border-bottom: 1px solid rgba(245,242,238,0.06); }
+.conquista:first-child { border-top: 1px solid rgba(245,242,238,0.06); }
+.conquista-ano { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--orange); min-width: 48px; padding-top: 0.1rem; }
+.conquista-txt { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+.conquista-txt strong { display: block; color: var(--white); font-weight: 600; margin-bottom: 0.2rem; font-size: 0.88rem; }
+.atleta-card { background: #0d0d0d; border: 1px solid rgba(245,242,238,0.06); padding: 3rem; }
+.atleta-quote { font-size: 1.05rem; font-weight: 300; color: var(--gray); line-height: 1.8; font-style: italic; }
+.atleta-quote::before { content: '"'; font-family: Georgia, serif; font-size: 3rem; color: var(--orange); line-height: 0; vertical-align: -0.5rem; margin-right: 0.2rem; }
+.atleta-nome { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2rem; }
+.atleta-titulo { font-size: 0.78rem; color: var(--orange); letter-spacing: 0.08em; margin-top: 0.3rem; }
+
+/* ─── CTA FINAL ─── */
+.cta-final {
+  padding: 8rem 4rem;
+  text-align: center;
+  background: var(--black2);
+  border-top: 1px solid rgba(245,242,238,0.06);
+  position: relative; overflow: hidden;
+}
+.cta-final::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(200,75,17,0.08) 0%, transparent 70%);
+}
+.cta-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900; text-transform: uppercase;
+  line-height: 0.95; position: relative; z-index: 1;
+}
+.cta-title em { color: var(--orange); font-style: normal; }
+.cta-sub { font-size: 1rem; color: var(--gray); margin-top: 1.5rem; position: relative; z-index: 1; }
+.cta-btn {
+  margin-top: 2.5rem;
+  background: var(--orange); color: var(--white);
+  border: none; padding: 1.1rem 3rem;
+  font-family: 'Barlow', sans-serif; font-size: 0.9rem;
+  font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s; position: relative; z-index: 1;
+}
+.cta-btn:hover { background: var(--orange-light); transform: translateY(-3px); }
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid rgba(245,242,238,0.06);
+}
+.footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 800; }
+.footer-logo span { color: var(--orange); }
+footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  .sobre { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
+  .programas { padding: 4rem 1.5rem; }
+  .prog-grid { grid-template-columns: 1fr; }
+  .prog-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+  .prog-featured-visual { display: none; }
+  .prog-featured-content { padding: 2.5rem 2rem; }
+  .planos { padding: 4rem 1.5rem; }
+  .planos-grid { grid-template-columns: 1fr; }
+  .atleta { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
+  .cta-final { padding: 5rem 1.5rem; }
+  footer { padding: 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Peak<span>Form</span></div>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#programas">Programas</a></li>
+    <li><a href="#planos">Planos</a></li>
+    <li><a href="#atleta">Coaches</a></li>
+  </ul>
+  <a href="#programas" class="nav-cta">Ver programas</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-tag">A plataforma portuguesa de CrossFit &amp; Performance</div>
+  <h1 class="hero-title">
+    Treina.<br>
+    Evolui.<br>
+    <em>Chega ao topo.</em>
+  </h1>
+  <p class="hero-sub">
+    Programas de CrossFit, Weightlifting e skills técnicas criados por atletas de elite. Do zero ao pódio — tudo numa plataforma.
+  </p>
+  <div class="hero-actions">
+    <a href="#programas" class="btn-primary">Ver programas</a>
+    <a href="#planos" class="btn-secondary">Explorar planos</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">3×</div>
+      <div class="stat-label">Top 2 Open Portugal</div>
+    </div>
+    <div>
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Contexto português</div>
+    </div>
+    <div>
+      <div class="stat-num">Skills</div>
+      <div class="stat-label">Pull-up ao Muscle-up</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section class="sobre" id="sobre">
+  <div class="reveal">
+    <div class="section-tag">O que é o PeakForm</div>
+    <h2 class="section-title">Feito por atletas.<br><em>Para atletas.</em></h2>
+    <p class="sobre-text">
+      O PeakForm é a primeira plataforma portuguesa focada em CrossFit, Weightlifting e skills técnicas de ginástica. Criada por quem compete ao mais alto nível em Portugal, para quem quer evoluir a sério.
+    </p>
+    <p class="sobre-text" style="margin-top: 1rem;">
+      Seja a tua primeira pull-up ou a preparação para o Open, temos um programa para ti.
+    </p>
+  </div>
+  <div class="sobre-cards reveal">
+    <div class="sobre-card">
+      <div class="sobre-card-icon">01</div>
+      <h4>Skills técnicas</h4>
+      <p>Pull-up, C2B, Bar Muscle-up, HSPU. Progressões estruturadas do zero ao avançado.</p>
+    </div>
+    <div class="sobre-card">
+      <div class="sobre-card-icon">02</div>
+      <h4>Weightlifting</h4>
+      <p>Snatch, Clean &amp; Jerk, programas de squat. Técnica e força em paralelo.</p>
+    </div>
+    <div class="sobre-card">
+      <div class="sobre-card-icon">03</div>
+      <h4>CrossFit &amp; WODs</h4>
+      <p>Programas completos de CrossFit, desafios mensais e preparação para competição.</p>
+    </div>
+    <div class="sobre-card">
+      <div class="sobre-card-icon">04</div>
+      <h4>Coaching 1:1</h4>
+      <p>Acompanhamento direto com os coaches. Vagas limitadas, resultados garantidos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMAS -->
+<section class="programas" id="programas">
+  <div class="programas-header reveal">
+    <div class="section-tag">Programas de especialidade</div>
+    <h2 class="section-title">Domina cada<br><em>movimento.</em></h2>
+  </div>
+
+  <div class="prog-grid reveal">
+
+    <!-- CARD PRINCIPAL: FIRST PULL-UP (span 2) -->
+    <div class="prog-card featured">
+      <div class="prog-featured-content">
+        <div>
+          <div class="prog-badge">
+            <span class="prog-badge-dot"></span>
+            Disponível agora
+          </div>
+          <div class="prog-nome">First<br><em>Pull-Up</em></div>
+          <p class="prog-desc">
+            O programa mais completo de Portugal para conseguires a tua primeira strict pull-up. 6 semanas, 3 sessões por semana, progressão estruturada do grip ao movimento completo — com vídeos para cada exercício.
+          </p>
+          <div class="prog-meta">
+            <div class="prog-meta-item">
+              <div class="prog-meta-val">6</div>
+              <div class="prog-meta-key">Semanas</div>
+            </div>
+            <div class="prog-meta-item">
+              <div class="prog-meta-val">3×</div>
+              <div class="prog-meta-key">Por semana</div>
+            </div>
+            <div class="prog-meta-item">
+              <div class="prog-meta-val">~25'</div>
+              <div class="prog-meta-key">Por sessão</div>
+            </div>
+            <div class="prog-meta-item">
+              <div class="prog-meta-val">3</div>
+              <div class="prog-meta-key">Fases</div>
+            </div>
+          </div>
+          <ul class="prog-features" style="margin-top:1.5rem;">
+            <li>Programa completo semana a semana com progressão detalhada</li>
+            <li>Vídeos demonstrativos de todos os exercícios</li>
+            <li>Notas de coaching para cada sessão</li>
+            <li>Acesso imediato após compra, sem subscrição</li>
+          </ul>
+        </div>
+        <div class="prog-cta-wrap">
+          <div class="prog-price-row">
+            <div class="prog-price">€29</div>
+            <div class="prog-price-label">acesso vitalício</div>
+          </div>
+          <a href="https://pay.hotmart.com/C102172215W?checkoutMode=2" target="_blank" rel="noopener" class="hotmart-custom-btn">Comprar agora →</a>
+          <p class="prog-guarantee">✓ &nbsp;Garantia de 7 dias &nbsp;·&nbsp; Pagamento seguro</p>
+        </div>
+      </div>
+      <div class="prog-featured-visual">
+        <div class="prog-visual-number">01</div>
+        <div class="prog-visual-label">Especialidade de skills</div>
+      </div>
+    </div>
+
+    <!-- CARD 2: BAR MUSCLE UP (em breve) -->
+    <div class="prog-card prog-card-small">
+      <div class="prog-badge" style="opacity:0.4;">
+        <span class="prog-badge-dot" style="background:var(--gray2)"></span>
+        Em desenvolvimento
+      </div>
+      <div class="prog-coming">
+        <div class="prog-coming-icon">BMU</div>
+        <div class="prog-coming-badge">Em breve</div>
+        <h3>Bar Muscle Up</h3>
+        <p>O próximo passo depois da pull-up. 6 semanas para dominar o movimento mais temido do CrossFit.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PLANOS -->
+<section class="planos" id="planos">
+  <div class="planos-header reveal">
+    <div class="section-tag" style="justify-content: center;">Planos de acesso</div>
+    <h2 class="section-title">Escolhe o teu <em>nível</em></h2>
+  </div>
+  <div class="planos-grid reveal">
+    <div class="plano">
+      <div class="plano-badge">Entrada</div>
+      <div class="plano-nome">À la carte</div>
+      <div class="plano-preco">€29 <span>/ programa</span></div>
+      <div class="plano-desc">Compra o programa que precisas, quando precisas.</div>
+      <div class="plano-divider"></div>
+      <ul class="plano-features">
+        <li>Acesso ao programa escolhido</li>
+        <li>Vídeos técnicos incluídos</li>
+        <li>Notas de coaching incluídas</li>
+        <li>Desconto em futuros programas</li>
+      </ul>
+      <a href="#programas" class="plano-btn" style="text-align:center;display:block;text-decoration:none;">Ver programas</a>
+    </div>
+    <div class="plano destaque">
+      <div class="plano-badge">★ Mais popular</div>
+      <div class="plano-nome">Active</div>
+      <div class="plano-preco">€24,99 <span>/ mês</span></div>
+      <div class="plano-desc">Acesso total à plataforma e comunidade.</div>
+      <div class="plano-divider"></div>
+      <ul class="plano-features">
+        <li>Todos os programas incluídos</li>
+        <li>Novos treinos semanais</li>
+        <li>Comunidade privada</li>
+        <li>Desafios mensais</li>
+        <li>Workshops com desconto</li>
+      </ul>
+      <button class="plano-btn">Começar agora</button>
+    </div>
+    <div class="plano">
+      <div class="plano-badge">Elite</div>
+      <div class="plano-nome">Coach</div>
+      <div class="plano-preco">€59,99 <span>/ mês</span></div>
+      <div class="plano-desc">Coaching 1:1 com atletas de competição.</div>
+      <div class="plano-divider"></div>
+      <ul class="plano-features">
+        <li>Tudo do plano Active</li>
+        <li>Plano 100% personalizado</li>
+        <li>Feedback semanal direto</li>
+        <li>Workshops exclusivos</li>
+        <li>Vagas muito limitadas</li>
+      </ul>
+      <button class="plano-btn">Entrar em contacto</button>
+    </div>
+  </div>
+</section>
+
+<!-- ATLETA / COACHES -->
+<section class="atleta" id="atleta">
+  <div class="reveal">
+    <div class="section-tag">Os coaches</div>
+    <h2 class="section-title">Treinado por<br><em>quem chegou lá.</em></h2>
+    <div class="atleta-conquistas">
+      <div class="conquista">
+        <div class="conquista-ano">2024</div>
+        <div class="conquista-txt">
+          <strong>1.º Lugar — CrossFit Open Portugal</strong>
+          Melhor atleta nacional da temporada
+        </div>
+      </div>
+      <div class="conquista">
+        <div class="conquista-ano">2025</div>
+        <div class="conquista-txt">
+          <strong>1.º Lugar — CrossFit Open Portugal</strong>
+          Título nacional confirmado pela 2.ª vez
+        </div>
+      </div>
+      <div class="conquista">
+        <div class="conquista-ano">2026</div>
+        <div class="conquista-txt">
+          <strong>2.º Lugar — CrossFit Open Portugal</strong>
+          Pódio nacional pela 3.ª vez consecutiva
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="atleta-card reveal">
+    <p class="atleta-quote">
+      Não há atalhos para o topo. Mas há um caminho certo — e é isso que ensinamos. Cada programa que construímos é o resultado de anos de competição, erro e aprendizagem.
+    </p>
+    <div class="atleta-nome">O teu coach de elite</div>
+    <div class="atleta-titulo">2× Campeão Nacional CrossFit Open Portugal</div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2 class="cta-title reveal">Pronto para<br><em>subir de nível?</em></h2>
+  <p class="cta-sub reveal">Começa hoje. Sem desculpas.</p>
+  <a href="#programas" class="cta-btn reveal" style="display:inline-block;text-decoration:none;">Ver programas →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Peak<span>Form</span></div>
+  <p>© 2026 PeakForm. Todos os direitos reservados.</p>
+  <p>peakform.pt</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
