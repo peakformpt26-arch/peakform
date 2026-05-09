@@ -1,94 +1,100 @@
 # PeakForm
 
-Landing page da plataforma portuguesa de CrossFit & Performance, servida via **Streamlit**.
+Plataforma portuguesa de CrossFit & Performance. Landing pública + área privada do atleta com programas de treino.
 
 ---
 
-## Estrutura do projeto
+## Estrutura
 
 ```
 peakform-1/
-├── app.py            # Ponto de entrada Streamlit
-├── index.html        # Landing page completa (HTML/CSS/JS)
-├── requirements.txt  # Dependências Python
-└── README.md
+├── app.py                      # Entrada Streamlit — router de páginas
+├── index.html                  # Landing page pública
+├── input/
+│   ├── PeakForm Icon.png           # Favicon
+├── requirements.txt
+├── README.md
+└── input/
+    ├── PeakForm Icon.png           # Favicon
+    └── first-pullup-peakform.html  # Programa First Pull-Up
 ```
-
-### `app.py`
-Configura o Streamlit (wide layout, sem chrome), lê `index.html` e renderiza-o dentro de um iframe sem bordas via `st.components.v1.html`. Toda a navegação, animações e o botão Hotmart funcionam normalmente dentro do iframe.
-
-### `index.html`
-Landing page single-page com as seguintes secções:
-
-| Secção | ID | Conteúdo |
-|---|---|---|
-| Navbar | — | Logo, links de âncora, CTA |
-| Hero | — | Headline, sub-headline, stats |
-| Sobre | `#sobre` | Proposta de valor + 4 cards de pilares |
-| Programas | `#programas` | Card destacado "First Pull-Up" (Hotmart) + card "Bar Muscle-Up" (em breve) |
-| Planos | `#planos` | 3 planos de preço (À la carte / Active / Coach) |
-| Coaches | `#atleta` | Palmarés + citação do coach |
-| CTA Final | — | Call-to-action de fecho |
-| Footer | — | Copyright |
-
-**Tecnologias usadas no HTML:**
-- Google Fonts — Barlow Condensed + Barlow
-- Hotmart Checkout Widget
-- IntersectionObserver para animações de scroll (`.reveal`)
 
 ---
 
-## Instalar e correr localmente
+## Páginas / estados
+
+| Estado | O que mostra |
+|---|---|
+| `landing` | Landing page pública (`index.html` em iframe) |
+| `login` | Formulário de autenticação |
+| `area_atleta` | Dashboard privado com card do programa |
+| `first_pullup` | Programa completo (`first-pullup-peakform.html` em iframe) |
+
+O router usa `st.session_state.page`. A navegação entre páginas nativas (login → área → programa) usa `st.button` para preservar a sessão. A navegação a partir do iframe da landing usa `window.parent.location.href='/?nav=X'`.
+
+---
+
+## Correr localmente
 
 ```bash
-# 1. Clonar / entrar na pasta
-cd peakform-1
-
-# 2. Criar ambiente virtual (opcional mas recomendado)
-python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# macOS / Linux
-source .venv/bin/activate
-
-# 3. Instalar dependências
+# 1. Instalar dependências
 pip install -r requirements.txt
 
-# 4. Arrancar a aplicação
+# 2. Iniciar
 streamlit run app.py
 ```
 
-Abre automaticamente em `http://localhost:8501`.
+Abre em `http://localhost:8501`.
 
 ---
 
-## Deploy (Streamlit Community Cloud)
+## Login de teste
 
-1. Faz push do repositório para GitHub.
-2. Em [share.streamlit.io](https://share.streamlit.io) clica **New app**.
-3. Seleciona o repositório, branch `main` e ficheiro `app.py`.
-4. Clica **Deploy** — fica disponível num URL público em segundos.
+> ⚠️ Autenticação fake — apenas para protótipo.
 
----
-
-## Pagamentos
-
-O botão **"Comprar agora"** no card *First Pull-Up* aponta para:
-
-```
-https://pay.hotmart.com/C102172215W?checkoutMode=2
-```
-
-Para alterar o produto, substitui o ID `C102172215W` pelo ID do teu produto Hotmart em `index.html`.
-
----
-
-## Personalização rápida
-
-| O que alterar | Onde |
+| Campo | Valor |
 |---|---|
-| Cores da marca | Variáveis CSS `:root` no topo de `index.html` |
-| Preços / textos | Secções `#programas` e `#planos` em `index.html` |
-| Link de compra Hotmart | Atributo `href` do `.hotmart-custom-btn` |
-| Palmarés do coach | Secção `#atleta` em `index.html` |
-| Altura do iframe | Parâmetro `height` em `app.py` |
+| Utilizador | `PeakFormTeste` |
+| Palavra-passe | `teste123` |
+
+---
+
+## Fluxo completo de teste
+
+1. Abrir `http://localhost:8501` → ver landing
+2. Clicar **Login** (navbar ou botões da landing)
+3. Inserir credenciais de teste → **Entrar**
+4. Ver **Área do Atleta** com card First Pull-Up
+5. Clicar **Abrir programa** → ver programa completo
+6. Clicar **← Voltar à Área do Atleta**
+7. Clicar **Sair** → voltar à landing sem sessão
+
+---
+
+## Programa First Pull-Up
+
+O ficheiro está em:
+
+```
+peakform-1/input/first-pullup-peakform.html
+```
+
+A app detecta automaticamente o ficheiro. Se não existir, mostra uma mensagem de aviso na página do programa.
+
+---
+
+## Notas técnicas
+
+- **HTTP interno**: `app.py` inicia um servidor HTTP Python na porta `8502` em background para servir os ficheiros HTML. Isto permite que os iframes carreguem scripts, fontes e vídeos Vimeo sem restrições de CORS.
+- **Hotmart removido**: todos os scripts, CSS e links Hotmart foram removidos do `index.html`.
+- **Autenticação**: fake, baseada em `st.session_state`. Não usar em produção sem autenticação real.
+
+---
+
+## Deploy (Streamlit Cloud)
+
+1. Push do repositório para GitHub
+2. [share.streamlit.io](https://share.streamlit.io) → New app → selecionar repo + `app.py`
+3. Deploy
+
+> **Nota**: no Streamlit Cloud, o servidor HTTP interno (porta 8502) não é acessível externamente — os iframes carregam os ficheiros via `localhost` dentro do mesmo container, pelo que o comportamento é idêntico ao local.

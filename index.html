@@ -3,24 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PeakForm – Treina. Evolui. Chega ao topo.</title>
+<title>PeakForm</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<!-- Hotmart -->
-<script type="text/javascript">
-  function importHotmart(){
-    var imported = document.createElement('script');
-    imported.src = 'https://static.hotmart.com/checkout/widget.min.js';
-    document.head.appendChild(imported);
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    link.href = 'https://static.hotmart.com/css/hotmart-fb.min.css';
-    document.head.appendChild(link);
-  }
-  importHotmart();
-</script>
-
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -33,7 +17,6 @@
   --orange: #C84B11;
   --orange-dark: #A33A0A;
   --orange-light: #E05515;
-  --orange-glow: rgba(200,75,17,0.15);
 }
 
 html { scroll-behavior: smooth; }
@@ -49,20 +32,30 @@ nav {
   border-bottom: 1px solid rgba(200,75,17,0.15);
   animation: fadeDown 0.8s ease both;
 }
-.nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: 0.02em; }
+.nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: 0.02em; cursor: pointer; }
 .nav-logo span { color: var(--orange); }
 .nav-links { display: flex; gap: 2.5rem; list-style: none; }
 .nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: var(--white); }
-.nav-cta {
+.nav-auth { display: flex; align-items: center; gap: 0.75rem; }
+.nav-btn-area {
+  background: transparent; color: var(--white);
+  border: 1px solid rgba(245,242,238,0.2); padding: 0.5rem 1.1rem;
+  font-family: 'Barlow', sans-serif; font-size: 0.75rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: border-color 0.2s;
+  text-decoration: none; display: inline-block;
+}
+.nav-btn-area:hover { border-color: rgba(245,242,238,0.5); }
+.nav-btn-login {
   background: var(--orange); color: var(--white);
-  border: none; padding: 0.6rem 1.4rem;
-  font-family: 'Barlow', sans-serif; font-size: 0.8rem;
+  border: none; padding: 0.55rem 1.3rem;
+  font-family: 'Barlow', sans-serif; font-size: 0.75rem;
   font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
   cursor: pointer; transition: background 0.2s;
   text-decoration: none; display: inline-block;
 }
-.nav-cta:hover { background: var(--orange-light); }
+.nav-btn-login:hover { background: var(--orange-light); }
 
 /* ─── HERO ─── */
 .hero {
@@ -111,7 +104,7 @@ nav {
 .hero-title em { color: var(--orange); font-style: normal; }
 .hero-sub {
   font-size: 1.05rem; font-weight: 300; color: var(--gray);
-  max-width: 480px; line-height: 1.7;
+  max-width: 500px; line-height: 1.7;
   margin-top: 1.8rem; position: relative; z-index: 1;
   animation: fadeUp 0.8s 0.5s ease both;
 }
@@ -185,215 +178,106 @@ nav {
   border-bottom: 1px solid rgba(245,242,238,0.06);
 }
 .programas-header { margin-bottom: 3.5rem; }
-.programas-header .section-tag { justify-content: flex-start; }
-
 .prog-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1px;
-  background: rgba(245,242,238,0.06);
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px; background: rgba(245,242,238,0.06);
 }
-
 .prog-card {
-  background: var(--black2);
-  padding: 2.8rem 2.4rem;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.25s;
-  display: flex;
-  flex-direction: column;
+  background: var(--black2); padding: 2.8rem 2.4rem;
+  position: relative; overflow: hidden;
+  transition: background 0.25s; display: flex; flex-direction: column;
 }
 .prog-card:hover { background: #131313; }
-
 .prog-card.featured {
-  background: #0f0f0f;
-  grid-column: span 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  padding: 0;
+  background: #0f0f0f; grid-column: span 2;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0;
 }
 .prog-card.featured:hover { background: #0f0f0f; }
-
 .prog-featured-content {
-  padding: 3rem 3rem 3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 3rem;
+  display: flex; flex-direction: column; justify-content: space-between;
   border-right: 1px solid rgba(245,242,238,0.06);
 }
-
 .prog-featured-visual {
   background: linear-gradient(135deg, #1a0800 0%, #2d0e00 50%, #1a0800 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 2rem;
-  position: relative;
-  overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 3rem 2rem; position: relative; overflow: hidden;
 }
 .prog-featured-visual::before {
-  content: '';
-  position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(200,75,17,0.25) 0%, transparent 70%);
 }
 .prog-visual-number {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 9rem;
-  font-weight: 900;
-  color: rgba(200,75,17,0.15);
-  line-height: 1;
-  position: relative;
-  z-index: 1;
-  letter-spacing: -0.04em;
-  user-select: none;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 9rem; font-weight: 900;
+  color: rgba(200,75,17,0.15); line-height: 1; position: relative; z-index: 1;
+  letter-spacing: -0.04em; user-select: none;
 }
 .prog-visual-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--orange);
-  position: relative;
-  z-index: 1;
-  margin-top: 0.5rem;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--orange); position: relative; z-index: 1; margin-top: 0.5rem;
 }
-
 .prog-badge {
   font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
   text-transform: uppercase; color: var(--orange);
-  margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
 }
-.prog-badge-dot {
-  width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0;
-}
-
+.prog-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
 .prog-nome {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 2.2rem; font-weight: 900;
-  text-transform: uppercase; letter-spacing: 0.02em;
-  line-height: 1;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.02em; line-height: 1;
 }
 .prog-nome em { color: var(--orange); font-style: normal; }
-
-.prog-desc {
-  font-size: 0.88rem; font-weight: 300; color: var(--gray);
-  line-height: 1.7; margin-top: 1rem;
-}
-
+.prog-desc { font-size: 0.88rem; font-weight: 300; color: var(--gray); line-height: 1.7; margin-top: 1rem; }
 .prog-meta {
-  display: flex; gap: 1.5rem;
-  margin-top: 1.5rem; padding-top: 1.5rem;
+  display: flex; gap: 1.5rem; margin-top: 1.5rem; padding-top: 1.5rem;
   border-top: 1px solid rgba(245,242,238,0.08);
 }
-.prog-meta-item {
-  display: flex; flex-direction: column; gap: 0.2rem;
-}
-.prog-meta-val {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.3rem; font-weight: 800; color: var(--white);
-}
-.prog-meta-key {
-  font-size: 0.65rem; font-weight: 500;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray2);
-}
-
+.prog-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.prog-meta-val { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--white); }
+.prog-meta-key { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray2); }
 .prog-features {
-  list-style: none;
-  display: flex; flex-direction: column; gap: 0.55rem;
+  list-style: none; display: flex; flex-direction: column; gap: 0.55rem;
   margin-top: 1.5rem; margin-bottom: 2rem;
 }
-.prog-features li {
-  font-size: 0.82rem; color: var(--gray);
-  display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.4;
-}
+.prog-features li { font-size: 0.82rem; color: var(--gray); display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.4; }
 .prog-features li::before { content: '✓'; color: var(--orange); font-weight: 700; flex-shrink: 0; }
-
-.prog-cta-wrap {
-  margin-top: auto;
-  padding-top: 1.5rem;
-}
-
-.prog-price-row {
-  display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 1rem;
-}
-.prog-price {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 2.4rem; font-weight: 900; color: var(--white); line-height: 1;
-}
-.prog-price-label {
-  font-size: 0.78rem; color: var(--gray); font-weight: 400;
-}
-
-.hotmart-custom-btn {
+.prog-cta-wrap { margin-top: auto; padding-top: 1.5rem; }
+.prog-btn {
   display: block; width: 100%;
-  background: var(--orange);
-  color: var(--white);
-  border: none;
-  padding: 1rem 1.5rem;
-  font-family: 'Barlow', sans-serif;
-  font-size: 0.85rem; font-weight: 700;
+  background: var(--orange); color: var(--white);
+  border: none; padding: 1rem 1.5rem;
+  font-family: 'Barlow', sans-serif; font-size: 0.85rem; font-weight: 700;
   letter-spacing: 0.12em; text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
-  text-decoration: none;
-  text-align: center;
-  line-height: 1.4;
+  cursor: pointer; transition: background 0.2s, transform 0.15s;
+  text-decoration: none; text-align: center; line-height: 1.4;
 }
-.hotmart-custom-btn:hover {
-  background: var(--orange-light);
-  transform: translateY(-2px);
-  color: var(--white);
-}
+.prog-btn:hover { background: var(--orange-light); transform: translateY(-2px); }
 
-.prog-guarantee {
-  font-size: 0.72rem; color: var(--gray2);
-  text-align: center; margin-top: 0.75rem;
-  letter-spacing: 0.04em;
-}
-
+/* Coming soon card */
 .prog-card-small { display: flex; flex-direction: column; }
 .prog-coming {
-  flex: 1;
-  display: flex; flex-direction: column; justify-content: center;
-  align-items: center; text-align: center;
-  padding: 3rem 2rem;
-  position: relative;
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  align-items: center; text-align: center; padding: 3rem 2rem; position: relative;
 }
 .prog-coming-icon {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 4rem; font-weight: 900;
-  color: rgba(245,242,238,0.04);
-  line-height: 1; margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 4rem; font-weight: 900;
+  color: rgba(245,242,238,0.04); line-height: 1; margin-bottom: 1.5rem; letter-spacing: -0.02em;
 }
 .prog-coming h3 {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.3rem; font-weight: 800;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 800;
   text-transform: uppercase; letter-spacing: 0.05em;
-  color: rgba(245,242,238,0.3);
-  margin-bottom: 0.5rem;
+  color: rgba(245,242,238,0.3); margin-bottom: 0.5rem;
 }
-.prog-coming p {
-  font-size: 0.78rem; color: var(--gray2);
-  line-height: 1.5;
-}
+.prog-coming p { font-size: 0.78rem; color: var(--gray2); line-height: 1.5; }
 .prog-coming-badge {
-  display: inline-block;
-  font-size: 0.6rem; font-weight: 700;
+  display: inline-block; font-size: 0.6rem; font-weight: 700;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--gray2); border: 1px solid rgba(245,242,238,0.1);
   padding: 0.3rem 0.8rem; margin-bottom: 1rem;
 }
 
 /* ─── PLANOS ─── */
-.planos {
-  padding: 7rem 4rem;
-  background: var(--black);
-  border-top: 1px solid rgba(245,242,238,0.06);
-}
+.planos { padding: 7rem 4rem; background: var(--black); border-top: 1px solid rgba(245,242,238,0.06); }
 .planos-header { text-align: center; margin-bottom: 4rem; }
 .planos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(245,242,238,0.06); max-width: 1000px; margin: 0 auto; }
 .plano { background: var(--black); padding: 2.5rem 2rem; transition: background 0.2s; }
@@ -428,10 +312,8 @@ nav {
 
 /* ─── ATLETA ─── */
 .atleta {
-  padding: 7rem 4rem;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
-  align-items: start;
-  border-top: 1px solid rgba(245,242,238,0.06);
+  padding: 7rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+  align-items: start; border-top: 1px solid rgba(245,242,238,0.06);
 }
 .atleta-conquistas { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0; }
 .conquista { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.2rem 0; border-bottom: 1px solid rgba(245,242,238,0.06); }
@@ -447,28 +329,22 @@ nav {
 
 /* ─── CTA FINAL ─── */
 .cta-final {
-  padding: 8rem 4rem;
-  text-align: center;
-  background: var(--black2);
-  border-top: 1px solid rgba(245,242,238,0.06);
+  padding: 8rem 4rem; text-align: center;
+  background: var(--black2); border-top: 1px solid rgba(245,242,238,0.06);
   position: relative; overflow: hidden;
 }
 .cta-final::before {
-  content: '';
-  position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(200,75,17,0.08) 0%, transparent 70%);
 }
 .cta-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 900; text-transform: uppercase;
-  line-height: 0.95; position: relative; z-index: 1;
+  font-family: 'Barlow Condensed', sans-serif; font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900; text-transform: uppercase; line-height: 0.95; position: relative; z-index: 1;
 }
 .cta-title em { color: var(--orange); font-style: normal; }
 .cta-sub { font-size: 1rem; color: var(--gray); margin-top: 1.5rem; position: relative; z-index: 1; }
 .cta-btn {
-  margin-top: 2.5rem;
-  background: var(--orange); color: var(--white);
+  margin-top: 2.5rem; background: var(--orange); color: var(--white);
   border: none; padding: 1.1rem 3rem;
   font-family: 'Barlow', sans-serif; font-size: 0.9rem;
   font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
@@ -478,8 +354,7 @@ nav {
 
 /* ─── FOOTER ─── */
 footer {
-  padding: 2rem 4rem;
-  display: flex; justify-content: space-between; align-items: center;
+  padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center;
   border-top: 1px solid rgba(245,242,238,0.06);
 }
 .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 800; }
@@ -521,14 +396,17 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Peak<span>Form</span></div>
+  <div class="nav-logo" onclick="navParent('landing')">Peak<span>Form</span></div>
   <ul class="nav-links">
     <li><a href="#sobre">Sobre</a></li>
     <li><a href="#programas">Programas</a></li>
     <li><a href="#planos">Planos</a></li>
     <li><a href="#atleta">Coaches</a></li>
   </ul>
-  <a href="#programas" class="nav-cta">Ver programas</a>
+  <div class="nav-auth">
+    <a href="javascript:void(0)" onclick="navParent('area_atleta')" class="nav-btn-area">Área do Atleta</a>
+    <a href="javascript:void(0)" onclick="navParent('login')" class="nav-btn-login">Login</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -542,7 +420,7 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
     <em>Chega ao topo.</em>
   </h1>
   <p class="hero-sub">
-    Programas de CrossFit, Weightlifting e skills técnicas criados por atletas de elite. Do zero ao pódio — tudo numa plataforma.
+    Do primeiro movimento técnico à performance competitiva — com progressão, clareza e método.
   </p>
   <div class="hero-actions">
     <a href="#programas" class="btn-primary">Ver programas</a>
@@ -595,7 +473,7 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
     <div class="sobre-card">
       <div class="sobre-card-icon">04</div>
       <h4>Coaching 1:1</h4>
-      <p>Acompanhamento direto com os coaches. Vagas limitadas, resultados garantidos.</p>
+      <p>Acompanhamento estruturado, progressão clara e feedback direto. Vagas limitadas.</p>
     </div>
   </div>
 </section>
@@ -609,7 +487,7 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
 
   <div class="prog-grid reveal">
 
-    <!-- CARD PRINCIPAL: FIRST PULL-UP (span 2) -->
+    <!-- CARD PRINCIPAL: FIRST PULL-UP -->
     <div class="prog-card featured">
       <div class="prog-featured-content">
         <div>
@@ -643,16 +521,11 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
             <li>Programa completo semana a semana com progressão detalhada</li>
             <li>Vídeos demonstrativos de todos os exercícios</li>
             <li>Notas de coaching para cada sessão</li>
-            <li>Acesso imediato após compra, sem subscrição</li>
+            <li>Acesso ao programa completo dentro da Área do Atleta</li>
           </ul>
         </div>
         <div class="prog-cta-wrap">
-          <div class="prog-price-row">
-            <div class="prog-price">€29</div>
-            <div class="prog-price-label">acesso vitalício</div>
-          </div>
-          <a href="https://pay.hotmart.com/C102172215W?checkoutMode=2" target="_blank" rel="noopener" class="hotmart-custom-btn">Comprar agora →</a>
-          <p class="prog-guarantee">✓ &nbsp;Garantia de 7 dias &nbsp;·&nbsp; Pagamento seguro</p>
+          <button onclick="navParent('login')" class="prog-btn">Ver programa →</button>
         </div>
       </div>
       <div class="prog-featured-visual">
@@ -661,7 +534,7 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
       </div>
     </div>
 
-    <!-- CARD 2: BAR MUSCLE UP (em breve) -->
+    <!-- CARD 2: BAR MUSCLE UP -->
     <div class="prog-card prog-card-small">
       <div class="prog-badge" style="opacity:0.4;">
         <span class="prog-badge-dot" style="background:var(--gray2)"></span>
@@ -689,7 +562,7 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
       <div class="plano-badge">Entrada</div>
       <div class="plano-nome">À la carte</div>
       <div class="plano-preco">€29 <span>/ programa</span></div>
-      <div class="plano-desc">Compra o programa que precisas, quando precisas.</div>
+      <div class="plano-desc">Acede ao programa que precisas, quando precisas.</div>
       <div class="plano-divider"></div>
       <ul class="plano-features">
         <li>Acesso ao programa escolhido</li>
@@ -697,7 +570,7 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
         <li>Notas de coaching incluídas</li>
         <li>Desconto em futuros programas</li>
       </ul>
-      <a href="#programas" class="plano-btn" style="text-align:center;display:block;text-decoration:none;">Ver programas</a>
+      <button onclick="navParent('login')" class="plano-btn">Ver programas</button>
     </div>
     <div class="plano destaque">
       <div class="plano-badge">★ Mais popular</div>
@@ -712,7 +585,7 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
         <li>Desafios mensais</li>
         <li>Workshops com desconto</li>
       </ul>
-      <button class="plano-btn">Começar agora</button>
+      <button onclick="navParent('login')" class="plano-btn">Começar agora</button>
     </div>
     <div class="plano">
       <div class="plano-badge">Elite</div>
@@ -727,12 +600,12 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
         <li>Workshops exclusivos</li>
         <li>Vagas muito limitadas</li>
       </ul>
-      <button class="plano-btn">Entrar em contacto</button>
+      <button onclick="navParent('login')" class="plano-btn">Entrar em contacto</button>
     </div>
   </div>
 </section>
 
-<!-- ATLETA / COACHES -->
+<!-- COACHES -->
 <section class="atleta" id="atleta">
   <div class="reveal">
     <div class="section-tag">Os coaches</div>
@@ -774,7 +647,7 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
 <section class="cta-final">
   <h2 class="cta-title reveal">Pronto para<br><em>subir de nível?</em></h2>
   <p class="cta-sub reveal">Começa hoje. Sem desculpas.</p>
-  <a href="#programas" class="cta-btn reveal" style="display:inline-block;text-decoration:none;">Ver programas →</a>
+  <button onclick="navParent('login')" class="cta-btn reveal">Entrar na plataforma →</button>
 </section>
 
 <!-- FOOTER -->
@@ -785,10 +658,14 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
 </footer>
 
 <script>
+  // Navigate parent Streamlit window via query param (preserves session for re-auth flows)
+  function navParent(page) {
+    window.parent.location.href = '/?nav=' + page;
+  }
+
+  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('visible');
-    });
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>

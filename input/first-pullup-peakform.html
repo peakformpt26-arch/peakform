@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>First Pull-Up · PeakForm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f3ef;
+  --bg2:#ffffff;
+  --bg3:#ece9e4;
+  --border:#ddd9d3;
+  --border2:#ccc8c2;
+  --text:#111111;
+  --text2:#555550;
+  --text3:#999990;
+  --orange:#c8410a;
+  --orange-light:#e8520f;
+  --orange-pale:#fdf0ea;
+  --orange-border:#f5c4a8;
+  --black:#111111;
+  --warm-gray:#b0a99e;
+  --phase1:#2d7d4f;
+  --phase2:#c8410a;
+  --phase3:#7a1a1a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;min-height:100vh}
+
+/* ---- TOPBAR ---- */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(245,243,239,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-logo svg{height:32px;width:auto}
+.topbar-wordmark{font-family:'DM Sans',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1}
+.topbar-wordmark .peak{color:var(--black)}
+.topbar-wordmark .form{color:var(--orange)}
+.topbar-tag{font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border2);padding:4px 12px;border-radius:99px;background:var(--bg)}
+
+/* ---- LAYOUT ---- */
+.page{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem}
+
+/* ---- HERO ---- */
+.hero{padding:3rem 0 2.5rem;border-bottom:1px solid var(--border);margin-bottom:2.5rem}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.18em;color:var(--orange);text-transform:uppercase;margin-bottom:.75rem}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:.92;color:var(--black);margin-bottom:1rem;letter-spacing:.02em}
+.hero-title span{color:var(--orange)}
+.hero-desc{font-size:15px;color:var(--text2);max-width:520px;line-height:1.75;margin-bottom:.75rem}
+.hero-tagline{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:2rem}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.stat{background:var(--bg2);padding:20px 14px;text-align:center}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--orange);line-height:1}
+.stat-l{font-size:11px;color:var(--text3);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+
+/* ---- PHASE SELECTOR ---- */
+.phase-selector{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:2rem}
+.psBtn{padding:14px 10px;text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--text3);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.psBtn:hover{border-color:var(--border2);color:var(--text2);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.psBtn.active{border-color:var(--orange);color:var(--orange);background:var(--orange-pale);box-shadow:0 2px 8px rgba(200,65,10,.12)}
+.psBtn .dot{display:block;width:8px;height:8px;border-radius:50%;margin:0 auto 8px}
+.d1{background:#2d7d4f}.d2{background:var(--orange)}.d3{background:#7a1a1a}.dg{background:var(--warm-gray)}
+.psBtn .phase-label{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.05em;display:block;margin-bottom:2px;color:inherit}
+.psBtn .phase-weeks{font-size:11px;color:var(--text3);display:block}
+.psBtn.active .phase-weeks{color:var(--orange);opacity:.7}
+
+/* ---- WEEK NAV ---- */
+.week-nav{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap}
+.wBtn{padding:6px 18px;font-size:13px;font-weight:500;border:1px solid var(--border2);border-radius:99px;background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.wBtn:hover{border-color:var(--orange);color:var(--orange)}
+.wBtn.active{border-color:var(--orange);color:var(--orange);background:var(--orange-pale)}
+
+/* ---- WEEK OVERVIEW ---- */
+.week-ov{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px 26px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.phase-badge{display:inline-block;font-size:11px;font-weight:500;padding:4px 12px;border-radius:99px;margin-bottom:10px;letter-spacing:.05em}
+.b1{background:#e6f4ed;color:#1e5c36;border:1px solid #b8dfc8}
+.b2{background:var(--orange-pale);color:var(--orange);border:1px solid var(--orange-border)}
+.b3{background:#fce8e8;color:#7a1a1a;border:1px solid #f5baba}
+.week-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;color:var(--black);margin-bottom:4px}
+.week-sub{font-size:13px;color:var(--text2);line-height:1.7}
+.prog-bar{height:3px;background:var(--border);border-radius:2px;margin-top:16px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px}
+
+/* ---- SESSION CARD ---- */
+.session-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.session-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;transition:background .15s;user-select:none}
+.session-header:hover{background:var(--bg3)}
+.session-label{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.08em;color:var(--text3)}
+.session-focus{font-size:13px;color:var(--orange);font-weight:500;margin-top:1px}
+.toggle-icon{font-size:18px;color:var(--border2);transition:transform .25s;flex-shrink:0}
+.toggle-icon.open{transform:rotate(180deg)}
+.session-body{padding:16px 20px 20px;display:none;border-top:1px solid var(--border)}
+.session-body.open{display:block}
+
+/* ---- EXERCISE ---- */
+.ex{padding:14px 0;border-bottom:1px solid var(--border)}
+.ex:last-child{border-bottom:none;padding-bottom:0}
+.ex-top{display:flex;gap:12px;align-items:flex-start}
+.ex-ltr{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--border2);min-width:20px;line-height:1.1}
+.ex-content{flex:1}
+.ex-name-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:4px}
+.ex-name{font-size:14px;font-weight:500;color:var(--black)}
+.tag{font-size:10px;font-weight:500;padding:2px 9px;border-radius:99px;white-space:nowrap;letter-spacing:.02em}
+.tg{background:#fef9c3;color:#713f12;border:1px solid #fde68a}
+.ts{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe}
+.tp{background:#ffedd5;color:#9a3412;border:1px solid #fed7aa}
+.te{background:#fce7f3;color:#9d174d;border:1px solid #fbcfe8}
+.tc{background:#ede9fe;color:#5b21b6;border:1px solid #ddd6fe}
+.ti{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.tf{background:var(--orange-pale);color:var(--orange);border:1px solid var(--orange-border)}
+.ex-sets{font-size:12px;color:var(--text2);margin-bottom:5px;line-height:1.5;font-weight:500}
+.ex-note{font-size:12px;color:var(--text3);line-height:1.65;border-left:2px solid var(--orange-border);padding-left:10px;margin-top:6px}
+
+/* ---- VIDEO EMBED ---- */
+.video-wrap{margin-top:10px;border-radius:8px;overflow:hidden;background:#000;position:relative;padding-top:56.25%}
+.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.video-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;font-weight:500;color:var(--orange);cursor:pointer;padding:5px 12px;border:1px solid var(--orange-border);border-radius:99px;background:var(--orange-pale);transition:all .15s;user-select:none}
+.video-toggle:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.video-toggle svg{width:12px;height:12px;flex-shrink:0}
+.video-container{display:none;margin-top:6px}
+.video-container.open{display:block}
+
+/* ---- COACH NOTE ---- */
+.coach-note{background:#fdf8f5;border:1px solid var(--orange-border);border-left:3px solid var(--orange);border-radius:8px;padding:14px 16px;margin-top:16px}
+.cn-label{font-size:10px;font-weight:600;letter-spacing:.12em;color:var(--orange);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.cn-label::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--orange)}
+.cn-text{font-size:13px;color:var(--text2);line-height:1.75}
+
+/* ---- PRINCIPLES ---- */
+.principles-grid{display:grid;gap:10px;margin-bottom:1.5rem}
+.principle-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.p-num{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--border);line-height:1;min-width:32px}
+.p-title{font-size:14px;font-weight:500;color:var(--black);margin-bottom:4px}
+.p-desc{font-size:13px;color:var(--text2);line-height:1.7}
+
+/* ---- CRITERIA ---- */
+.criteria-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:1.5rem}
+.criteria-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.criteria-title{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.05em}
+.criteria-item{font-size:12px;color:var(--text3);padding:4px 0;display:flex;gap:8px;line-height:1.5}
+.criteria-item::before{content:'✓';color:var(--orange);flex-shrink:0;font-weight:700}
+
+/* ---- RULES ---- */
+.rules-list{margin-top:4px}
+.rule-row{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.rule-row:last-child{border-bottom:none}
+.rule-title{font-size:13px;font-weight:600;color:var(--text2);min-width:170px}
+.rule-desc{font-size:13px;color:var(--text3);line-height:1.6}
+
+/* ---- FOOTER ---- */
+.footer{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.footer-brand{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:700}
+.footer-brand .peak{color:var(--black)}
+.footer-brand .form{color:var(--orange)}
+.footer-note{font-size:12px;color:var(--text3)}
+
+/* ---- HIDDEN ---- */
+.hidden{display:none!important}
+
+/* ---- DIVIDER ---- */
+.section-divider{height:1px;background:var(--border);margin:1.5rem 0}
+
+/* ---- RESPONSIVE ---- */
+@media(max-width:640px){
+  .hero-title{font-size:56px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .phase-selector{grid-template-columns:repeat(2,1fr)}
+  .criteria-grid{grid-template-columns:1fr}
+  .rule-row{flex-direction:column;gap:4px}
+  .rule-title{min-width:auto}
+  .page{padding:2rem 1.25rem 5rem}
+  .topbar{padding:0 1.25rem}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <!-- SVG icon inline (simplified version of PeakForm runner icon) -->
+    <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Peak shape -->
+      <polygon points="5,48 22,18 30,28 38,18 55,48" fill="none" stroke="#c8410a" stroke-width="0" opacity="0"/>
+      <!-- Runner body -->
+      <circle cx="39" cy="14" r="5" fill="#c8410a"/>
+      <!-- Main peak + runner shape -->
+      <path d="M4 48 L20 20 L30 30 L40 14 L56 48" stroke="#c8410a" stroke-width="3.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+      <!-- Speed lines -->
+      <path d="M4 48 L30 48" stroke="#b0a99e" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+      <path d="M8 52 L24 52" stroke="#b0a99e" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+    </svg>
+    <div class="topbar-wordmark"><span class="peak">Peak</span><span class="form">Form</span></div>
+  </div>
+  <div class="topbar-tag">Programa de Especialidade · v1.0</div>
+</div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">PeakForm · Especialidade de Movimento</div>
+    <h1 class="hero-title">FIRST<br><span>PULL-UP</span></h1>
+    <p class="hero-desc">Programa estruturado de 6 semanas para quem parte do zero e quer o seu primeiro strict pull-up com ROM completo.</p>
+    <p class="hero-tagline">Train Smarter. Move Better. Peak Every Day.</p>
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-n">6</div><div class="stat-l">Semanas</div></div>
+      <div class="stat"><div class="stat-n">3×</div><div class="stat-l">Por semana</div></div>
+      <div class="stat"><div class="stat-n">~25'</div><div class="stat-l">Por sessão</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">Fases</div></div>
+    </div>
+  </div>
+
+  <!-- PHASE SELECTOR -->
+  <div class="phase-selector">
+    <button class="psBtn active" onclick="showPhase('p1',this)">
+      <span class="dot d1"></span>
+      <span class="phase-label">Fundação</span>
+      <span class="phase-weeks">Semanas 1–2</span>
+    </button>
+    <button class="psBtn" onclick="showPhase('p2',this)">
+      <span class="dot d2"></span>
+      <span class="phase-label">Força</span>
+      <span class="phase-weeks">Semanas 3–4</span>
+    </button>
+    <button class="psBtn" onclick="showPhase('p3',this)">
+      <span class="dot d3"></span>
+      <span class="phase-label">Conversão</span>
+      <span class="phase-weeks">Semanas 5–6</span>
+    </button>
+    <button class="psBtn" onclick="showPhase('princípios',this)">
+      <span class="dot dg"></span>
+      <span class="phase-label">Princípios</span>
+      <span class="phase-weeks">Lógica do programa</span>
+    </button>
+  </div>
+
+  <!-- ===================== FASE 1 ===================== -->
+  <div id="p1">
+    <div class="week-nav">
+      <button class="wBtn active" onclick="showWeek('p1','w1',this)">Semana 1</button>
+      <button class="wBtn" onclick="showWeek('p1','w2',this)">Semana 2</button>
+    </div>
+
+    <!-- SEM 1 -->
+    <div id="p1-w1">
+      <div class="week-ov">
+        <div class="phase-badge b1">Fase 1, Fundação</div>
+        <div class="week-title">Semana 1 · Grip, ativação escapular e body awareness</div>
+        <div class="week-sub">Objectivo: aprender a sentir e controlar os ombros na barra, construir força nas mãos e começar a perceber o Hollow Body. Sem fadiga, o foco é aprender os movimentos corretamente.</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:17%;background:#2d7d4f"></div></div>
+      </div>
+
+      <!-- SESSÃO A -->
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão A</div><div class="session-focus">Active Hang · Scap Pull-up · Inverted Row · Hollow Hold · Dumbbell Head Pinch</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Active Hang</span><span class="tag ts">escapular</span><span class="tag tg">grip</span></div>
+              <div class="ex-sets">3 séries × 15 seg · descanso 60 seg</div>
+              <div class="ex-note">A diferença para o dead hang é esta: aqui tens de puxar os ombros para baixo e para trás ativamente, como se quisesses meter os ombros nos bolsos traseiros das calças. Mantém os braços esticados, sem dobrar os cotovelos.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190393821?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Active Hang"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Scap Pull-up</span><span class="tag ts">escapular</span></div>
+              <div class="ex-sets">3 séries × 8 reps · descanso 60 seg</div>
+              <div class="ex-note">A partir do hang, sobe e desce os ombros sem dobrar os cotovelos. É um movimento pequeno mas é o ponto de partida de qualquer pull-up. Faz devagar nas duas direções e sente os músculos a trabalhar.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395130?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Scap Pull-up"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Inverted Row (Pronated)</span><span class="tag tp">pulling</span></div>
+              <div class="ex-sets">3 séries × 10 reps · descanso 90 seg</div>
+              <div class="ex-note">Barra alta = mais fácil. Corpo em prancha total, não quebrar nas ancas. Regista a altura da barra para progredir semana a semana.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394967?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Inverted Row (Pronated)"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Hollow Hold</span><span class="tag tc">core</span></div>
+              <div class="ex-sets">Acumular 60 seg · parar o timer quando quebrar a posição</div>
+              <div class="ex-note">Lombar colada ao chão, costelas fechadas, braços e pernas estendidos. Se impossível, tuck hollow hold com joelhos dobrados. Esta é a posição do pull-up real.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394866?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Hollow Hold"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Dumbbell Head Pinch</span><span class="tag tg">grip</span></div>
+              <div class="ex-sets">3 séries × 30 seg · descanso 60 seg</div>
+              <div class="ex-note">Pinçar a cabeça do dumbbell entre os dedos. Peso leve, vai ficar pesado depressa. Grip especializado que o dead hang não substitui.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394520?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Dumbbell Head Pinch"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">Atenção ao shrug, se sentires que estás a encolher os ombros em direção às orelhas em vez de os puxar para baixo, para e recomeça a série. É o erro mais comum nesta fase, e corrigi-lo agora vai poupar-te semanas de trabalho mais tarde.</div></div>
+        </div>
+      </div>
+
+      <!-- SESSÃO B -->
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão B</div><div class="session-focus">Dead Hang · Inverted Row (Supinated) · Pull-up Negativa · Hollow Rocks · Farmer Carry</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Dead Hang</span><span class="tag tg">grip</span></div>
+              <div class="ex-sets">4 séries × 20 seg · descanso 60 seg · alternando a posição das palmas (para baixo e para cima)</div>
+              <div class="ex-note">Hang passivo desta vez, objetivo é grip e tolerância articular. Mantém ombros ativos mesmo no hang passivo.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394202?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Dead Hang"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Inverted Row (Supinated)</span><span class="tag tp">pulling</span></div>
+              <div class="ex-sets">3 séries × 10 reps · descanso 90 seg</div>
+              <div class="ex-note">Variante supinated da sessão A. Recruta mais bíceps. Mesma altura de barra, compara facilidade com a versão com palmas para baixo.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395029?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Inverted Row (Supinated)"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Pull-up Negativa (caixa)</span><span class="tag te">excêntrica</span></div>
+              <div class="ex-sets">3 séries × 4 reps · descanso 2 min · descida 4–5 seg</div>
+              <div class="ex-note">Subir com a caixa, queixo acima da barra, baixar LENTO. Primeiro contacto com a excêntrica, ainda não a estamos a maximizar, só a introduzir o padrão.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395093?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Pull-up Negativa (caixa)"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Hollow Rocks</span><span class="tag tc">core</span></div>
+              <div class="ex-sets">3 séries × 10 reps · descanso 60 seg</div>
+              <div class="ex-note">Transição dinâmica do hold, mantém a tensão durante o movimento. Não quebrar a posição no topo do balanço.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394913?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Hollow Rocks"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="ex">
+            <div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+              <div class="ex-name-row"><span class="ex-name">Farmer Carry</span><span class="tag tg">grip</span></div>
+              <div class="ex-sets">2 séries × 30m · descanso 60 seg</div>
+              <div class="ex-note">Carga moderada. Postura ereta, ombros para trás. Encerra o treino, o grip já vai estar fatigado.</div>
+              <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+              <div class="video-container">
+                <div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394678?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Farmer Carry"></iframe></div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">Nesta semana, qualquer descida acima de 3 seg já é uma vitória. O objetivo é familiarizares-te com o movimento, não atingir performance. É normal "cair" no final, foca-te em controlar a descida o máximo que conseguires em cada rep.</div></div>
+        </div>
+      </div>
+
+      <!-- SESSÃO C -->
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão C</div><div class="session-focus">Active Hang · Scap Pull-up · Pull-up Negativa · Inverted Row · Hollow Hold</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Active Hang</span><span class="tag ts">escapular</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">4 séries × 15 seg · descanso 60 seg · +1 série vs sessão A</div>
+            <div class="ex-note">Foco na qualidade da ativação escapular, já deve estar mais intuitiva do que no primeiro dia.</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190393821?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Active Hang"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Scap Pull-up</span><span class="tag ts">escapular</span></div>
+            <div class="ex-sets">3 séries × 10 reps · descanso 60 seg · +2 reps vs sessão A</div>
+            <div class="ex-note">O movimento deve começar a ser mais fluido e intuitivo.</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395130?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Scap Pull-up"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Pull-up Negativa (caixa)</span><span class="tag te">excêntrica</span></div>
+            <div class="ex-sets">3 séries × 5 reps · descanso 2 min · descida 5 seg</div>
+            <div class="ex-note">+1 rep e +1 seg de descida vs sessão B. O princípio da sobrecarga progressiva aplicado à excêntrica.</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395093?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Pull-up Negativa (caixa)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Inverted Row (Pronated, barra mais baixa)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 12 reps · descanso 90 seg · baixa 5–10cm vs sessão A</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394967?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Inverted Row (Pronated)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Hollow Hold</span><span class="tag tc">core</span></div>
+            <div class="ex-sets">Acumular 75 seg · +15 seg vs sessão A</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394866?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Hollow Hold"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">Antes de passares para a semana 2, verifica estes três pontos: consegues puxar os ombros para baixo com clareza no Active Hang? Aguentas o Hollow Hold 20 ou mais segundos sem quebrar? Desces na Pull-up Negativa em 4 ou mais segundos com controlo? Se a resposta for não em qualquer um, repete esta semana antes de avançar. Não há problema nenhum nisso.</div></div>
+        </div>
+      </div>
+    </div><!-- /p1-w1 -->
+
+    <!-- SEM 2 -->
+    <div id="p1-w2" class="hidden">
+      <div class="week-ov">
+        <div class="phase-badge b1">Fase 1, Fundação</div>
+        <div class="week-title">Semana 2 · Chin Over Bar Hold e volume excêntrico</div>
+        <div class="week-sub">Objectivo: introduzir chin over bar hold, aumentar tempo de hang ativo e aumentar qualidade da excêntrica para 6 seg controlados.</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:33%;background:#2d7d4f"></div></div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão A</div><div class="session-focus">Active Hang · Chin Over Bar Hold · Pull-up Negativa · Inverted Row · Dumbbell Head Pinch</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Active Hang</span><span class="tag ts">escapular</span></div>
+            <div class="ex-sets">3 séries × 15 seg · descanso 60 seg · manutenção com foco na qualidade</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190393821?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Active Hang"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Chin Over Bar Hold (supinated)</span><span class="tag ti">isométrico</span></div>
+            <div class="ex-sets">3 séries × max hold · descanso 90 seg · usar caixa para assistir</div>
+            <div class="ex-note">Usar caixa para chegar à posição. Segurar queixo acima da barra pelo máximo de tempo. Regista o tempo de cada série, esses números vão guiar a fase 2.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Pull-up Negativa (caixa)</span><span class="tag te">excêntrica</span></div>
+            <div class="ex-sets">4 séries × 4 reps · descanso 2 min · descida 5–6 seg</div>
+            <div class="ex-note">Esta semana o objetivo é não "cair" nos últimos segundos da descida. Tenta manter o controlo do início ao fim, até os braços ficarem completamente esticados em baixo.</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395093?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Pull-up Negativa (caixa)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Inverted Row (pés elevados em caixa)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 10 reps · descanso 90 seg · elevar pés para aumentar dificuldade vs semana 1</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394967?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Inverted Row (Pronated)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Dumbbell Head Pinch</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">3 séries × 40 seg · descanso 60 seg · +10 seg vs semana 1</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394520?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Dumbbell Head Pinch"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">O Chin Over Bar Hold vai dizer-te muito sobre onde estás. Se não consegues segurar mais de 5 seg, é sinal de que a força de flexão do cotovelo precisa de mais trabalho, adiciona 3 séries de 10 DB curls no final do treino desta semana.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão B</div><div class="session-focus">Band Pull-up · Straight Arm Pull Down · DB Bicep Curl · Hollow Hold</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Band Pull-up (supinated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 8 reps · descanso 2 min · banda suficiente para completar as reps</div>
+            <div class="ex-note">Primeiro contacto com o movimento completo do pull-up, com ajuda de uma banda elástica. Usa uma banda resistente o suficiente para conseguires manter boa postura em todas as reps. O foco é puxar os ombros para baixo ANTES de dobrar os braços.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Straight Arm Banded Pull Down</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 15 reps · descanso 60 seg</div>
+            <div class="ex-note">Ativação do grande dorsal com braços estendidos. Padrão neurológico importante, o lat a trabalhar antes dos braços dobrarem. Essencial para o pull-up real.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">DB Bicep Curl (supinated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 10 reps · descanso 60 seg · sem kipping, movimento estrito</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Hollow Hold</span><span class="tag tc">core</span></div>
+            <div class="ex-sets">Acumular 90 seg · progressão vs semana 1</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394866?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Hollow Hold"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">No Band Pull-up, usa uma banda suficientemente grossa para conseguires manter boa forma em todas as reps. 8 reps perfeitas valem muito mais do que 12 com os cotovelos a abrirem para os lados. Qualidade sempre primeiro.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão C</div><div class="session-focus">Chin Over Bar Hold + Negativa · Dead Hang · Inverted Row · Farmer Carry</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Chin Over Bar Hold → Pull-up Negativa</span><span class="tag ti">isométrico</span><span class="tag te">excêntrica</span></div>
+            <div class="ex-sets">4 séries × 1 rep · descanso 2 min · hold 3–5 seg + descida 5–6 seg</div>
+            <div class="ex-note">Combinação do aguentar no topo com a descida controlada, tudo numa rep. É exigente. Podes usar uma banda elástica para ajudar na descida se necessário. O tempo que passas sob tensão é o que conta aqui.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Dead Hang (pronated)</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">Acumular 60 seg · parar quando largar · regista nº de séries</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394202?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Dead Hang"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Inverted Row (Supinated, pés elevados)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 10 reps · descanso 90 seg · máxima dificuldade do inverted row por agora</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395029?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Inverted Row (Supinated)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Farmer Carry pesado</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">3 séries × 40m · descanso 60 seg · aumenta carga vs semana 1</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394678?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Farmer Carry"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">Fim da Fase 1. Para avançares para a Fase 2, confirma: Active Hang 15 seg com boa forma ✓ · Pull-up Negativa 5+ seg com controlo total ✓ · Chin Over Bar Hold 5+ seg ✓ · Hollow Hold 20+ seg sem quebrar ✓. Se ainda não estás confortável em algum destes, repete a semana 2. É a decisão certa.</div></div>
+        </div>
+      </div>
+    </div><!-- /p1-w2 -->
+  </div><!-- /p1 -->
+
+  <!-- ===================== FASE 2 ===================== -->
+  <div id="p2" class="hidden">
+    <div class="week-nav">
+      <button class="wBtn active" onclick="showWeek('p2','w3',this)">Semana 3</button>
+      <button class="wBtn" onclick="showWeek('p2','w4',this)">Semana 4</button>
+    </div>
+
+    <div id="p2-w3">
+      <div class="week-ov">
+        <div class="phase-badge b2">Fase 2, Força específica</div>
+        <div class="week-title">Semana 3 · Excêntrica com pausa isométrica · Rack Chin-up</div>
+        <div class="week-sub">Objectivo: introduzir a pausa isométrica a 90° na excêntrica, o exercício mais importante do programa, e o rack chin-up como força específica de pulling.</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:50%;background:var(--orange)"></div></div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão A</div><div class="session-focus">Active Hang · Excêntrica com pausa 90° · Rack Chin-up · Banded Lat Pull Down · Plate Pinch</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Active Hang (warm-up obrigatório)</span><span class="tag ts">escapular</span></div>
+            <div class="ex-sets">3 séries × 20 seg · descanso 60 seg</div>
+            <div class="ex-note">Faz sempre este exercício antes das descidas controladas. Prepara os ombros e ativa os músculos certos antes de carregares.</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190393821?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Active Hang"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Pull-up Negativa com pausa isométrica a 90°</span><span class="tag te">excêntrica</span><span class="tag ti">isométrico</span></div>
+            <div class="ex-sets">4 séries × 5 reps · descanso 2–3 min · descida 3 seg + pausa 2 seg a 90° + descida 3 seg</div>
+            <div class="ex-note">EXERCÍCIO CHAVE desta fase. Sobe com caixa → desce 3 seg até 90° de cotovelo → pausa 2 seg → continua a descer 3 seg até extensão total. O ângulo de 90° é o ponto mais fraco do pull-up, trabalhá-lo aqui é o diferencial técnico do programa.</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração (Pull-up Negativa)</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395093?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Pull-up Negativa (caixa)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Rack Chin-up (supinated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × max reps · descanso 2 min</div>
+            <div class="ex-note">Coloca a barra ao nível do peito. Os pés ficam no chão com os joelhos dobrados. Usa as pernas apenas o suficiente para conseguires completar cada rep, sem as usar como motor principal. Desce devagar em cada repetição.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Banded Lat Pull Down (pronated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × 15 reps · descanso 60 seg</div>
+            <div class="ex-note">Com os braços esticados, puxa a banda para baixo usando as costas. Continua a reforçar o padrão de usar as costas antes dos braços, que é exactamente o que queres no pull-up.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Plate Pinch Hold</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">3 séries × max hold · descanso 90 seg · regista tempos</div>
+            <div class="ex-note">Segura um ou dois discos entre o polegar e os outros dedos. Máximo esforço em cada série. Trabalha as pontas dos dedos de uma forma que o dead hang sozinho não consegue fazer.</div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">A pausa a 90° vai ser muito difícil, é suposto ser. Se não conseguires manter 2 seg na pausa, reduz para 1 seg e mantém os 3+3 seg de descida. Nunca sacrifiques a qualidade da excêntrica pela pausa. A forma é sempre a prioridade.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão B</div><div class="session-focus">Band Pull-up (Pronated) · Chin Over Bar Hold + Negativa · Inverted Row · DB Hammer Curl · Hollow Hold</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Band Pull-up (pronated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × 8 reps · descanso 2 min · mesma banda da semana 2</div>
+            <div class="ex-note">Mudar para palmas viradas para a frente. Foco no padrão, escápulas antes dos braços. Começa a sentir onde o movimento quebra.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Chin Over Bar Hold → Pull-up Negativa</span><span class="tag ti">isométrico</span><span class="tag te">excêntrica</span></div>
+            <div class="ex-sets">5 séries × 1 rep · descanso 90 seg · hold 3–5 seg + descida 5–6 seg · +1 série vs semana 2</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Inverted Row (Pronated, pés elevados)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × 10 reps · descanso 90 seg · baixa barra 5–10cm vs semana 2</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394967?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Inverted Row (Pronated)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">DB Hammer Curl</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 10 reps · descanso 60 seg · palmas uma para a outra</div>
+            <div class="ex-note">Trabalha bíceps braquial e braquiorradial, músculos críticos na transição de ângulo do pull-up.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Hollow Hold</span><span class="tag tc">core</span></div>
+            <div class="ex-sets">Acumular 2 min · progressão vs fase 1</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394866?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Hollow Hold"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">5 séries de Hold + Negativa é muito volume de qualidade. Se chegares à série 4 e já não conseguires manter o hold de 3 seg, para aí. 4 séries perfeitas valem muito mais do que 5 séries com compensação.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão C</div><div class="session-focus">Scap Pull-up · Excêntrica com pausa · Rack Chin-up (Pronated) · Farmer Carry</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Scap Pull-up</span><span class="tag ts">escapular</span></div>
+            <div class="ex-sets">4 séries × 10 reps · descanso 60 seg</div>
+            <div class="ex-note">Volta ao Scap Pull-up mas agora com muito mais intenção. Deve sentir-se completamente diferente da semana 1, porque a tua consciência do movimento já evoluiu muito.</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395130?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Scap Pull-up"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Pull-up Negativa com pausa isométrica a 90°</span><span class="tag te">excêntrica</span><span class="tag ti">isométrico</span></div>
+            <div class="ex-sets">4 séries × 5 reps · descanso 2–3 min</div>
+            <div class="ex-note">Repetes o exercício da Sessão A. Deves sentir mais controlo na pausa do que na primeira vez. Regista se conseguiste manter 2 segundos em todas as reps.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Rack Chin-up (pronated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × max reps · descanso 2 min</div>
+            <div class="ex-note">Versão pronated. Compara dificuldade com supinated da sessão A, vai ser mais difícil para a maioria.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Farmer Carry pesado</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">4 séries × 40m · descanso 60 seg · +1 série vs semana 2</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394678?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Farmer Carry"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">No final desta sessão, tenta um pull-up sem assistência. Não é para conseguires, é para perceberes até onde vais. Essa amplitude que sentes vai orientar a intensidade da semana 4. Regista o resultado.</div></div>
+        </div>
+      </div>
+    </div><!-- /p2-w3 -->
+
+    <div id="p2-w4" class="hidden">
+      <div class="week-ov">
+        <div class="phase-badge b2">Fase 2, Força específica</div>
+        <div class="week-title">Semana 4 · Toe-Assisted Pull-up · Top Hold EMOM · Redução de banda</div>
+        <div class="week-sub">Objectivo: introduzir toe-assisted pull-up supervisionado, banded top hold em formato EMOM e começar a reduzir a assistência da banda.</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:67%;background:var(--orange)"></div></div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão A</div><div class="session-focus">Toe-Assisted Pull-up · Banded Top Hold EMOM · Ring Row · DB Alternating Hammer Curl · Plate Pinch</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Toe-Assisted Pull-up (supinated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × 6 reps · descanso 2 min</div>
+            <div class="ex-note">Os dedos dos pés ajudam apenas o suficiente para completares a rep. Uma boa regra: se o joelho dobrar mais de 30 graus, estás a usar demasiada perna. Desce sempre devagar em cada repetição.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Banded Top of Pull-up Hold EMOM</span><span class="tag ti">isométrico</span></div>
+            <div class="ex-sets">Every 30 seg × 8 rounds · hold 10 seg no topo · mesma banda das semanas anteriores</div>
+            <div class="ex-note">Entra com caixa, segura 10 seg no topo, sai. Padrão: 10 seg de trabalho, 20 seg de descanso. Se não consegues 10 seg, usa banda mais grossa.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Ring Row (pausa 1 seg no topo)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 8 reps · descanso 90 seg</div>
+            <div class="ex-note">Os anéis permitem que os pulsos rodem naturalmente durante o movimento. Faz uma pausa de 1 segundo no topo de cada rep. Para aumentar a dificuldade, baixa a posição do teu corpo em relação ao chão.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">DB Alternating Hammer Curl</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 8 reps por braço · descanso 60 seg</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Plate Pinch Hold</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">3 séries × max hold · descanso 90 seg · bate tempos da semana 3</div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">No Toe-Assisted Pull-up, os pés são um guia, não um motor. Se sentires que o joelho está a dobrar mais de 30°, estás a usar demasiada perna e a retirar carga ao que realmente importa. Menos assistência = mais ganho.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão B</div><div class="session-focus">Band Pull-up (banda fina) · Chin Over Bar Hold + Negativa máxima · Rack Chin-up · Dead Hang · Hollow Hold</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Band Pull-up (banda mais fina)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × max reps · descanso 2 min · reduzir assistência vs semanas anteriores</div>
+            <div class="ex-note">Se impossível com banda fina, mantém banda anterior mas faz max reps. O importante é a tendência de redução da assistência.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Chin Over Bar Hold → Pull-up Negativa máxima</span><span class="tag ti">isométrico</span><span class="tag te">excêntrica</span></div>
+            <div class="ex-sets">5 séries × 1 rep · descanso 2 min · hold 5 seg + descida 8–10 seg</div>
+            <div class="ex-note">Pico de intensidade da excêntrica neste programa. Controlo absoluto até à extensão total, braços completamente estendidos no fundo.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Rack Chin-up (supinated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × max reps · descanso 2 min · +1 série vs semana 3</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Dead Hang acumulação</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">Acumular 90 seg · parar quando largar</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394202?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Dead Hang"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Hollow Hold</span><span class="tag tc">core</span></div>
+            <div class="ex-sets">Acumular 2:30 min · +30 seg vs fase 1</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394866?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Hollow Hold"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">Uma descida de 10 seg com controlo total significa que estás pronto para a Fase 3. Se ainda estás a "cair" nos últimos 3 seg, faz mais uma semana com descidas de 8 seg antes de avançar. O teu corpo diz-te o que precisa, ouve-o.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão C</div><div class="session-focus">Toe-Assisted Pull-up (Pronated) · Top Hold EMOM · Inverted Row · Avaliação intermédia</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Toe-Assisted Pull-up (pronated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × 6 reps · descanso 2 min · versão com palmas para baixo</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Banded Top Hold EMOM</span><span class="tag ti">isométrico</span></div>
+            <div class="ex-sets">Every 30 seg × 10 rounds · hold 10 seg · +2 rounds vs sessão A</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Inverted Row (máxima inclinação possível)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × 8 reps · descanso 90 seg</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394967?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Inverted Row (Pronated)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">AVALIAÇÃO, Tentativa de pull-up sem assistência</span><span class="tag tf">avaliação</span></div>
+            <div class="ex-sets">1–3 tentativas · descanso total entre cada (3–4 min) · sem kipping</div>
+            <div class="ex-note">Não é para "passar", é para medir. Regista amplitude máxima conseguida. Esta informação define a estratégia da fase 3.</div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">É possível que faças o teu primeiro pull-up aqui. Se isso acontecer, celebra! Mas mantém a estrutura da Fase 3 na mesma. Um pull-up isolado ainda não é um pull-up adquirido. O objetivo é conseguires fazê-lo de forma consistente, com ROM completo.</div></div>
+        </div>
+      </div>
+    </div><!-- /p2-w4 -->
+  </div><!-- /p2 -->
+
+  <!-- ===================== FASE 3 ===================== -->
+  <div id="p3" class="hidden">
+    <div class="week-nav">
+      <button class="wBtn active" onclick="showWeek('p3','w5',this)">Semana 5</button>
+      <button class="wBtn" onclick="showWeek('p3','w6',this)">Semana 6</button>
+    </div>
+
+    <div id="p3-w5">
+      <div class="week-ov">
+        <div class="phase-badge b3">Fase 3, Conversão</div>
+        <div class="week-title">Semana 5 · Primeiras reps reais · Força máxima</div>
+        <div class="week-sub">Objectivo: converter toda a força construída em reps reais. Alta intensidade, baixo volume de excêntricas. Descanso total obrigatório entre tentativas.</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:83%;background:#7a1a1a"></div></div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão A</div><div class="session-focus">Pull-up real (tentativas) · Excêntrica manutenção · Rack Chin-up · Dead Hang</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Band Pull-up (banda fina, warm-up)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 3 reps · descanso 90 seg · apenas ativação, não fatigues</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Strict Pull-up sem assistência, tentativas</span><span class="tag tf">pull-up real</span></div>
+            <div class="ex-sets">5 tentativas · descanso 3–4 min entre cada · ROM completo obrigatório</div>
+            <div class="ex-note">Antes de cada tentativa, segue esta sequência: 1) puxa os ombros para baixo e para trás, 2) puxa os cotovelos em direção ao chão, 3) mantém o olhar em frente, não olhes para cima. Regista até onde chegas em cada tentativa. Cada centímetro a mais é progresso real.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Pull-up Negativa manutenção</span><span class="tag te">excêntrica</span></div>
+            <div class="ex-sets">2 séries × 4 reps · descanso 2 min · descida 8 seg</div>
+            <div class="ex-note">Volume reduzido vs fase 2, apenas para manter o padrão. O esforço principal já foi nas tentativas.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Rack Chin-up (pronated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × max reps · descanso 2 min · compara com semana 4</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">E</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Dead Hang acumulação</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">Acumular 2 min · deve ser mais fácil vs semanas anteriores</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394202?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Dead Hang"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">O erro mais comum aqui é tentar "puxar com os braços". Antes de cada tentativa, lembra-te: o pull-up começa nos ombros, não nos braços. Puxa os ombros para baixo primeiro e só depois é que os braços puxam. Se sentires que estás a encolher os ombros no início da rep, para, descansa e recomeça com intenção.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão B</div><div class="session-focus">Chin-up real (tentativas) · Banded Top Hold EMOM · Partial Band Pull-up · Hollow Hold</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Strict Chin-up sem assistência, tentativas</span><span class="tag tf">pull-up real</span></div>
+            <div class="ex-sets">5 tentativas · descanso 3 min · palmas viradas para ti</div>
+            <div class="ex-note">O chin-up é mais fácil que o pull-up, mais bíceps, menos exigência de lat. Quem ainda não fez pull-up, começa a construir confiança aqui.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Banded Top Hold EMOM</span><span class="tag ti">isométrico</span></div>
+            <div class="ex-sets">Every 30 seg × 12 rounds · hold 10 seg · +2 rounds vs semana 4</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Partial Banded Pull-up (pronated, banda fina)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × 10 reps · descanso 90 seg</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Hollow Hold</span><span class="tag tc">core</span></div>
+            <div class="ex-sets">Acumular 3 min · pico de acumulação do programa</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394866?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Hollow Hold"></iframe></div></div>
+          </div></div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão C</div><div class="session-focus">Pull-up real (tentativas máximas) · Rack Chin-up · Farmer Carry · Plate Pinch</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Strict Pull-up sem assistência, tentativas</span><span class="tag tf">pull-up real</span></div>
+            <div class="ex-sets">5 tentativas · descanso 4 min · segunda tentativa da semana, regista e compara</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Rack Chin-up (supinated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × max reps · descanso 2 min · +1 série vs semana 4</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Farmer Carry pesado</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">4 séries × 40m · descanso 60 seg · carga máxima mantendo postura ereta</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394678?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Farmer Carry"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Plate Pinch Hold</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">3 séries × max hold · descanso 90 seg · bate tempos da semana 3</div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">Fim da semana 5. Se ainda não fizeste o pull-up, não desanimes, analisa onde está o bloqueio. Rack Chin-up com poucas reps? Trabalha mais força de lat. Chin Over Bar Hold fraco? Foca nos bíceps e no cotovelo. Compensação técnica? Volta ao Active Hang e à depressão escapular. Cada problema tem uma solução específica.</div></div>
+        </div>
+      </div>
+    </div><!-- /p3-w5 -->
+
+    <div id="p3-w6" class="hidden">
+      <div class="week-ov">
+        <div class="phase-badge b3">Fase 3, Conversão</div>
+        <div class="week-title">Semana 6 · Consolidação e baseline para o próximo ciclo</div>
+        <div class="week-sub">Objectivo: solidificar o strict pull-up com EMOM de qualidade, estabelecer ROM completo como standard e definir baseline para o programa seguinte.</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:100%;background:#7a1a1a"></div></div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão A</div><div class="session-focus">EMOM Pull-up · Negativa manutenção · Rack Chin-up · Banded Top Hold</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">EMOM Strict Pull-up de qualidade</span><span class="tag tf">pull-up real</span></div>
+            <div class="ex-sets">Every 60 seg × 8 min · 1 rep com ROM completo · parar se forma degradar</div>
+            <div class="ex-note">1 rep perfeita a cada minuto. Extensão total no fundo, queixo acima da barra no topo. Se a forma degradar, para o EMOM aí. 8 reps de qualidade é o objetivo.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Pull-up Negativa lenta pós-EMOM</span><span class="tag te">excêntrica</span></div>
+            <div class="ex-sets">2 séries × 3 reps · descanso 2 min · descida 8–10 seg</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190395093?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Pull-up Negativa (caixa)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Rack Chin-up (pronated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">3 séries × max reps · descanso 2 min · último bloco de rack chin do programa</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Banded Top Hold EMOM</span><span class="tag ti">isométrico</span></div>
+            <div class="ex-sets">Every 30 seg × 14 rounds · hold 10 seg · pico do programa</div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">1 rep perfeita a cada minuto é o objetivo, não 8 reps de qualquer jeito. Se sentires que a forma está a degradar antes de chegares ao minuto 8, para o EMOM aí. Qualidade consistente é o que transforma uma rep isolada num padrão que dura.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão B</div><div class="session-focus">EMOM Chin-up · Toe-Assisted Pull-up · Inverted Row · Dead Hang</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">EMOM Strict Chin-up de qualidade</span><span class="tag tf">pull-up real</span></div>
+            <div class="ex-sets">Every 60 seg × 8 min · 1 rep · palmas viradas para ti · ROM completo</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Toe-Assisted Pull-up (supinated)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">5 séries × 6 reps · descanso 2 min · +1 série vs semana 4 · assistência mínima de perna</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Inverted Row pesado (máxima inclinação)</span><span class="tag tp">pulling</span></div>
+            <div class="ex-sets">4 séries × 6 reps · descanso 90 seg · última progressão do inverted row</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394967?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Inverted Row (Pronated)"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Dead Hang acumulação</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">Acumular 2:30 min · compara nº de séries com semana 4</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394202?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Dead Hang"></iframe></div></div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">Depois desta semana tens a base sólida para começares a trabalhar volume. O próximo passo natural é chegar a 3–5 reps strict consecutivas, e isso abre caminho direto para o Bar Muscle Up.</div></div>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-header" onclick="toggleSession(this)">
+          <div><div class="session-label">Sessão C · Teste Final</div><div class="session-focus">Avaliação completa · Baseline para próximo ciclo</div></div>
+          <div class="toggle-icon">▾</div>
+        </div>
+        <div class="session-body">
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">A</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Strict Pull-up, max reps com boa forma</span><span class="tag tf">avaliação</span></div>
+            <div class="ex-sets">1 série · 10 min descanso pós warm-up · sem kipping · para quando a forma quebrar</div>
+            <div class="ex-note">Este é o teu ponto de partida para o próximo programa. Conta apenas as reps em que consegues braços completamente esticados em baixo e queixo acima da barra em cima. Reps com "trampa" não contam.</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">B</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Strict Chin-up, max reps com boa forma</span><span class="tag tf">avaliação</span></div>
+            <div class="ex-sets">1 série · descanso 5 min após pull-up · palmas viradas para ti</div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">C</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">Dead Hang, max hold</span><span class="tag tg">grip</span></div>
+            <div class="ex-sets">1 série · descanso 3 min · max effort · compara com semana 1</div>
+            <span class="video-toggle" onclick="toggleVideo(this)"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração</span>
+            <div class="video-container"><div class="video-wrap"><iframe src="https://player.vimeo.com/video/1190394202?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen title="Dead Hang"></iframe></div></div>
+          </div></div></div>
+          <div class="ex"><div class="ex-top"><div class="ex-ltr">D</div><div class="ex-content">
+            <div class="ex-name-row"><span class="ex-name">EMOM final, Pull-up + Chin-up alternados</span><span class="tag tf">pull-up real</span></div>
+            <div class="ex-sets">Every 60 seg × 10 min · alternar strict pull-up e chin-up · 1 rep cada</div>
+            <div class="ex-note">Celebração do trabalho feito. 5 pull-ups + 5 chin-ups com qualidade, este é o marco do programa completo.</div>
+          </div></div></div>
+          <div class="coach-note"><div class="cn-label">Nota importante</div><div class="cn-text">Fim do programa, és oficialmente parte do clube. Regista as tuas reps de pull-up, reps de chin-up e tempo de dead hang. Guarda esses números, são a tua baseline para o próximo ciclo. O próximo passo? Bar Muscle Up, 6 semanas.</div></div>
+        </div>
+      </div>
+    </div><!-- /p3-w6 -->
+  </div><!-- /p3 -->
+
+  <!-- ===================== PRINCÍPIOS ===================== -->
+  <div id="princípios" class="hidden">
+    <div class="week-ov" style="margin-bottom:1.5rem">
+      <div class="week-title">Princípios do programa</div>
+      <div class="week-sub">A lógica por trás de cada decisão de design, para o coach e para o atleta.</div>
+    </div>
+    <div class="principles-grid">
+      <div class="principle-card"><div class="p-num">1</div><div><div class="p-title">Grip e Active Hang primeiro</div><div class="p-desc">Base de tudo. Sem grip forte não há pull-up. Sem hang ativo não há ativação correta. É o primeiro filtro, quem não consegue manter 15 seg de Active Hang não está pronto para excêntricas.</div></div></div>
+      <div class="principle-card"><div class="p-num">2</div><div><div class="p-title">Ativação escapular na semana 1, não na semana 3</div><div class="p-desc">A maioria dos programas introduz o Scap Pull-up tarde. Este começa na semana 1 porque o padrão de "ombros para baixo antes de puxar" leva 2 semanas a instalar-se neurologicamente.</div></div></div>
+      <div class="principle-card"><div class="p-num">3</div><div><div class="p-title">Excêntrica com pausa isométrica a 90°</div><div class="p-desc">O ângulo de 90° de cotovelo é o ponto mais fraco do pull-up para quase todos os iniciantes. A pausa forçada nesse ângulo é o diferencial técnico deste programa.</div></div></div>
+      <div class="principle-card"><div class="p-num">4</div><div><div class="p-title">Grip especializado além do Dead Hang</div><div class="p-desc">Plate Pinch e Dumbbell Head Pinch trabalham as polpas dos dedos de forma que o dead hang não consegue. É o detalhe que a maioria dos programas ignora.</div></div></div>
+      <div class="principle-card"><div class="p-num">5</div><div><div class="p-title">Tentativas reais só na fase 3</div><div class="p-desc">Tentativas prematuras criam padrões de compensação difíceis de corrigir. 4 semanas de base antes da primeira tentativa real não é excesso de cautela, é eficiência.</div></div></div>
+      <div class="principle-card"><div class="p-num">6</div><div><div class="p-title">EMOM de qualidade para consolidação</div><div class="p-desc">1 rep perfeita por minuto é a ferramenta mais eficaz para transformar uma rep isolada num padrão neurológico consistente.</div></div></div>
+    </div>
+    <div class="week-ov" style="margin-bottom:10px"><div class="week-title" style="font-size:20px">Critérios de progressão entre fases</div></div>
+    <div class="criteria-grid" style="margin-bottom:1.5rem">
+      <div class="criteria-card">
+        <div class="criteria-title">Fase 1 → Fase 2</div>
+        <div class="criteria-item">Active Hang 15 seg com boa forma</div>
+        <div class="criteria-item">Pull-up Negativa 5+ seg com controlo total</div>
+        <div class="criteria-item">Chin Over Bar Hold 5+ seg</div>
+        <div class="criteria-item">Hollow Hold 20+ seg sem quebrar</div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-title">Fase 2 → Fase 3</div>
+        <div class="criteria-item">Pull-up Negativa 8+ seg com controlo</div>
+        <div class="criteria-item">Chin Over Bar Hold 8+ seg</div>
+        <div class="criteria-item">Band Pull-up com banda fina</div>
+        <div class="criteria-item">Rack Chin-up 5+ reps com boa forma</div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-title">Se não cumpre critérios</div>
+        <div class="criteria-item">Repete a última semana da fase</div>
+        <div class="criteria-item">Programa estende-se até 8 semanas sem perder coerência</div>
+        <div class="criteria-item">Nunca avançar antes de estar pronto</div>
+      </div>
+    </div>
+    <div class="week-ov" style="margin-bottom:10px"><div class="week-title" style="font-size:20px">Regras gerais e segurança</div></div>
+    <div class="session-card">
+      <div class="session-header" onclick="toggleSession(this)">
+        <div><div class="session-label">Ver regras</div><div class="session-focus">Descanso · Grip · Kipping · Dor · Compatibilidade</div></div>
+        <div class="toggle-icon">▾</div>
+      </div>
+      <div class="session-body">
+        <div class="rules-list">
+          <div class="rule-row"><div class="rule-title">Descanso entre sessões</div><div class="rule-desc">Mínimo 48h. O programa assume segunda, quarta e sexta, mas qualquer distribuição com 48h de intervalo funciona.</div></div>
+          <div class="rule-row"><div class="rule-title">Grip</div><div class="rule-desc">Sempre full grip (polegar à volta da barra). Thumbless grip não é permitido, risco de lesão e perda de ativação do antebraço.</div></div>
+          <div class="rule-row"><div class="rule-title">Kipping</div><div class="rule-desc">Proibido até ter pelo menos 3 reps strict com ROM completo. Kipping prematuro mascara fraqueza e atrasa o desenvolvimento real.</div></div>
+          <div class="rule-row"><div class="rule-title">Dor vs desconforto</div><div class="rule-desc">Dor anterior no ombro ou dor aguda no cotovelo = para imediatamente e avalia. Desconforto muscular (queimadura, pump) é normal e esperado.</div></div>
+          <div class="rule-row"><div class="rule-title">Compatibilidade</div><div class="rule-desc">Este programa é um add-on. Pode ser feito antes ou depois do treino principal. Nunca no mesmo dia que treino pesado de costas ou ombros.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand"><span class="peak">Peak</span><span class="form">Form</span></div>
+    <div class="footer-note">First Pull-Up · Programa de Especialidade v1.0 · 2025</div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+function showPhase(phase, btn) {
+  ['p1','p2','p3','princípios'].forEach(p => {
+    const el = document.getElementById(p);
+    if (el) el.classList.toggle('hidden', p !== phase);
+  });
+  document.querySelectorAll('.psBtn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+function showWeek(phase, week, btn) {
+  const prefix = phase + '-';
+  ['w1','w2','w3','w4','w5','w6'].forEach(w => {
+    const el = document.getElementById(prefix + w);
+    if (el) el.classList.toggle('hidden', w !== week);
+  });
+  if (btn) {
+    btn.closest('.week-nav').querySelectorAll('.wBtn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
+
+function toggleSession(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.toggle-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.classList.toggle('open', !isOpen);
+}
+
+function toggleVideo(btn) {
+  const container = btn.nextElementSibling;
+  const isOpen = container.classList.contains('open');
+  container.classList.toggle('open', !isOpen);
+  const svg = btn.querySelector('svg');
+  if (!isOpen) {
+    btn.innerHTML = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm3-8H5v2h6V8z"/></svg>Fechar vídeo';
+  } else {
+    btn.innerHTML = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm-1.5 5v6l5-3-5-3z"/></svg>Ver demonstração';
+  }
+}
+</script>
+</body>
+</html>
