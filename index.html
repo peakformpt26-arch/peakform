@@ -7,388 +7,280 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
 :root {
-  --black: #111111;
-  --black2: #0d0d0d;
-  --white: #F5F2EE;
-  --gray: #9E9890;
-  --gray2: #6a6560;
-  --orange: #C84B11;
-  --orange-dark: #A33A0A;
-  --orange-light: #E05515;
+  --black: #111111; --black2: #0d0d0d; --white: #F5F2EE;
+  --warm-gray: #9E9890; --gray2: #6a6560;
+  --orange: #C84B11; --orange-light: #E05515;
 }
-
 html { scroll-behavior: smooth; }
 body { background: var(--black); color: var(--white); font-family: 'Barlow', sans-serif; overflow-x: hidden; }
 
-/* ─── NAV ─── */
+/* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.2rem 4rem;
-  background: rgba(17,17,17,0.92);
-  backdrop-filter: blur(12px);
+  background: rgba(17,17,17,0.92); backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(200,75,17,0.15);
   animation: fadeDown 0.8s ease both;
 }
 .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: 0.02em; cursor: pointer; }
 .nav-logo span { color: var(--orange); }
 .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-.nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.nav-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm-gray); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: var(--white); }
 .nav-auth { display: flex; align-items: center; gap: 0.75rem; }
-.nav-btn-area {
-  background: transparent; color: var(--white);
-  border: 1px solid rgba(245,242,238,0.2); padding: 0.5rem 1.1rem;
-  font-family: 'Barlow', sans-serif; font-size: 0.75rem;
-  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  cursor: pointer; transition: border-color 0.2s;
-  text-decoration: none; display: inline-block;
-}
+.nav-btn-area { background: transparent; color: var(--white); border: 1px solid rgba(245,242,238,0.2); padding: 0.5rem 1.1rem; font-family: 'Barlow', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: border-color 0.2s; text-decoration: none; display: inline-block; }
 .nav-btn-area:hover { border-color: rgba(245,242,238,0.5); }
-.nav-btn-login {
-  background: var(--orange); color: var(--white);
-  border: none; padding: 0.55rem 1.3rem;
-  font-family: 'Barlow', sans-serif; font-size: 0.75rem;
-  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  cursor: pointer; transition: background 0.2s;
-  text-decoration: none; display: inline-block;
-}
+.nav-btn-login { background: var(--orange); color: var(--white); border: none; padding: 0.55rem 1.3rem; font-family: 'Barlow', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; }
 .nav-btn-login:hover { background: var(--orange-light); }
 
-/* ─── HERO ─── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  justify-content: center; align-items: flex-start;
-  padding: 8rem 4rem 4rem;
-  position: relative; overflow: hidden;
-}
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(200,75,17,0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(200,75,17,0.06) 0%, transparent 60%);
-}
+/* ── HERO ── */
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 8rem 4rem 4rem; position: relative; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(200,75,17,0.12) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 20% 80%, rgba(200,75,17,0.06) 0%, transparent 60%); }
 .hero-lines { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-.hero-lines::before {
-  content: ''; position: absolute; top: -20%; right: -5%;
-  width: 55%; height: 140%;
-  border-left: 1px solid rgba(200,75,17,0.2);
-  transform: rotate(-12deg); transform-origin: top right;
-}
-.hero-lines::after {
-  content: ''; position: absolute; top: -20%; right: 8%;
-  width: 55%; height: 140%;
-  border-left: 1px solid rgba(200,75,17,0.08);
-  transform: rotate(-12deg); transform-origin: top right;
-}
-.hero-tag {
-  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.25em;
-  text-transform: uppercase; color: var(--orange);
-  margin-bottom: 1.5rem; position: relative; z-index: 1;
-  animation: fadeUp 0.8s 0.2s ease both;
-  display: flex; align-items: center; gap: 0.8rem;
-}
+.hero-lines::before { content: ''; position: absolute; top: -20%; right: -5%; width: 55%; height: 140%; border-left: 1px solid rgba(200,75,17,0.2); transform: rotate(-12deg); transform-origin: top right; }
+.hero-lines::after { content: ''; position: absolute; top: -20%; right: 8%; width: 55%; height: 140%; border-left: 1px solid rgba(200,75,17,0.08); transform: rotate(-12deg); transform-origin: top right; }
+.hero-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--orange); margin-bottom: 1.5rem; position: relative; z-index: 1; animation: fadeUp 0.8s 0.2s ease both; display: flex; align-items: center; gap: 0.8rem; }
 .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--orange); }
-.hero-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(4rem, 10vw, 8rem);
-  font-weight: 900; line-height: 0.92;
-  text-transform: uppercase; letter-spacing: -0.01em;
-  position: relative; z-index: 1;
-  animation: fadeUp 0.8s 0.35s ease both;
-  max-width: 700px;
-}
+.hero-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(4rem, 10vw, 8rem); font-weight: 900; line-height: 0.92; text-transform: uppercase; letter-spacing: -0.01em; position: relative; z-index: 1; animation: fadeUp 0.8s 0.35s ease both; max-width: 700px; }
 .hero-title em { color: var(--orange); font-style: normal; }
-.hero-sub {
-  font-size: 1.05rem; font-weight: 300; color: var(--gray);
-  max-width: 500px; line-height: 1.7;
-  margin-top: 1.8rem; position: relative; z-index: 1;
-  animation: fadeUp 0.8s 0.5s ease both;
-}
-.hero-actions {
-  display: flex; gap: 1rem; margin-top: 2.5rem;
-  position: relative; z-index: 1;
-  animation: fadeUp 0.8s 0.65s ease both;
-}
-.btn-primary {
-  background: var(--orange); color: var(--white);
-  border: none; padding: 1rem 2.2rem;
-  font-family: 'Barlow', sans-serif; font-size: 0.85rem;
-  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  cursor: pointer; transition: background 0.2s, transform 0.15s;
-  text-decoration: none; display: inline-block;
-}
+.hero-sub { font-size: 1.05rem; font-weight: 300; color: var(--warm-gray); max-width: 500px; line-height: 1.7; margin-top: 1.8rem; position: relative; z-index: 1; animation: fadeUp 0.8s 0.5s ease both; }
+.hero-actions { display: flex; gap: 1rem; margin-top: 2.5rem; position: relative; z-index: 1; animation: fadeUp 0.8s 0.65s ease both; flex-wrap: wrap; }
+.btn-primary { background: var(--orange); color: var(--white); border: none; padding: 1rem 2.2rem; font-family: 'Barlow', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.15s; text-decoration: none; display: inline-block; }
 .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
-.btn-secondary {
-  background: transparent; color: var(--white);
-  border: 1px solid rgba(245,242,238,0.25); padding: 1rem 2.2rem;
-  font-family: 'Barlow', sans-serif; font-size: 0.85rem;
-  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  cursor: pointer; transition: border-color 0.2s, transform 0.15s;
-  text-decoration: none; display: inline-block;
-}
+.btn-secondary { background: transparent; color: var(--white); border: 1px solid rgba(245,242,238,0.25); padding: 1rem 2.2rem; font-family: 'Barlow', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: border-color 0.2s, transform 0.15s; text-decoration: none; display: inline-block; }
 .btn-secondary:hover { border-color: var(--white); transform: translateY(-2px); }
-.hero-stats {
-  display: flex; gap: 3rem; margin-top: 4rem;
-  position: relative; z-index: 1;
-  animation: fadeUp 0.8s 0.8s ease both;
-  padding-top: 2.5rem;
-  border-top: 1px solid rgba(245,242,238,0.08);
-}
-.stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2.4rem; font-weight: 800; color: var(--orange); line-height: 1; }
-.stat-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); margin-top: 0.3rem; }
+.hero-stats { display: flex; gap: 3rem; margin-top: 4rem; position: relative; z-index: 1; animation: fadeUp 0.8s 0.8s ease both; padding-top: 2.5rem; border-top: 1px solid rgba(245,242,238,0.08); flex-wrap: wrap; }
+.stat-item { display: flex; flex-direction: column; }
+.stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; color: var(--orange); line-height: 1; }
+.stat-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm-gray); margin-top: 0.3rem; }
+.stat-sub { font-size: 0.65rem; color: var(--gray2); letter-spacing: 0.08em; margin-top: 0.15rem; }
 
-/* ─── SOBRE ─── */
-.sobre {
-  padding: 7rem 4rem;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
-  align-items: center;
-  border-top: 1px solid rgba(245,242,238,0.06);
-}
-.section-tag {
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em;
-  text-transform: uppercase; color: var(--orange);
-  margin-bottom: 1.2rem;
-  display: flex; align-items: center; gap: 0.8rem;
-}
+/* ── SOBRE ── */
+.sobre { padding: 7rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; border-top: 1px solid rgba(245,242,238,0.06); }
+.section-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--orange); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
 .section-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--orange); }
-.section-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
-  font-weight: 800; text-transform: uppercase;
-  line-height: 1; letter-spacing: 0.01em;
-}
+.section-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 800; text-transform: uppercase; line-height: 1; letter-spacing: 0.01em; }
 .section-title em { color: var(--orange); font-style: normal; }
-.sobre-text { font-size: 1rem; font-weight: 300; color: var(--gray); line-height: 1.8; margin-top: 1.5rem; }
+.sobre-text { font-size: 0.92rem; font-weight: 300; color: var(--warm-gray); line-height: 1.85; margin-top: 1.5rem; }
 .sobre-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(245,242,238,0.06); }
 .sobre-card { background: var(--black); padding: 2rem 1.8rem; transition: background 0.2s; }
 .sobre-card:hover { background: #1a1a1a; }
-.sobre-card-icon { font-size: 1.4rem; margin-bottom: 1rem; color: var(--orange); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; letter-spacing: 0.05em; }
+.sobre-card-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: 0.05em; color: var(--orange); margin-bottom: 1rem; }
 .sobre-card h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
-.sobre-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+.sobre-card p { font-size: 0.83rem; color: var(--warm-gray); line-height: 1.65; font-weight: 300; }
+.sobre-breve { margin-top: 1px; background: rgba(245,242,238,0.03); border: 1px solid rgba(245,242,238,0.06); padding: 1.2rem 1.8rem; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+.sobre-breve-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray2); white-space: nowrap; }
+.sobre-breve-item { font-size: 0.72rem; color: rgba(158,152,144,0.6); letter-spacing: 0.06em; }
+.sobre-breve-sep { color: rgba(158,152,144,0.25); }
 
-/* ─── PROGRAMAS ─── */
-.programas {
-  padding: 7rem 4rem;
-  background: var(--black2);
-  border-top: 1px solid rgba(245,242,238,0.06);
-  border-bottom: 1px solid rgba(245,242,238,0.06);
-}
-.programas-header { margin-bottom: 3.5rem; }
-.prog-grid {
-  display: grid; grid-template-columns: 1fr 1fr 1fr;
-  gap: 1px; background: rgba(245,242,238,0.06);
-}
-.prog-card {
-  background: var(--black2); padding: 2.8rem 2.4rem;
-  position: relative; overflow: hidden;
-  transition: background 0.25s; display: flex; flex-direction: column;
-}
+/* ── MÉTODO ── */
+.metodo { padding: 7rem 4rem; background: var(--black2); border-top: 1px solid rgba(245,242,238,0.06); }
+.metodo-header { margin-bottom: 3.5rem; }
+.metodo-subtitle { font-size: 0.88rem; color: var(--warm-gray); margin-top: 0.6rem; letter-spacing: 0.05em; font-weight: 300; }
+.metodo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(245,242,238,0.06); }
+.metodo-card { background: var(--black2); padding: 2rem; transition: background 0.2s; }
+.metodo-card:hover { background: #141414; }
+.metodo-num { font-family: 'Barlow Condensed', sans-serif; font-size: 3rem; font-weight: 900; color: var(--orange); opacity: 0.8; line-height: 1; margin-bottom: 1.2rem; }
+.metodo-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--white); margin-bottom: 0.8rem; }
+.metodo-card p { font-size: 0.82rem; color: var(--warm-gray); font-weight: 300; line-height: 1.65; }
+
+/* ── PROGRAMAS ── */
+.programas { padding: 7rem 4rem; background: var(--black2); border-top: 1px solid rgba(245,242,238,0.06); }
+.programas-header { margin-bottom: 1.5rem; }
+.programas-sub { font-size: 0.88rem; color: var(--warm-gray); margin-top: 0.8rem; max-width: 620px; line-height: 1.7; font-weight: 300; }
+.prog-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: rgba(245,242,238,0.06); margin-top: 2.5rem; }
+.prog-card { background: var(--black2); padding: 2.8rem 2.4rem; position: relative; overflow: hidden; transition: background 0.25s; display: flex; flex-direction: column; }
 .prog-card:hover { background: #131313; }
-.prog-card.featured {
-  background: #0f0f0f; grid-column: span 2;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0;
-}
+.prog-card.featured { background: #0f0f0f; grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; }
 .prog-card.featured:hover { background: #0f0f0f; }
-.prog-featured-content {
-  padding: 3rem;
-  display: flex; flex-direction: column; justify-content: space-between;
-  border-right: 1px solid rgba(245,242,238,0.06);
-}
-.prog-featured-visual {
-  background: linear-gradient(135deg, #1a0800 0%, #2d0e00 50%, #1a0800 100%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 3rem 2rem; position: relative; overflow: hidden;
-}
-.prog-featured-visual::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(200,75,17,0.25) 0%, transparent 70%);
-}
-.prog-visual-number {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 9rem; font-weight: 900;
-  color: rgba(200,75,17,0.15); line-height: 1; position: relative; z-index: 1;
-  letter-spacing: -0.04em; user-select: none;
-}
-.prog-visual-label {
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--orange); position: relative; z-index: 1; margin-top: 0.5rem;
-}
-.prog-badge {
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--orange);
-  margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
-}
+.prog-featured-content { padding: 3rem; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(245,242,238,0.06); }
+.prog-featured-visual { background: linear-gradient(135deg, #1a0800 0%, #2d0e00 50%, #1a0800 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 2rem; position: relative; overflow: hidden; }
+.prog-featured-visual::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(200,75,17,0.25) 0%, transparent 70%); }
+.prog-visual-number { font-family: 'Barlow Condensed', sans-serif; font-size: 9rem; font-weight: 900; color: rgba(200,75,17,0.15); line-height: 1; position: relative; z-index: 1; letter-spacing: -0.04em; user-select: none; }
+.prog-visual-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); position: relative; z-index: 1; margin-top: 0.5rem; }
+.prog-badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
 .prog-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
-.prog-nome {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem; font-weight: 900;
-  text-transform: uppercase; letter-spacing: 0.02em; line-height: 1;
-}
+.prog-nome { font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; }
 .prog-nome em { color: var(--orange); font-style: normal; }
-.prog-desc { font-size: 0.88rem; font-weight: 300; color: var(--gray); line-height: 1.7; margin-top: 1rem; }
-.prog-meta {
-  display: flex; gap: 1.5rem; margin-top: 1.5rem; padding-top: 1.5rem;
-  border-top: 1px solid rgba(245,242,238,0.08);
-}
+.prog-desc { font-size: 0.88rem; font-weight: 300; color: var(--warm-gray); line-height: 1.7; margin-top: 1rem; }
+.prog-meta { display: flex; gap: 1.5rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(245,242,238,0.08); }
 .prog-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
 .prog-meta-val { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--white); }
 .prog-meta-key { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray2); }
-.prog-features {
-  list-style: none; display: flex; flex-direction: column; gap: 0.55rem;
-  margin-top: 1.5rem; margin-bottom: 2rem;
-}
-.prog-features li { font-size: 0.82rem; color: var(--gray); display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.4; }
+.prog-features { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; margin-top: 1.5rem; margin-bottom: 2rem; }
+.prog-features li { font-size: 0.82rem; color: var(--warm-gray); display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.4; font-weight: 300; }
 .prog-features li::before { content: '✓'; color: var(--orange); font-weight: 700; flex-shrink: 0; }
 .prog-cta-wrap { margin-top: auto; padding-top: 1.5rem; }
-.prog-btn {
-  display: block; width: 100%;
-  background: var(--orange); color: var(--white);
-  border: none; padding: 1rem 1.5rem;
-  font-family: 'Barlow', sans-serif; font-size: 0.85rem; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  cursor: pointer; transition: background 0.2s, transform 0.15s;
-  text-decoration: none; text-align: center; line-height: 1.4;
-}
+.prog-btn { display: block; width: 100%; background: var(--orange); color: var(--white); border: none; padding: 1rem 1.5rem; font-family: 'Barlow', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.15s; text-align: center; line-height: 1.4; }
 .prog-btn:hover { background: var(--orange-light); transform: translateY(-2px); }
+.prog-coming { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 3rem 2rem; }
+.prog-coming-icon { font-family: 'Barlow Condensed', sans-serif; font-size: 4rem; font-weight: 900; color: rgba(245,242,238,0.04); line-height: 1; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+.prog-coming h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(245,242,238,0.3); margin-bottom: 0.5rem; }
+.prog-coming p { font-size: 0.78rem; color: var(--gray2); line-height: 1.5; font-weight: 300; }
+.prog-coming-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray2); border: 1px solid rgba(245,242,238,0.1); padding: 0.3rem 0.8rem; margin-bottom: 1rem; }
 
-/* Coming soon card */
-.prog-card-small { display: flex; flex-direction: column; }
-.prog-coming {
-  flex: 1; display: flex; flex-direction: column; justify-content: center;
-  align-items: center; text-align: center; padding: 3rem 2rem; position: relative;
-}
-.prog-coming-icon {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 4rem; font-weight: 900;
-  color: rgba(245,242,238,0.04); line-height: 1; margin-bottom: 1.5rem; letter-spacing: -0.02em;
-}
-.prog-coming h3 {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 800;
-  text-transform: uppercase; letter-spacing: 0.05em;
-  color: rgba(245,242,238,0.3); margin-bottom: 0.5rem;
-}
-.prog-coming p { font-size: 0.78rem; color: var(--gray2); line-height: 1.5; }
-.prog-coming-badge {
-  display: inline-block; font-size: 0.6rem; font-weight: 700;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--gray2); border: 1px solid rgba(245,242,238,0.1);
-  padding: 0.3rem 0.8rem; margin-bottom: 1rem;
-}
+/* ── COMO FUNCIONA ── */
+.como-funciona { padding: 7rem 4rem; background: #141414; border-top: 1px solid rgba(245,242,238,0.06); }
+.como-funciona .section-header { margin-bottom: 3.5rem; }
+.steps-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; position: relative; }
+.steps-row::before { content: ''; position: absolute; top: 2.2rem; left: 2.5rem; right: 2.5rem; height: 1px; background: linear-gradient(90deg, var(--orange) 0%, rgba(200,75,17,0.15) 100%); z-index: 0; }
+.step { padding: 0 1.5rem 0 0; position: relative; z-index: 1; }
+.step-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2.8rem; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: 1.2rem; display: block; }
+.step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--white); margin-bottom: 0.6rem; }
+.step p { font-size: 0.78rem; color: var(--warm-gray); line-height: 1.65; font-weight: 300; }
 
-/* ─── PLANOS ─── */
+/* ── PREVIEW ÁREA DO ATLETA ── */
+.preview-section { padding: 7rem 4rem; background: var(--black); border-top: 1px solid rgba(245,242,238,0.06); }
+.preview-header { text-align: center; margin-bottom: 3.5rem; }
+.preview-header .section-tag { justify-content: center; }
+.preview-header .preview-sub { font-size: 0.95rem; color: var(--warm-gray); margin-top: 0.8rem; font-weight: 300; }
+.dashboard-mockup { max-width: 900px; margin: 0 auto; background: #0d0d0d; border: 1px solid rgba(245,242,238,0.1); overflow: hidden; }
+.dash-topbar { background: #0a0a0a; padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(245,242,238,0.06); }
+.dash-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--white); }
+.dash-logo span { color: var(--orange); }
+.dash-tag { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-gray); }
+.dash-body { padding: 2rem; display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; }
+.dash-prog-card { background: #111111; border: 1px solid rgba(245,242,238,0.06); padding: 1.5rem; }
+.dash-prog-badge { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.7rem; }
+.dash-prog-badge-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--orange); }
+.dash-prog-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; text-transform: uppercase; color: var(--white); line-height: 1; margin-bottom: 0.8rem; }
+.dash-prog-name em { color: var(--orange); font-style: normal; }
+.dash-week-info { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.6rem; }
+.dash-week-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 900; color: var(--white); line-height: 1; }
+.dash-week-label { font-size: 0.72rem; color: var(--warm-gray); font-weight: 300; }
+.dash-progress-bar-wrap { background: rgba(245,242,238,0.06); height: 4px; margin: 1rem 0; }
+.dash-progress-bar { height: 100%; background: var(--orange); width: 33%; }
+.dash-sessions-label { font-size: 0.65rem; color: var(--warm-gray); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8rem; font-weight: 500; }
+.dash-session-row { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(245,242,238,0.04); }
+.dash-session-row:last-child { border-bottom: none; }
+.dash-session-name { font-size: 0.78rem; color: var(--warm-gray); font-weight: 300; }
+.dash-session-done { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); }
+.dash-session-todo { font-size: 0.62rem; color: rgba(245,242,238,0.2); }
+.dash-next { margin-top: 0.8rem; padding: 0.6rem 0.8rem; background: rgba(200,75,17,0.08); border-left: 2px solid var(--orange); }
+.dash-next-label { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); margin-bottom: 0.2rem; }
+.dash-next-name { font-size: 0.76rem; color: var(--white); }
+.dash-right { display: flex; flex-direction: column; gap: 1rem; }
+.dash-stat-card { background: #111111; border: 1px solid rgba(245,242,238,0.06); padding: 1.2rem 1.5rem; }
+.dash-stat-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 0.4rem; }
+.dash-stat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 900; color: var(--white); line-height: 1; }
+.dash-stat-val span { font-size: 0.9rem; font-weight: 400; color: var(--warm-gray); }
+.dash-phase-indicator { background: #111111; border: 1px solid rgba(245,242,238,0.06); padding: 1.2rem 1.5rem; }
+.dash-phase-dots { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+.dash-phase-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(245,242,238,0.12); }
+.dash-phase-dot.active { background: var(--orange); }
+.dash-cats { padding: 1rem 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; border-top: 1px solid rgba(245,242,238,0.06); }
+.dash-cat { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray2); border: 1px solid rgba(245,242,238,0.08); padding: 0.25rem 0.6rem; }
+.dash-cat.active { color: var(--orange); border-color: rgba(200,75,17,0.3); }
+.dash-cta-wrap { padding: 1.5rem 2rem; text-align: center; border-top: 1px solid rgba(245,242,238,0.06); }
+.dash-enter-btn { display: inline-block; background: var(--orange); color: var(--white); border: none; padding: 0.85rem 2.5rem; font-family: 'Barlow', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+.dash-enter-btn:hover { background: var(--orange-light); }
+
+/* ── ACESSO AOS PROGRAMAS ── */
 .planos { padding: 7rem 4rem; background: var(--black); border-top: 1px solid rgba(245,242,238,0.06); }
-.planos-header { text-align: center; margin-bottom: 4rem; }
+.planos-header { text-align: center; margin-bottom: 1.5rem; }
+.planos-header .section-tag { justify-content: center; }
+.planos-sub { font-size: 0.9rem; color: var(--warm-gray); margin-top: 0.8rem; text-align: center; font-weight: 300; max-width: 540px; margin-left: auto; margin-right: auto; line-height: 1.7; margin-bottom: 3rem; }
 .planos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(245,242,238,0.06); max-width: 1000px; margin: 0 auto; }
 .plano { background: var(--black); padding: 2.5rem 2rem; transition: background 0.2s; }
 .plano:hover { background: #141414; }
 .plano.destaque { background: var(--orange); }
 .plano.destaque:hover { background: var(--orange-light); }
 .plano-badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
-.plano.destaque .plano-badge { color: rgba(245,242,238,0.7); }
+.plano.destaque .plano-badge { color: rgba(245,242,238,0.75); }
+.plano-badge.em-breve { color: var(--warm-gray); }
 .plano-nome { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
-.plano-preco { font-family: 'Barlow Condensed', sans-serif; font-size: 3rem; font-weight: 900; line-height: 1; margin: 1rem 0 0.3rem; }
-.plano-preco span { font-size: 1rem; font-weight: 400; color: var(--gray); }
-.plano.destaque .plano-preco span { color: rgba(245,242,238,0.7); }
-.plano-desc { font-size: 0.8rem; color: var(--gray); margin-bottom: 1.5rem; line-height: 1.5; }
-.plano.destaque .plano-desc { color: rgba(245,242,238,0.8); }
+.plano-preco { font-family: 'Barlow Condensed', sans-serif; font-size: 2.6rem; font-weight: 900; line-height: 1; margin: 1rem 0 0.3rem; }
+.plano-preco span { font-size: 1rem; font-weight: 400; color: var(--warm-gray); }
+.plano.destaque .plano-preco span { color: rgba(245,242,238,0.75); }
+.plano-desc { font-size: 0.82rem; color: var(--warm-gray); margin-bottom: 1.5rem; line-height: 1.6; font-weight: 300; }
+.plano.destaque .plano-desc { color: rgba(245,242,238,0.85); }
 .plano-divider { height: 1px; background: rgba(245,242,238,0.1); margin-bottom: 1.5rem; }
 .plano.destaque .plano-divider { background: rgba(245,242,238,0.25); }
 .plano-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-.plano-features li { font-size: 0.82rem; color: var(--gray); display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.4; }
+.plano-features li { font-size: 0.82rem; color: var(--warm-gray); display: flex; gap: 0.7rem; align-items: flex-start; line-height: 1.4; font-weight: 300; }
 .plano.destaque .plano-features li { color: rgba(245,242,238,0.9); }
 .plano-features li::before { content: '✓'; color: var(--orange); font-weight: 700; flex-shrink: 0; }
 .plano.destaque .plano-features li::before { color: var(--white); }
-.plano-btn {
-  display: block; width: 100%; margin-top: 2rem; padding: 0.85rem;
-  font-family: 'Barlow', sans-serif; font-size: 0.8rem;
-  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.2s; border: none;
-  background: rgba(245,242,238,0.08); color: var(--white);
-}
+.plano-btn { display: block; width: 100%; margin-top: 2rem; padding: 0.85rem; font-family: 'Barlow', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; border: none; background: rgba(245,242,238,0.08); color: var(--white); }
 .plano-btn:hover { background: rgba(245,242,238,0.15); }
+.plano-btn.disabled { opacity: 0.4; cursor: default; }
 .plano.destaque .plano-btn { background: rgba(17,17,17,0.25); color: var(--white); }
 .plano.destaque .plano-btn:hover { background: rgba(17,17,17,0.4); }
+.planos-note { max-width: 1000px; margin: 3rem auto 0; padding: 1.5rem 2rem; background: rgba(245,242,238,0.02); border: 1px solid rgba(245,242,238,0.06); }
+.planos-note-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 0.5rem; }
+.planos-note-items { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
+.planos-note-item { font-size: 0.78rem; color: var(--gray2); display: flex; align-items: center; gap: 0.5rem; }
+.planos-note-item::before { content: '·'; color: var(--orange); }
 
-/* ─── ATLETA ─── */
-.atleta {
-  padding: 7rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
-  align-items: start; border-top: 1px solid rgba(245,242,238,0.06);
-}
-.atleta-conquistas { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0; }
-.conquista { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.2rem 0; border-bottom: 1px solid rgba(245,242,238,0.06); }
-.conquista:first-child { border-top: 1px solid rgba(245,242,238,0.06); }
-.conquista-ano { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--orange); min-width: 48px; padding-top: 0.1rem; }
-.conquista-txt { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
-.conquista-txt strong { display: block; color: var(--white); font-weight: 600; margin-bottom: 0.2rem; font-size: 0.88rem; }
-.atleta-card { background: #0d0d0d; border: 1px solid rgba(245,242,238,0.06); padding: 3rem; }
-.atleta-quote { font-size: 1.05rem; font-weight: 300; color: var(--gray); line-height: 1.8; font-style: italic; }
-.atleta-quote::before { content: '"'; font-family: Georgia, serif; font-size: 3rem; color: var(--orange); line-height: 0; vertical-align: -0.5rem; margin-right: 0.2rem; }
-.atleta-nome { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2rem; }
-.atleta-titulo { font-size: 0.78rem; color: var(--orange); letter-spacing: 0.08em; margin-top: 0.3rem; }
+/* ── COACHES ── */
+.coaches { padding: 7rem 4rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 6rem; align-items: start; border-top: 1px solid rgba(245,242,238,0.06); }
+.coaches-quote { font-size: 0.95rem; font-weight: 300; color: var(--warm-gray); line-height: 1.85; font-style: italic; margin-top: 2rem; margin-bottom: 2.5rem; position: relative; padding-left: 1.5rem; }
+.coaches-quote::before { content: '"'; position: absolute; left: 0; top: -0.4rem; font-family: Georgia, serif; font-size: 2.5rem; color: var(--orange); line-height: 1; }
+.coaches-auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(245,242,238,0.06); }
+.coaches-auth-block { background: var(--black); padding: 1.5rem; transition: background 0.2s; }
+.coaches-auth-block:hover { background: #1a1a1a; }
+.coaches-auth-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--orange); margin-bottom: 0.5rem; }
+.coaches-auth-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--white); margin-bottom: 0.4rem; }
+.coaches-auth-text { font-size: 0.78rem; color: var(--warm-gray); line-height: 1.65; font-weight: 300; }
+.coaches-right { display: flex; flex-direction: column; gap: 1.2rem; padding-top: 1.5rem; }
+.coach-card { background: #0d0d0d; border: 1px solid rgba(245,242,238,0.06); padding: 2rem; }
+.coach-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); margin-bottom: 0.3rem; }
+.coach-role { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); }
+.coach-divider { height: 1px; background: rgba(245,242,238,0.06); margin: 1rem 0; }
+.coach-sub { font-size: 0.78rem; color: var(--warm-gray); font-weight: 300; line-height: 1.6; }
 
-/* ─── CTA FINAL ─── */
-.cta-final {
-  padding: 8rem 4rem; text-align: center;
-  background: var(--black2); border-top: 1px solid rgba(245,242,238,0.06);
-  position: relative; overflow: hidden;
-}
-.cta-final::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(200,75,17,0.08) 0%, transparent 70%);
-}
-.cta-title {
-  font-family: 'Barlow Condensed', sans-serif; font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 900; text-transform: uppercase; line-height: 0.95; position: relative; z-index: 1;
-}
+/* ── CTA FINAL ── */
+.cta-final { padding: 8rem 4rem; text-align: center; background: var(--black2); border-top: 1px solid rgba(245,242,238,0.06); position: relative; overflow: hidden; }
+.cta-final::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(200,75,17,0.08) 0%, transparent 70%); }
+.cta-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; text-transform: uppercase; line-height: 0.95; position: relative; z-index: 1; }
 .cta-title em { color: var(--orange); font-style: normal; }
-.cta-sub { font-size: 1rem; color: var(--gray); margin-top: 1.5rem; position: relative; z-index: 1; }
-.cta-btn {
-  margin-top: 2.5rem; background: var(--orange); color: var(--white);
-  border: none; padding: 1.1rem 3rem;
-  font-family: 'Barlow', sans-serif; font-size: 0.9rem;
-  font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.2s; position: relative; z-index: 1;
-}
+.cta-sub { font-size: 1rem; color: var(--warm-gray); margin-top: 1.5rem; position: relative; z-index: 1; font-weight: 300; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+.cta-btn { margin-top: 2.5rem; background: var(--orange); color: var(--white); border: none; padding: 1.1rem 3rem; font-family: 'Barlow', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; position: relative; z-index: 1; display: inline-block; }
 .cta-btn:hover { background: var(--orange-light); transform: translateY(-3px); }
 
-/* ─── FOOTER ─── */
-footer {
-  padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px solid rgba(245,242,238,0.06);
-}
+/* ── FOOTER ── */
+footer { padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(245,242,238,0.06); }
 .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 800; }
 .footer-logo span { color: var(--orange); }
-footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
+footer p { font-size: 0.75rem; color: var(--warm-gray); letter-spacing: 0.08em; }
 
-/* ─── ANIMATIONS ─── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ─── RESPONSIVE ─── */
+/* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   nav { padding: 1rem 1.5rem; }
   .nav-links { display: none; }
   .hero { padding: 7rem 1.5rem 3rem; }
+  .hero-stats { gap: 1.5rem; }
   .sobre { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
+  .metodo { padding: 4rem 1.5rem; }
+  .metodo-grid { grid-template-columns: 1fr 1fr; }
   .programas { padding: 4rem 1.5rem; }
   .prog-grid { grid-template-columns: 1fr; }
   .prog-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
   .prog-featured-visual { display: none; }
   .prog-featured-content { padding: 2.5rem 2rem; }
+  .como-funciona { padding: 4rem 1.5rem; }
+  .steps-row { grid-template-columns: 1fr; }
+  .steps-row::before { display: none; }
+  .step { padding: 0 0 1.5rem 0; border-bottom: 1px solid rgba(245,242,238,0.06); }
+  .preview-section { padding: 4rem 1.5rem; }
+  .dash-body { grid-template-columns: 1fr; }
   .planos { padding: 4rem 1.5rem; }
   .planos-grid { grid-template-columns: 1fr; }
-  .atleta { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
+  .coaches { padding: 4rem 1.5rem; grid-template-columns: 1fr; gap: 3rem; }
   .cta-final { padding: 5rem 1.5rem; }
   footer { padding: 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+}
+@media (max-width: 600px) {
+  .metodo-grid { grid-template-columns: 1fr; }
+  .coaches-auth-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -399,13 +291,14 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
   <div class="nav-logo" onclick="navParent('landing')">Peak<span>Form</span></div>
   <ul class="nav-links">
     <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#metodo">Método</a></li>
     <li><a href="#programas">Programas</a></li>
     <li><a href="#planos">Planos</a></li>
-    <li><a href="#atleta">Coaches</a></li>
+    <li><a href="#coaches">Coaches</a></li>
   </ul>
   <div class="nav-auth">
-    <a href="javascript:void(0)" onclick="navParent('area_atleta')" class="nav-btn-area">Área do Atleta</a>
-    <a href="javascript:void(0)" onclick="navParent('login')" class="nav-btn-login">Login</a>
+    <a onclick="navParent('area_atleta')" class="nav-btn-area">Área do Atleta</a>
+    <a onclick="navParent('login')" class="nav-btn-login">Login</a>
   </div>
 </nav>
 
@@ -413,31 +306,29 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-lines"></div>
-  <div class="hero-tag">A plataforma portuguesa de CrossFit &amp; Performance</div>
+  <div class="hero-tag">Skills, força e performance com progressão clara</div>
   <h1 class="hero-title">
-    Treina.<br>
-    Evolui.<br>
-    <em>Chega ao topo.</em>
+    TRAIN.<br>
+    EVOLVE.<br>
+    <em>PERFORM BETTER.</em>
   </h1>
-  <p class="hero-sub">
-    Do primeiro movimento técnico à performance competitiva — com progressão, clareza e método.
-  </p>
+  <p class="hero-sub">Do primeiro movimento técnico à performance competitiva — com progressão, clareza e método.</p>
   <div class="hero-actions">
-    <a href="#programas" class="btn-primary">Ver programas</a>
-    <a href="#planos" class="btn-secondary">Explorar planos</a>
+    <button onclick="navParent('area_atleta')" class="btn-primary">Entrar na Área do Atleta</button>
+    <a href="#programas" class="btn-secondary">Ver programas</a>
   </div>
   <div class="hero-stats">
-    <div>
-      <div class="stat-num">3×</div>
-      <div class="stat-label">Top 2 Open Portugal</div>
+    <div class="stat-item">
+      <div class="stat-num">Programas</div>
+      <div class="stat-label">Skills · Strength · Engine</div>
     </div>
-    <div>
-      <div class="stat-num">100%</div>
-      <div class="stat-label">Contexto português</div>
+    <div class="stat-item">
+      <div class="stat-num">Método</div>
+      <div class="stat-label">Progressão sem improviso</div>
     </div>
-    <div>
-      <div class="stat-num">Skills</div>
-      <div class="stat-label">Pull-up ao Muscle-up</div>
+    <div class="stat-item">
+      <div class="stat-num">Performance</div>
+      <div class="stat-label">Treino com intenção</div>
     </div>
   </div>
 </section>
@@ -446,34 +337,77 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
 <section class="sobre" id="sobre">
   <div class="reveal">
     <div class="section-tag">O que é o PeakForm</div>
-    <h2 class="section-title">Feito por atletas.<br><em>Para atletas.</em></h2>
+    <h2 class="section-title">SKILLS, FORÇA E PERFORMANCE.<br><em>NUM SÓ LUGAR.</em></h2>
     <p class="sobre-text">
-      O PeakForm é a primeira plataforma portuguesa focada em CrossFit, Weightlifting e skills técnicas de ginástica. Criada por quem compete ao mais alto nível em Portugal, para quem quer evoluir a sério.
+      O PeakForm é uma plataforma de treino criada para quem quer evoluir com estrutura. Aqui encontras programas de skills para os movimentos gímnicos que ainda não dominas, ciclos de força, engine e preparação competitiva — da primeira pull-up à preparação para o Open, ATHX ou HYROX.
     </p>
-    <p class="sobre-text" style="margin-top: 1rem;">
-      Seja a tua primeira pull-up ou a preparação para o Open, temos um programa para ti.
+    <p class="sobre-text" style="margin-top:1rem;">
+      Cada programa é organizado por fases, semanas e sessões, com progressões claras, vídeos técnicos e notas de coaching para saberes exactamente o que fazer, quando avançar e como medir a tua evolução.
     </p>
   </div>
-  <div class="sobre-cards reveal">
-    <div class="sobre-card">
-      <div class="sobre-card-icon">01</div>
-      <h4>Skills técnicas</h4>
-      <p>Pull-up, C2B, Bar Muscle-up, HSPU. Progressões estruturadas do zero ao avançado.</p>
+  <div class="reveal">
+    <div class="sobre-cards">
+      <div class="sobre-card">
+        <div class="sobre-card-num">01</div>
+        <h4>Skills</h4>
+        <p>Pull-up, C2B, toes-to-bar, HSPU, handstand walk, bar muscle-up, ring muscle-up e outros movimentos gímnicos.</p>
+      </div>
+      <div class="sobre-card">
+        <div class="sobre-card-num">02</div>
+        <h4>Strength</h4>
+        <p>Programas de squat, força específica e ciclos estruturados para desenvolver uma base física mais forte.</p>
+      </div>
+      <div class="sobre-card">
+        <div class="sobre-card-num">03</div>
+        <h4>Engine</h4>
+        <p>Programas para melhorar resistência, pacing, capacidade aeróbia e performance em workouts longos.</p>
+      </div>
+      <div class="sobre-card">
+        <div class="sobre-card-num">04</div>
+        <h4>Competition</h4>
+        <p>Preparação para Open, ATHX, HYROX, WODs e desafios com objectivos claros.</p>
+      </div>
     </div>
-    <div class="sobre-card">
-      <div class="sobre-card-icon">02</div>
-      <h4>Weightlifting</h4>
-      <p>Snatch, Clean &amp; Jerk, programas de squat. Técnica e força em paralelo.</p>
+    <div class="sobre-breve">
+      <span class="sobre-breve-label">Em breve na plataforma</span>
+      <span class="sobre-breve-item">Coaching 1:1</span>
+      <span class="sobre-breve-sep">·</span>
+      <span class="sobre-breve-item">Merch PeakForm</span>
+      <span class="sobre-breve-sep">·</span>
+      <span class="sobre-breve-item">Workshops</span>
+      <span class="sobre-breve-sep">·</span>
+      <span class="sobre-breve-item">Programação para boxes</span>
     </div>
-    <div class="sobre-card">
-      <div class="sobre-card-icon">03</div>
-      <h4>CrossFit &amp; WODs</h4>
-      <p>Programas completos de CrossFit, desafios mensais e preparação para competição.</p>
+  </div>
+</section>
+
+<!-- MÉTODO -->
+<section class="metodo" id="metodo">
+  <div class="metodo-header reveal">
+    <div class="section-tag">O método PeakForm</div>
+    <h2 class="section-title">UM MÉTODO SIMPLES.<br><em>UMA PROGRESSÃO CLARA.</em></h2>
+    <p class="metodo-subtitle">Sem improviso.</p>
+  </div>
+  <div class="metodo-grid reveal">
+    <div class="metodo-card">
+      <div class="metodo-num">01</div>
+      <div class="metodo-card-title">Escolher</div>
+      <p>Escolhe o programa certo para o teu objectivo: skills, força, engine ou preparação competitiva.</p>
     </div>
-    <div class="sobre-card">
-      <div class="sobre-card-icon">04</div>
-      <h4>Coaching 1:1</h4>
-      <p>Acompanhamento estruturado, progressão clara e feedback direto. Vagas limitadas.</p>
+    <div class="metodo-card">
+      <div class="metodo-num">02</div>
+      <div class="metodo-card-title">Seguir</div>
+      <p>Cada sessão tem estrutura, vídeos técnicos, notas de coaching e objectivo claro.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">03</div>
+      <div class="metodo-card-title">Registar</div>
+      <p>Acompanha sessões concluídas, cargas, notas e evolução ao longo das semanas.</p>
+    </div>
+    <div class="metodo-card">
+      <div class="metodo-num">04</div>
+      <div class="metodo-card-title">Evoluir</div>
+      <p>Avanças com critérios claros, sabendo quando repetir, progredir ou ajustar.</p>
     </div>
   </div>
 </section>
@@ -482,50 +416,32 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
 <section class="programas" id="programas">
   <div class="programas-header reveal">
     <div class="section-tag">Programas de especialidade</div>
-    <h2 class="section-title">Domina cada<br><em>movimento.</em></h2>
+    <h2 class="section-title">PROGRAMAS PARA CADA OBJECTIVO.</h2>
+    <p class="programas-sub">Skills, força, engine, competição e treino híbrido — organizados por foco para encontrares rapidamente o próximo passo.</p>
   </div>
-
   <div class="prog-grid reveal">
-
-    <!-- CARD PRINCIPAL: FIRST PULL-UP -->
     <div class="prog-card featured">
       <div class="prog-featured-content">
         <div>
-          <div class="prog-badge">
-            <span class="prog-badge-dot"></span>
-            Disponível agora
-          </div>
+          <div class="prog-badge"><span class="prog-badge-dot"></span>Disponível agora</div>
           <div class="prog-nome">First<br><em>Pull-Up</em></div>
-          <p class="prog-desc">
-            O programa mais completo de Portugal para conseguires a tua primeira strict pull-up. 6 semanas, 3 sessões por semana, progressão estruturada do grip ao movimento completo — com vídeos para cada exercício.
-          </p>
+          <p class="prog-desc">Programa de 6 semanas para conquistares a tua primeira strict pull-up com progressão estruturada, vídeos técnicos e critérios claros de evolução.</p>
           <div class="prog-meta">
-            <div class="prog-meta-item">
-              <div class="prog-meta-val">6</div>
-              <div class="prog-meta-key">Semanas</div>
-            </div>
-            <div class="prog-meta-item">
-              <div class="prog-meta-val">3×</div>
-              <div class="prog-meta-key">Por semana</div>
-            </div>
-            <div class="prog-meta-item">
-              <div class="prog-meta-val">~25'</div>
-              <div class="prog-meta-key">Por sessão</div>
-            </div>
-            <div class="prog-meta-item">
-              <div class="prog-meta-val">3</div>
-              <div class="prog-meta-key">Fases</div>
-            </div>
+            <div class="prog-meta-item"><div class="prog-meta-val">6</div><div class="prog-meta-key">Semanas</div></div>
+            <div class="prog-meta-item"><div class="prog-meta-val">3×</div><div class="prog-meta-key">Por semana</div></div>
+            <div class="prog-meta-item"><div class="prog-meta-val">~25'</div><div class="prog-meta-key">Por sessão</div></div>
+            <div class="prog-meta-item"><div class="prog-meta-val">3</div><div class="prog-meta-key">Fases</div></div>
           </div>
-          <ul class="prog-features" style="margin-top:1.5rem;">
-            <li>Programa completo semana a semana com progressão detalhada</li>
-            <li>Vídeos demonstrativos de todos os exercícios</li>
-            <li>Notas de coaching para cada sessão</li>
-            <li>Acesso ao programa completo dentro da Área do Atleta</li>
+          <ul class="prog-features">
+            <li>6 semanas de progressão estruturada</li>
+            <li>3 sessões por semana</li>
+            <li>Vídeos técnicos por exercício</li>
+            <li>Notas de coaching por sessão</li>
+            <li>Critérios claros para avançar de fase</li>
           </ul>
         </div>
         <div class="prog-cta-wrap">
-          <button onclick="navParent('login')" class="prog-btn">Ver programa →</button>
+          <button onclick="navParent('first_pullup')" class="prog-btn">Ver programa →</button>
         </div>
       </div>
       <div class="prog-featured-visual">
@@ -533,142 +449,257 @@ footer p { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; }
         <div class="prog-visual-label">Especialidade de skills</div>
       </div>
     </div>
-
-    <!-- CARD 2: BAR MUSCLE UP -->
-    <div class="prog-card prog-card-small">
-      <div class="prog-badge" style="opacity:0.4;">
-        <span class="prog-badge-dot" style="background:var(--gray2)"></span>
-        Em desenvolvimento
+    <div class="prog-card">
+      <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);">
+        <span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento
       </div>
       <div class="prog-coming">
         <div class="prog-coming-icon">BMU</div>
         <div class="prog-coming-badge">Em breve</div>
-        <h3>Bar Muscle Up</h3>
-        <p>O próximo passo depois da pull-up. 6 semanas para dominar o movimento mais temido do CrossFit.</p>
+        <h3>Bar Muscle-Up</h3>
+        <p>O próximo passo depois da pull-up. Progressão estruturada para dominar o movimento.</p>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- PLANOS -->
+<!-- COMO FUNCIONA -->
+<section class="como-funciona">
+  <div class="section-header reveal">
+    <div class="section-tag">Como funciona</div>
+    <h2 class="section-title">CINCO PASSOS.<br><em>SEM COMPLICAÇÕES.</em></h2>
+  </div>
+  <div class="steps-row reveal" style="margin-top:3rem;">
+    <div class="step">
+      <span class="step-num">01</span>
+      <div class="step-title">Escolhe o programa</div>
+      <p>Navega pelos programas disponíveis e escolhe o foco certo para o teu nível e objectivo.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <div class="step-title">Entra na Área do Atleta</div>
+      <p>Acede aos teus programas, sessões e conteúdos organizados num só lugar.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <div class="step-title">Segue as sessões guiadas</div>
+      <p>Cada sessão inclui exercícios, vídeos técnicos, notas do coach e objectivo claro.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <div class="step-title">Regista o teu progresso</div>
+      <p>Marca sessões concluídas, acompanha notas, cargas e evolução semana a semana.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">05</span>
+      <div class="step-title">Evolui para o próximo nível</div>
+      <p>Quando cumpres os critérios, avanças para a fase seguinte com progressão e intenção.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PREVIEW ÁREA DO ATLETA -->
+<section class="preview-section">
+  <div class="preview-header reveal">
+    <div class="section-tag">Área do Atleta</div>
+    <h2 class="section-title">A TUA EVOLUÇÃO ORGANIZADA<br><em>NUM SÓ LUGAR.</em></h2>
+    <p class="preview-sub">Programas, sessões, progresso e notas de treino — tudo dentro da tua Área do Atleta.</p>
+  </div>
+  <div class="dashboard-mockup reveal">
+    <div class="dash-topbar">
+      <div class="dash-logo">Peak<span>Form</span></div>
+      <div class="dash-tag">Área do Atleta</div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-prog-card">
+        <div class="dash-prog-badge"><div class="dash-prog-badge-dot"></div>Disponível</div>
+        <div class="dash-prog-name">First <em>Pull-Up</em></div>
+        <div class="dash-week-info">
+          <div class="dash-week-num">Semana 2</div>
+          <div class="dash-week-label">de 6</div>
+        </div>
+        <div class="dash-progress-bar-wrap"><div class="dash-progress-bar"></div></div>
+        <div class="dash-sessions-label">Sessões desta semana</div>
+        <div class="dash-session-row"><div class="dash-session-name">Sessão A — Força de tracção</div><div class="dash-session-done">Concluída</div></div>
+        <div class="dash-session-row"><div class="dash-session-name">Sessão B — Resistência</div><div class="dash-session-done">Concluída</div></div>
+        <div class="dash-session-row"><div class="dash-session-name">Sessão C — Técnica</div><div class="dash-session-todo">Por fazer</div></div>
+        <div class="dash-next">
+          <div class="dash-next-label">Próximo treino</div>
+          <div class="dash-next-name">Sessão C — Técnica e activação</div>
+        </div>
+      </div>
+      <div class="dash-right">
+        <div class="dash-stat-card">
+          <div class="dash-stat-label">Sessões concluídas</div>
+          <div class="dash-stat-val">4 <span>/ 18 total</span></div>
+        </div>
+        <div class="dash-stat-card">
+          <div class="dash-stat-label">Ritmo semanal</div>
+          <div class="dash-stat-val">3× <span>/ semana</span></div>
+        </div>
+        <div class="dash-phase-indicator">
+          <div class="dash-stat-label">Fase actual</div>
+          <div class="dash-stat-val" style="font-size:1.2rem;margin-top:.3rem;">Fase 1 — Base</div>
+          <div class="dash-phase-dots">
+            <div class="dash-phase-dot active"></div>
+            <div class="dash-phase-dot"></div>
+            <div class="dash-phase-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-cats">
+      <div class="dash-cat active">Skills</div>
+      <div class="dash-cat">Strength</div>
+      <div class="dash-cat">Engine</div>
+      <div class="dash-cat">Competition</div>
+    </div>
+    <div class="dash-cta-wrap">
+      <button onclick="navParent('area_atleta')" class="dash-enter-btn">Entrar na Área do Atleta →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ACESSO AOS PROGRAMAS -->
 <section class="planos" id="planos">
   <div class="planos-header reveal">
-    <div class="section-tag" style="justify-content: center;">Planos de acesso</div>
-    <h2 class="section-title">Escolhe o teu <em>nível</em></h2>
+    <div class="section-tag">Acesso aos programas</div>
+    <h2 class="section-title">ESCOLHE O TEU PRÓXIMO PROGRAMA.</h2>
   </div>
+  <p class="planos-sub reveal">Compra apenas os programas que precisas. O acesso fica guardado na tua Área do Atleta.</p>
   <div class="planos-grid reveal">
     <div class="plano">
       <div class="plano-badge">Entrada</div>
-      <div class="plano-nome">À la carte</div>
-      <div class="plano-preco">€29 <span>/ programa</span></div>
-      <div class="plano-desc">Acede ao programa que precisas, quando precisas.</div>
+      <div class="plano-nome">Programa Individual</div>
+      <div class="plano-preco">desde €10</div>
+      <div class="plano-desc">Compra um programa específico e mantém o acesso dentro da tua Área do Atleta.</div>
       <div class="plano-divider"></div>
       <ul class="plano-features">
-        <li>Acesso ao programa escolhido</li>
+        <li>Acesso ao programa comprado</li>
+        <li>Sessões organizadas por semanas</li>
         <li>Vídeos técnicos incluídos</li>
-        <li>Notas de coaching incluídas</li>
-        <li>Desconto em futuros programas</li>
+        <li>Notas de coaching</li>
+        <li>Progresso guardado na Área do Atleta</li>
       </ul>
-      <button onclick="navParent('login')" class="plano-btn">Ver programas</button>
+      <button onclick="navParent('area_atleta')" class="plano-btn">Ver programas</button>
+    </div>
+    <div class="plano" style="opacity:0.7;">
+      <div class="plano-badge em-breve">Em breve</div>
+      <div class="plano-nome">Pack de Programas</div>
+      <div class="plano-preco" style="font-size:1.6rem;color:var(--warm-gray);">Em breve</div>
+      <div class="plano-desc">Combina vários programas por objectivo: skills, strength, engine ou preparação competitiva.</div>
+      <div class="plano-divider"></div>
+      <ul class="plano-features">
+        <li>Vários programas por categoria</li>
+        <li>Ideal para objectivos específicos</li>
+        <li>Mais estrutura ao longo do tempo</li>
+        <li>Acesso organizado na Área do Atleta</li>
+      </ul>
+      <button class="plano-btn disabled" disabled>Em breve</button>
     </div>
     <div class="plano destaque">
-      <div class="plano-badge">★ Mais popular</div>
-      <div class="plano-nome">Active</div>
-      <div class="plano-preco">€24,99 <span>/ mês</span></div>
-      <div class="plano-desc">Acesso total à plataforma e comunidade.</div>
+      <div class="plano-badge">Premium</div>
+      <div class="plano-nome">Coaching 1:1</div>
+      <div class="plano-preco">€60 <span>/ mês</span></div>
+      <div class="plano-desc">A opção para quem quer evoluir com propósito, feedback directo e uma estratégia ajustada ao seu objectivo.</div>
       <div class="plano-divider"></div>
       <ul class="plano-features">
-        <li>Todos os programas incluídos</li>
-        <li>Novos treinos semanais</li>
-        <li>Comunidade privada</li>
-        <li>Desafios mensais</li>
-        <li>Workshops com desconto</li>
+        <li>Plano personalizado</li>
+        <li>Feedback directo</li>
+        <li>Ajustes semanais</li>
+        <li>Estratégia por objectivo</li>
+        <li>Vagas limitadas</li>
       </ul>
-      <button onclick="navParent('login')" class="plano-btn">Começar agora</button>
+      <button onclick="navParent('em_breve')" class="plano-btn">Entrar em contacto</button>
     </div>
-    <div class="plano">
-      <div class="plano-badge">Elite</div>
-      <div class="plano-nome">Coach</div>
-      <div class="plano-preco">€59,99 <span>/ mês</span></div>
-      <div class="plano-desc">Coaching 1:1 com atletas de competição.</div>
-      <div class="plano-divider"></div>
-      <ul class="plano-features">
-        <li>Tudo do plano Active</li>
-        <li>Plano 100% personalizado</li>
-        <li>Feedback semanal direto</li>
-        <li>Workshops exclusivos</li>
-        <li>Vagas muito limitadas</li>
-      </ul>
-      <button onclick="navParent('login')" class="plano-btn">Entrar em contacto</button>
+  </div>
+  <div class="planos-note reveal">
+    <div class="planos-note-title">Em breve: Comunidade PeakForm</div>
+    <div class="planos-note-items">
+      <span class="planos-note-item">WODs semanais</span>
+      <span class="planos-note-item">Vídeos técnicos pontuais</span>
+      <span class="planos-note-item">Dicas de movimentos gímnicos</span>
+      <span class="planos-note-item">Desafios da comunidade</span>
     </div>
   </div>
 </section>
 
 <!-- COACHES -->
-<section class="atleta" id="atleta">
+<section class="coaches" id="coaches">
   <div class="reveal">
-    <div class="section-tag">Os coaches</div>
-    <h2 class="section-title">Treinado por<br><em>quem chegou lá.</em></h2>
-    <div class="atleta-conquistas">
-      <div class="conquista">
-        <div class="conquista-ano">2024</div>
-        <div class="conquista-txt">
-          <strong>1.º Lugar — CrossFit Open Portugal</strong>
-          Melhor atleta nacional da temporada
-        </div>
+    <div class="section-tag">Os Coaches</div>
+    <h2 class="section-title">CRIADO POR COACHES.<br><em>TESTADO POR ATLETAS.</em></h2>
+    <p class="coaches-quote">
+      Não criamos programas para preencher calendário. Criamos progressões para resolver problemas reais: falta de força, falta de técnica, falta de consistência e falta de direcção. A PeakForm nasce da prática, da competição e de anos no terreno a treinar pessoas com objectivos diferentes.
+    </p>
+    <div class="coaches-auth-grid">
+      <div class="coaches-auth-block">
+        <div class="coaches-auth-num">01</div>
+        <div class="coaches-auth-title">Experiência no terreno</div>
+        <p class="coaches-auth-text">Mais de 15 anos ligados ao treino funcional, performance e acompanhamento de atletas.</p>
       </div>
-      <div class="conquista">
-        <div class="conquista-ano">2025</div>
-        <div class="conquista-txt">
-          <strong>1.º Lugar — CrossFit Open Portugal</strong>
-          Título nacional confirmado pela 2.ª vez
-        </div>
+      <div class="coaches-auth-block">
+        <div class="coaches-auth-num">02</div>
+        <div class="coaches-auth-title">Coaching e programação</div>
+        <p class="coaches-auth-text">Programas criados com base em progressão, critérios claros e aplicação prática em contexto real.</p>
       </div>
-      <div class="conquista">
-        <div class="conquista-ano">2026</div>
-        <div class="conquista-txt">
-          <strong>2.º Lugar — CrossFit Open Portugal</strong>
-          Pódio nacional pela 3.ª vez consecutiva
-        </div>
+      <div class="coaches-auth-block">
+        <div class="coaches-auth-num">03</div>
+        <div class="coaches-auth-title">Fitness competitivo</div>
+        <p class="coaches-auth-text">Experiência em competição, preparação física e desenvolvimento de skills, força e engine.</p>
+      </div>
+      <div class="coaches-auth-block">
+        <div class="coaches-auth-num">04</div>
+        <div class="coaches-auth-title">Treino híbrido</div>
+        <p class="coaches-auth-text">Conhecimento aplicado a objectivos como Open, HYROX, ATHX e preparação física geral.</p>
       </div>
     </div>
+    <p style="font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gray2);margin-top:1.5rem;">Equipa PeakForm · Treino funcional · Skills · Strength · Engine</p>
   </div>
-  <div class="atleta-card reveal">
-    <p class="atleta-quote">
-      Não há atalhos para o topo. Mas há um caminho certo — e é isso que ensinamos. Cada programa que construímos é o resultado de anos de competição, erro e aprendizagem.
-    </p>
-    <div class="atleta-nome">O teu coach de elite</div>
-    <div class="atleta-titulo">2× Campeão Nacional CrossFit Open Portugal</div>
+  <div class="coaches-right reveal">
+    <div class="coach-card">
+      <div class="coach-name">Ruben Pacheco</div>
+      <div class="coach-role">Coach PeakForm</div>
+      <div class="coach-divider"></div>
+      <p class="coach-sub">Especializado em skills, força e preparação competitiva. Experiência como atleta e coach no contexto do fitness funcional e performance.</p>
+    </div>
+    <div class="coach-card">
+      <div class="coach-name">Rui Figueiredo</div>
+      <div class="coach-role">Coach PeakForm</div>
+      <div class="coach-divider"></div>
+      <p class="coach-sub">Especializado em engine, treino híbrido e metodologia de progressão. Focado no desenvolvimento de atletas com objectivos competitivos e funcionais.</p>
+    </div>
   </div>
 </section>
 
 <!-- CTA FINAL -->
 <section class="cta-final">
-  <h2 class="cta-title reveal">Pronto para<br><em>subir de nível?</em></h2>
-  <p class="cta-sub reveal">Começa hoje. Sem desculpas.</p>
-  <button onclick="navParent('login')" class="cta-btn reveal">Entrar na plataforma →</button>
+  <h2 class="cta-title reveal">O TEU PRÓXIMO NÍVEL<br><em>COMEÇA COM ESTRUTURA.</em></h2>
+  <p class="cta-sub reveal">Escolhe o programa certo, entra na Área do Atleta e segue a progressão.</p>
+  <button onclick="navParent('area_atleta')" class="cta-btn reveal">Entrar na Área do Atleta →</button>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Peak<span>Form</span></div>
+  <p>Train Smarter. Move Better. Perform Better.</p>
   <p>© 2026 PeakForm. Todos os direitos reservados.</p>
-  <p>peakform.pt</p>
 </footer>
 
 <script>
-  // Navigate parent Streamlit window via query param (preserves session for re-auth flows)
-  function navParent(page) {
-    window.parent.location.href = '/?nav=' + page;
-  }
+function navParent(page) {
+  window.top.location.href = window.top.location.pathname + '?nav=' + page;
+}
 
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+const revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(function(el) {
+  revealObserver.observe(el);
+});
 </script>
-
 </body>
 </html>
