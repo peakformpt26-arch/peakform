@@ -11,7 +11,6 @@ def _html(path: str) -> str:
         return f.read()
 
 
-# ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="PeakForm",
     page_icon=Image.open(_ICON),
@@ -19,7 +18,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ── Session state ─────────────────────────────────────────────────────────────
 for _k, _v in [
     ("authenticated", False),
     ("page", "landing"),
@@ -29,11 +27,11 @@ for _k, _v in [
     if _k not in st.session_state:
         st.session_state[_k] = _v
 
-# ── URL nav router ─────────────────────────────────────────────────────────────
 _nav = st.query_params.get("nav", None)
 if _nav:
     if _nav == "login":
         st.session_state.page = "login"
+        st.session_state.login_error = False
     elif _nav == "area_atleta":
         st.session_state.page = "area_atleta" if st.session_state.authenticated else "login"
     elif _nav == "landing":
@@ -53,7 +51,6 @@ if _nav:
     st.query_params.clear()
     st.rerun()
 
-# ── Shared CSS ────────────────────────────────────────────────────────────────
 _BASE_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
@@ -73,82 +70,79 @@ div[data-testid="stVerticalBlock"] > div { gap: 0 !important; }
 </style>
 """
 
+
 # ─────────────────────────────────────────────────────────────────────────────
 # LANDING
 # ─────────────────────────────────────────────────────────────────────────────
 def show_landing():
+    # Pure HTML navbar — no st.columns, no CSS nth-child hacks.
+    # onclick runs in the main page DOM (not inside an iframe), so
+    # window.location.href works reliably.
     st.markdown(_BASE_CSS + """
 <style>
-.pf-sl-logo {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 1.9rem;
-  font-weight: 800; color: #F5F2EE; letter-spacing: .02em;
-  padding: .72rem 0 .72rem 2rem; display: block;
+.pf-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.7rem 2.5rem;
+  background: rgba(17,17,17,0.97);
+  border-bottom: 1px solid rgba(200,75,17,0.15);
+  font-family: 'Barlow', sans-serif;
+  position: sticky; top: 0; z-index: 999;
 }
-.pf-sl-logo span { color: #C84B11; }
-.pf-sl-links {
-  display: flex; gap: 2rem; list-style: none;
-  padding: .85rem 0; margin: 0; align-items: center;
+.pf-nav-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.75rem; font-weight: 800; color: #F5F2EE;
+  letter-spacing: 0.02em; text-decoration: none; cursor: pointer;
 }
-.pf-sl-links a {
-  font-size: .78rem; font-weight: 500; letter-spacing: .12em;
+.pf-nav-logo span { color: #C84B11; }
+.pf-nav-links {
+  display: flex; gap: 2.2rem; list-style: none;
+  padding: 0; margin: 0; align-items: center;
+}
+.pf-nav-links a {
+  font-size: 0.76rem; font-weight: 500; letter-spacing: 0.12em;
   text-transform: uppercase; color: #9E9890; text-decoration: none;
+  transition: color 0.2s;
 }
-/* Nav strip */
-[data-testid="stHorizontalBlock"] {
-  background: rgba(17,17,17,.97) !important;
-  border-bottom: 1px solid rgba(200,75,17,.15) !important;
-  gap: 0 !important; align-items: stretch !important;
+.pf-nav-links a:hover { color: #F5F2EE; }
+.pf-nav-btns { display: flex; gap: 0.65rem; align-items: center; }
+.pf-btn-login {
+  background: transparent; color: rgba(245,242,238,0.8);
+  border: 1px solid rgba(245,242,238,0.25);
+  font-family: 'Barlow', sans-serif; font-size: 0.74rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.48rem 1.2rem; cursor: pointer; transition: all 0.2s;
+  line-height: 1;
 }
-[data-testid="stHorizontalBlock"] [data-testid="column"] { padding: 0 !important; }
-[data-testid="stHorizontalBlock"] .stButton > button {
-  font-family: 'Barlow', sans-serif !important; border-radius: 0 !important;
-  font-size: .74rem !important; font-weight: 600 !important;
-  letter-spacing: .1em !important; text-transform: uppercase !important;
-  padding: .74rem 1rem !important; width: 100% !important;
-  transition: all .2s !important;
+.pf-btn-login:hover { border-color: rgba(245,242,238,0.55); color: #F5F2EE; }
+.pf-btn-area {
+  background: #C84B11; color: #F5F2EE; border: none;
+  font-family: 'Barlow', sans-serif; font-size: 0.74rem;
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.48rem 1.2rem; cursor: pointer; transition: background 0.2s;
+  line-height: 1;
 }
-/* Login (3rd col) — outline */
-[data-testid="stHorizontalBlock"] > [data-testid="column"]:nth-last-child(2) .stButton > button {
-  background: transparent !important; color: rgba(245,242,238,.75) !important;
-  border: 1px solid rgba(245,242,238,.18) !important;
-}
-[data-testid="stHorizontalBlock"] > [data-testid="column"]:nth-last-child(2) .stButton > button:hover {
-  border-color: rgba(245,242,238,.45) !important; color: #F5F2EE !important;
-}
-/* Área do Atleta (last col) — orange */
-[data-testid="stHorizontalBlock"] > [data-testid="column"]:last-child .stButton > button {
-  background: #C84B11 !important; color: #F5F2EE !important; border: none !important;
-}
-[data-testid="stHorizontalBlock"] > [data-testid="column"]:last-child .stButton > button:hover {
-  background: #E05515 !important;
-}
+.pf-btn-area:hover { background: #E05515; }
 </style>
+<nav class="pf-nav">
+  <a class="pf-nav-logo" href="/?nav=landing">Peak<span>Form</span></a>
+  <ul class="pf-nav-links">
+    <li><a href="#">Sobre</a></li>
+    <li><a href="#">Método</a></li>
+    <li><a href="#">Programas</a></li>
+    <li><a href="#">Planos</a></li>
+    <li><a href="#">Coaches</a></li>
+  </ul>
+  <div class="pf-nav-btns">
+    <button class="pf-btn-login" onclick="window.location.href='/?nav=login'">Login</button>
+    <button class="pf-btn-area" onclick="window.location.href='/?nav=area_atleta'">Área do Atleta</button>
+  </div>
+</nav>
 """, unsafe_allow_html=True)
-
-    c_logo, c_links, c_login, c_area = st.columns([2.2, 5.1, 1.1, 1.8])
-    with c_logo:
-        st.markdown('<div class="pf-sl-logo">Peak<span>Form</span></div>', unsafe_allow_html=True)
-    with c_links:
-        st.markdown(
-            '<ul class="pf-sl-links">'
-            '<li><a href="#">Sobre</a></li><li><a href="#">Método</a></li>'
-            '<li><a href="#">Programas</a></li><li><a href="#">Planos</a></li>'
-            '<li><a href="#">Coaches</a></li></ul>',
-            unsafe_allow_html=True,
-        )
-    with c_login:
-        if st.button("Login", key="lnd_login", use_container_width=True):
-            st.session_state.page = "login"
-            st.rerun()
-    with c_area:
-        if st.button("Área do Atleta", key="lnd_area", use_container_width=True):
-            st.session_state.page = "area_atleta" if st.session_state.authenticated else "login"
-            st.rerun()
 
     landing_html = _html("index.html")
     landing_html = landing_html.replace(
         "</head>",
-        "<style>nav{display:none!important}.hero{padding-top:4rem!important}</style></head>",
+        "<style>nav{display:none!important}.hero{padding-top:2rem!important}</style></head>",
         1,
     )
     st.components.v1.html(landing_html, height=900, scrolling=True)
@@ -160,17 +154,32 @@ def show_landing():
 def show_login():
     st.markdown(_BASE_CSS + """
 <style>
-.stApp,[data-testid="stAppViewContainer"],section[data-testid="stMain"] {
+.stApp, [data-testid="stAppViewContainer"], section[data-testid="stMain"] {
   background: #0a0a0a !important;
 }
-[data-testid="stHorizontalBlock"] { background: transparent !important; border-bottom: none !important; }
+/* Reset horizontal block */
+[data-testid="stHorizontalBlock"] {
+  background: transparent !important; border: none !important;
+  gap: 0 !important; min-height: 100vh !important; align-items: stretch !important;
+}
 [data-testid="column"] { padding: 0 !important; }
 
+/* Left column dark background */
+[data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child {
+  background: #0d0d0d !important;
+  border-right: 1px solid rgba(245,242,238,.05) !important;
+}
+/* Right column */
+[data-testid="stHorizontalBlock"] > [data-testid="column"]:last-child {
+  background: #0a0a0a !important;
+  padding: 2.5rem 2.5rem 2rem !important;
+}
+
+/* Brand section */
 .pf-login-brand {
-  min-height: 100vh; display: flex; flex-direction: column;
-  justify-content: center; padding: 4rem 3.5rem;
-  background: #0d0d0d; border-right: 1px solid rgba(245,242,238,.05);
-  font-family: 'Barlow', sans-serif; position: relative; overflow: hidden;
+  padding: 4rem 3.5rem; font-family: 'Barlow', sans-serif;
+  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
 }
 .pf-login-brand::after {
   content: 'PF'; position: absolute; bottom: -3rem; right: -2rem;
@@ -184,46 +193,57 @@ def show_login():
 .pf-lb-eyebrow::before { content: ''; width: 20px; height: 1px; background: #C84B11; flex-shrink: 0; }
 .pf-lb-title { font-family: 'Barlow Condensed', sans-serif; font-size: 3rem; font-weight: 900; text-transform: uppercase; line-height: 1; color: #F5F2EE; margin-bottom: 1.2rem; }
 .pf-lb-text { font-size: .87rem; color: #9E9890; line-height: 1.8; margin-bottom: 2rem; max-width: 380px; font-weight: 300; }
-.pf-lb-list { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+.pf-lb-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .7rem; }
 .pf-lb-list li { font-size: .82rem; color: #9E9890; display: flex; gap: .7rem; align-items: flex-start; line-height: 1.5; font-weight: 300; }
 .pf-lb-list li::before { content: '→'; color: #C84B11; font-weight: 700; flex-shrink: 0; }
 
-.pf-login-form-wrap {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; padding: 2rem; background: #0a0a0a;
-}
-.pf-lf-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; color: #F5F2EE; text-align: center; }
+/* Right column header (above card) */
+.pf-lf-header { text-align: center; padding: 0 0 1.5rem; font-family: 'Barlow', sans-serif; }
+.pf-lf-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 800; color: #F5F2EE; }
 .pf-lf-logo span { color: #C84B11; }
-.pf-lf-tag { font-size: .63rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #9E9890; text-align: center; margin-top: .3rem; margin-bottom: 2.5rem; }
-.pf-lf-card { background: #111111; border: 1px solid rgba(245,242,238,.06); padding: 2.5rem; width: 100%; max-width: 380px; }
+.pf-lf-reserved { font-size: .63rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #9E9890; margin-top: .3rem; }
+
+/* Form styled as card — title/subtitle go inside the form via st.markdown */
+[data-testid="stForm"] {
+  background: #111111 !important;
+  border: 1px solid rgba(245,242,238,.07) !important;
+  padding: 2rem 2.2rem 1.5rem !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
 .pf-lf-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: #F5F2EE; margin-bottom: .4rem; }
 .pf-lf-sub { font-size: .82rem; color: #9E9890; margin-bottom: 1.5rem; line-height: 1.6; font-weight: 300; }
 .pf-error { background: rgba(200,75,17,.08); border-left: 2px solid #C84B11; color: #C84B11; font-size: .8rem; padding: .7rem 1rem; margin-bottom: 1rem; line-height: 1.5; }
-.pf-test-block { margin-top: 1.2rem; padding: .85rem 1.1rem; background: rgba(245,242,238,.02); border: 1px solid rgba(245,242,238,.05); }
+
+/* Test block */
+.pf-test-block { padding: .85rem 1.1rem 1rem; background: rgba(245,242,238,.02); border: 1px solid rgba(245,242,238,.05); border-top: none; }
 .pf-test-label { font-size: .58rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(158,152,144,.5); margin-bottom: .45rem; }
 .pf-test-data { font-size: .76rem; color: #6a6560; line-height: 1.75; }
 .pf-test-data code { color: #9E9890; background: rgba(245,242,238,.04); padding: .08rem .35rem; font-size: .74rem; font-family: monospace; }
 
+/* Inputs */
 [data-testid="stTextInput"] input {
-  background: #141414 !important; color: #F5F2EE !important;
-  border: 1px solid rgba(245,242,238,.13) !important; border-radius: 0 !important;
+  background: #151515 !important; color: #F5F2EE !important;
+  border: 1px solid rgba(245,242,238,.16) !important; border-radius: 0 !important;
   font-family: 'Barlow', sans-serif !important; font-size: .9rem !important;
   caret-color: #C84B11 !important; -webkit-text-fill-color: #F5F2EE !important;
 }
 [data-testid="stTextInput"] input::placeholder {
-  color: rgba(245,242,238,.28) !important; -webkit-text-fill-color: rgba(245,242,238,.28) !important;
+  color: rgba(245,242,238,.28) !important;
+  -webkit-text-fill-color: rgba(245,242,238,.28) !important;
 }
 [data-testid="stTextInput"] input:focus { border-color: #C84B11 !important; box-shadow: none !important; }
 [data-testid="stTextInput"] input:-webkit-autofill,
 [data-testid="stTextInput"] input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px #141414 inset !important;
+  -webkit-box-shadow: 0 0 0 1000px #151515 inset !important;
   -webkit-text-fill-color: #F5F2EE !important;
 }
 [data-testid="stTextInput"] label p {
   font-size: .63rem !important; font-weight: 600 !important;
   letter-spacing: .15em !important; text-transform: uppercase !important; color: #9E9890 !important;
 }
-[data-testid="stForm"] { border: none !important; background: transparent !important; padding: 0 !important; }
+
+/* Submit button */
 [data-testid="stFormSubmitButton"] > button {
   background: #C84B11 !important; color: #F5F2EE !important; border: none !important;
   border-radius: 0 !important; font-family: 'Barlow', sans-serif !important;
@@ -232,7 +252,8 @@ def show_login():
   padding: .9rem !important; margin-top: .5rem !important; cursor: pointer !important;
 }
 [data-testid="stFormSubmitButton"] > button:hover { background: #E05515 !important; }
-small { display: none !important; }
+
+/* Back button */
 .stButton > button {
   background: transparent !important; color: #6a6560 !important;
   border: 1px solid rgba(245,242,238,.08) !important; border-radius: 0 !important;
@@ -242,10 +263,15 @@ small { display: none !important; }
   padding: .65rem !important; margin-top: .6rem !important;
 }
 .stButton > button:hover { border-color: rgba(245,242,238,.2) !important; color: #9E9890 !important; }
+
+/* Hide "Press Enter to submit" */
+[data-testid="InputInstructions"] { display: none !important; }
+small { display: none !important; }
 </style>
 """, unsafe_allow_html=True)
 
     col_brand, col_form = st.columns([1, 1])
+
     with col_brand:
         st.markdown("""
 <div class="pf-login-brand">
@@ -265,38 +291,39 @@ small { display: none !important; }
 
     with col_form:
         st.markdown("""
-<div class="pf-login-form-wrap">
+<div class="pf-lf-header">
   <div class="pf-lf-logo">Peak<span>Form</span></div>
-  <div class="pf-lf-tag">Área Reservada</div>
-  <div class="pf-lf-card">
-    <div class="pf-lf-title">Entrar</div>
-    <p class="pf-lf-sub">Entra na tua Área do Atleta para aceder aos programas, sessões e progresso.</p>
+  <div class="pf-lf-reserved">Área Reservada</div>
+</div>
 """, unsafe_allow_html=True)
 
-        if st.session_state.login_error:
-            st.markdown(
-                '<div class="pf-error">Dados inválidos. Confirma o utilizador e a palavra-passe.</div>',
-                unsafe_allow_html=True,
-            )
-
         with st.form("login_form", clear_on_submit=False):
+            # Title + subtitle live inside the form so they're inside the card
+            st.markdown("""
+<div class="pf-lf-title">Entrar</div>
+<p class="pf-lf-sub">Entra na tua Área do Atleta para aceder aos programas, sessões e progresso.</p>
+""", unsafe_allow_html=True)
+            if st.session_state.login_error:
+                st.markdown(
+                    '<div class="pf-error">Dados inválidos. Confirma o utilizador e a palavra-passe.</div>',
+                    unsafe_allow_html=True,
+                )
             user = st.text_input("Utilizador", placeholder="O teu utilizador")
             pwd  = st.text_input("Palavra-passe", type="password", placeholder="A tua palavra-passe")
             submitted = st.form_submit_button("Entrar →")
 
         st.markdown("""
-    <div class="pf-test-block">
-      <div class="pf-test-label">Conta de teste</div>
-      <div class="pf-test-data">
-        Utilizador: <code>PeakFormTeste</code><br>
-        Palavra-passe: <code>teste123</code>
-      </div>
-    </div>
+<div class="pf-test-block">
+  <div class="pf-test-label">Conta de teste</div>
+  <div class="pf-test-data">
+    Utilizador: <code>PeakFormTeste</code><br>
+    Palavra-passe: <code>teste123</code>
   </div>
 </div>
 """, unsafe_allow_html=True)
 
         if st.button("← Voltar à página inicial", key="login_back"):
+            st.session_state.login_error = False
             st.session_state.page = "landing"
             st.rerun()
 
@@ -346,14 +373,13 @@ section[data-testid="stMain"] { background: #F7F5F2 !important; }
 .pf-mkey { font-size: .58rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: #6a6560; }
 .pf-pvisual { background: linear-gradient(135deg,#1a0800 0%,#2d0e00 50%,#1a0800 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid rgba(245,242,238,.06); position: relative; overflow: hidden; }
 .pf-pvisual::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 50%,rgba(200,75,17,.2) 0%,transparent 70%); }
-.pf-pvnum { font-family: 'Barlow Condensed', sans-serif; font-size: 5rem; font-weight: 900; color: rgba(200,75,17,.15); line-height: 1; position: relative; z-index: 1; letter-spacing: -.04em; }
+.pf-pvnum { font-family: 'Barlow Condensed', sans-serif; font-size: 5rem; font-weight: 900; color: rgba(200,75,17,.15); line-height: 1; position: relative; z-index: 1; }
 .pf-pvlbl { font-size: .58rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #C84B11; position: relative; z-index: 1; margin-top: .3rem; }
 .pf-coming-card { background: #F0EDE8; border: 1px solid rgba(17,17,17,.1); max-width: 700px; margin-top: 1rem; padding: 1.5rem 2.2rem; display: flex; align-items: center; gap: 1.5rem; opacity: .7; }
 .pf-coming-badge { font-size: .58rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #9E9890; border: 1px solid rgba(17,17,17,.15); padding: .25rem .7rem; white-space: nowrap; }
 .pf-coming-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; color: #6a6560; }
 .pf-cat-label { font-size: .65rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: #9E9890; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid rgba(17,17,17,.1); }
 .pf-coming-section { background: #F0EDE8; border: 1px solid rgba(17,17,17,.08); max-width: 700px; padding: 1.2rem 2rem; font-size: .82rem; color: #9E9890; font-style: italic; }
-
 .pf-btn-zone { background: #F7F5F2; padding: 1.5rem 3rem 3rem; }
 .stButton > button {
   font-family: 'Barlow', sans-serif !important; border-radius: 0 !important;
@@ -363,12 +389,8 @@ section[data-testid="stMain"] { background: #F7F5F2 !important; }
   background: transparent !important; color: #6a6560 !important;
 }
 .stButton > button:hover { background: rgba(17,17,17,.05) !important; color: #111111 !important; border-color: rgba(17,17,17,.4) !important; }
-[data-testid="stBaseButton-primary"] > button, button[kind="primary"] {
-  background: #C84B11 !important; color: #F5F2EE !important; border-color: #C84B11 !important;
-}
-[data-testid="stBaseButton-primary"] > button:hover, button[kind="primary"]:hover {
-  background: #E05515 !important; border-color: #E05515 !important;
-}
+[data-testid="stBaseButton-primary"] { background: #C84B11 !important; }
+button[kind="primary"] { background: #C84B11 !important; color: #F5F2EE !important; border-color: #C84B11 !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -377,9 +399,6 @@ section[data-testid="stMain"] { background: #F7F5F2 !important; }
   <div class="pf-anav-logo">Peak<span>Form</span></div>
   <div class="pf-anav-tag">Área do Atleta</div>
 </div>
-""", unsafe_allow_html=True)
-
-    st.markdown("""
 <div class="pf-amain">
   <div class="pf-atag">Os teus programas</div>
   <div class="pf-atitle">Área do Atleta</div>
@@ -484,7 +503,7 @@ def show_first_pullup():
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# EM BREVE (Coaching 1:1)
+# EM BREVE
 # ─────────────────────────────────────────────────────────────────────────────
 def show_em_breve():
     st.markdown(_BASE_CSS + """
