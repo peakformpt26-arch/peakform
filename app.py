@@ -3,6 +3,7 @@ import os
 import threading
 import http.server
 import socketserver
+from PIL import Image
 
 # ── Background HTTP server for index.html ──────────────────────────────────
 # Streamlit renders components inside iframes. Serving the landing page via
@@ -28,9 +29,10 @@ if "http_server_started" not in st.session_state:
     st.session_state["http_server_started"] = True
 
 # ── Page config ────────────────────────────────────────────────────────────
+_icon = Image.open(os.path.join(_ROOT, "input", "PeakForm Icon.png"))
 st.set_page_config(
-    page_title="PeakForm – Treina. Evolui. Chega ao topo.",
-    page_icon="🏋️",
+    page_title="PeakForm",
+    page_icon=_icon,
     layout="wide",
     initial_sidebar_state="collapsed",
 )
