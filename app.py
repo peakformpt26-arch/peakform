@@ -75,9 +75,8 @@ div[data-testid="stVerticalBlock"] > div { gap: 0 !important; }
 # LANDING
 # ─────────────────────────────────────────────────────────────────────────────
 def show_landing():
-    # Pure HTML navbar — no st.columns, no CSS nth-child hacks.
-    # onclick runs in the main page DOM (not inside an iframe), so
-    # window.location.href works reliably.
+    # Navbar em HTML puro com <a href> — sem onclick, sem st.columns.
+    # <a href> funciona sempre; Streamlit sanitiza onclick no st.markdown.
     st.markdown(_BASE_CSS + """
 <style>
 .pf-nav {
@@ -88,53 +87,57 @@ def show_landing():
   font-family: 'Barlow', sans-serif;
   position: sticky; top: 0; z-index: 999;
 }
-.pf-nav-logo {
+/* Logo — !important em todos os estados para sobrepor defaults de <a> */
+a.pf-nav-logo, a.pf-nav-logo:link, a.pf-nav-logo:visited,
+a.pf-nav-logo:hover, a.pf-nav-logo:active {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.75rem; font-weight: 800; color: #F5F2EE;
-  letter-spacing: 0.02em; text-decoration: none; cursor: pointer;
+  font-size: 1.75rem; font-weight: 800; color: #F5F2EE !important;
+  letter-spacing: 0.02em; text-decoration: none !important; display: inline-block;
 }
-.pf-nav-logo span { color: #C84B11; }
+a.pf-nav-logo span { color: #C84B11 !important; }
 .pf-nav-links {
   display: flex; gap: 2.2rem; list-style: none;
   padding: 0; margin: 0; align-items: center;
 }
-.pf-nav-links a {
+.pf-nav-links a, .pf-nav-links a:link, .pf-nav-links a:visited {
   font-size: 0.76rem; font-weight: 500; letter-spacing: 0.12em;
-  text-transform: uppercase; color: #9E9890; text-decoration: none;
+  text-transform: uppercase; color: #9E9890 !important; text-decoration: none !important;
   transition: color 0.2s;
 }
-.pf-nav-links a:hover { color: #F5F2EE; }
+.pf-nav-links a:hover { color: #F5F2EE !important; }
 .pf-nav-btns { display: flex; gap: 0.65rem; align-items: center; }
-.pf-btn-login {
-  background: transparent; color: rgba(245,242,238,0.8);
+/* Login — outline */
+a.pf-btn-login, a.pf-btn-login:link, a.pf-btn-login:visited {
+  background: transparent; color: rgba(245,242,238,0.8) !important;
   border: 1px solid rgba(245,242,238,0.25);
   font-family: 'Barlow', sans-serif; font-size: 0.74rem;
   font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 0.48rem 1.2rem; cursor: pointer; transition: all 0.2s;
-  line-height: 1;
+  padding: 0.48rem 1.2rem; transition: all 0.2s;
+  text-decoration: none !important; display: inline-block; line-height: 1;
 }
-.pf-btn-login:hover { border-color: rgba(245,242,238,0.55); color: #F5F2EE; }
-.pf-btn-area {
-  background: #C84B11; color: #F5F2EE; border: none;
+a.pf-btn-login:hover { border-color: rgba(245,242,238,0.55); color: #F5F2EE !important; }
+/* Área do Atleta — laranja */
+a.pf-btn-area, a.pf-btn-area:link, a.pf-btn-area:visited {
+  background: #C84B11; color: #F5F2EE !important; border: none;
   font-family: 'Barlow', sans-serif; font-size: 0.74rem;
   font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 0.48rem 1.2rem; cursor: pointer; transition: background 0.2s;
-  line-height: 1;
+  padding: 0.48rem 1.2rem; transition: background 0.2s;
+  text-decoration: none !important; display: inline-block; line-height: 1;
 }
-.pf-btn-area:hover { background: #E05515; }
+a.pf-btn-area:hover { background: #E05515; color: #F5F2EE !important; }
 </style>
 <nav class="pf-nav">
   <a class="pf-nav-logo" href="/?nav=landing">Peak<span>Form</span></a>
   <ul class="pf-nav-links">
-    <li><a href="#">Sobre</a></li>
-    <li><a href="#">Método</a></li>
-    <li><a href="#">Programas</a></li>
-    <li><a href="#">Planos</a></li>
-    <li><a href="#">Coaches</a></li>
+    <li><a href="#" onclick="(function(){var f=document.querySelectorAll('iframe');for(var i=0;i<f.length;i++){try{var e=f[i].contentDocument.getElementById('sobre');if(e){e.scrollIntoView({behavior:'smooth'});}}catch(x){}}})();return false;">Sobre</a></li>
+    <li><a href="#" onclick="(function(){var f=document.querySelectorAll('iframe');for(var i=0;i<f.length;i++){try{var e=f[i].contentDocument.getElementById('metodo');if(e){e.scrollIntoView({behavior:'smooth'});}}catch(x){}}})();return false;">Método</a></li>
+    <li><a href="#" onclick="(function(){var f=document.querySelectorAll('iframe');for(var i=0;i<f.length;i++){try{var e=f[i].contentDocument.getElementById('programas');if(e){e.scrollIntoView({behavior:'smooth'});}}catch(x){}}})();return false;">Programas</a></li>
+    <li><a href="#" onclick="(function(){var f=document.querySelectorAll('iframe');for(var i=0;i<f.length;i++){try{var e=f[i].contentDocument.getElementById('planos');if(e){e.scrollIntoView({behavior:'smooth'});}}catch(x){}}})();return false;">Planos</a></li>
+    <li><a href="#" onclick="(function(){var f=document.querySelectorAll('iframe');for(var i=0;i<f.length;i++){try{var e=f[i].contentDocument.getElementById('coaches');if(e){e.scrollIntoView({behavior:'smooth'});}}catch(x){}}})();return false;">Coaches</a></li>
   </ul>
   <div class="pf-nav-btns">
-    <button class="pf-btn-login" onclick="window.location.href='/?nav=login'">Login</button>
-    <button class="pf-btn-area" onclick="window.location.href='/?nav=area_atleta'">Área do Atleta</button>
+    <a class="pf-btn-login" href="/?nav=login">Login</a>
+    <a class="pf-btn-area" href="/?nav=area_atleta">Área do Atleta</a>
   </div>
 </nav>
 """, unsafe_allow_html=True)
@@ -344,61 +347,112 @@ small { display: none !important; }
 def show_area_atleta():
     st.markdown(_BASE_CSS + """
 <style>
-.stApp { background: #F7F5F2 !important; }
-[data-testid="stAppViewContainer"] { background: #F7F5F2 !important; }
-section[data-testid="stMain"] { background: #F7F5F2 !important; }
-[data-testid="stHorizontalBlock"] { background: transparent !important; border-bottom: none !important; }
+/* Dark palette — mesma que a landing */
+.stApp, [data-testid="stAppViewContainer"], section[data-testid="stMain"] {
+  background: #111111 !important;
+}
+[data-testid="stHorizontalBlock"] {
+  background: #111111 !important; border: none !important;
+  gap: 0 !important; padding: 0 3rem !important;
+}
+[data-testid="column"] { padding: 0 !important; }
 
-.pf-anav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: #111111; }
-.pf-anav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; color: #F5F2EE; }
+/* Navbar */
+.pf-anav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 3rem; background: #0d0d0d;
+  border-bottom: 1px solid rgba(200,75,17,.15);
+}
+.pf-anav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 800; color: #F5F2EE; }
 .pf-anav-logo span { color: #C84B11; }
-.pf-anav-tag { font-size: .67rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #9E9890; }
+.pf-anav-tag { font-size: .63rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #9E9890; }
 
-.pf-amain { background: #F7F5F2; padding: 3rem 3rem 1.5rem; }
-.pf-atag { font-size: .67rem; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: #C84B11; display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
+/* Main content */
+.pf-amain { padding: 3rem 3rem 0; }
+.pf-atag { font-size: .63rem; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: #C84B11; display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
 .pf-atag::before { content: ''; display: block; width: 20px; height: 1px; background: #C84B11; }
-.pf-atitle { font-family: 'Barlow Condensed', sans-serif; font-size: 2.8rem; font-weight: 900; text-transform: uppercase; color: #111111; line-height: 1; margin-bottom: .6rem; }
-.pf-asub { font-size: .9rem; color: #6a6560; font-weight: 300; line-height: 1.7; max-width: 520px; margin-bottom: 2.5rem; }
-.pf-plabel { font-size: .67rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #9E9890; padding-bottom: .7rem; border-bottom: 1px solid rgba(17,17,17,.1); margin-bottom: 1.5rem; }
-.pf-pcard { background: #111111; border: 1px solid rgba(17,17,17,.15); display: grid; grid-template-columns: 1fr 155px; max-width: 700px; }
+.pf-atitle { font-family: 'Barlow Condensed', sans-serif; font-size: 3rem; font-weight: 900; text-transform: uppercase; color: #F5F2EE; line-height: 1; margin-bottom: .6rem; }
+.pf-asub { font-size: .9rem; color: #9E9890; font-weight: 300; line-height: 1.7; max-width: 520px; margin-bottom: 2.5rem; }
+.pf-plabel { font-size: .63rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #6a6560; padding-bottom: .7rem; border-bottom: 1px solid rgba(245,242,238,.08); margin-bottom: 1.5rem; }
+.pf-cat-label { font-size: .63rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: #C84B11; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid rgba(200,75,17,.2); }
+
+/* Program card */
+.pf-pcard {
+  background: #1a1a1a; border: 1px solid rgba(245,242,238,.07);
+  display: grid; grid-template-columns: 1fr 145px; max-width: 700px;
+}
 .pf-pcard-body { padding: 2rem 2.2rem 1.8rem; }
 .pf-pbadge { display: inline-flex; align-items: center; gap: .5rem; font-size: .6rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #C84B11; margin-bottom: .9rem; }
-.pf-pbadge-dot { width: 5px; height: 5px; border-radius: 50%; background: #C84B11; }
-.pf-pname { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 900; text-transform: uppercase; color: #F5F2EE; line-height: 1; margin-bottom: .65rem; }
+.pf-pbadge-dot { width: 5px; height: 5px; border-radius: 50%; background: #C84B11; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.pf-pname { font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem; font-weight: 900; text-transform: uppercase; color: #F5F2EE; line-height: 1; margin-bottom: .65rem; }
 .pf-pname em { color: #C84B11; font-style: normal; }
-.pf-pdesc { font-size: .83rem; color: #9E9890; line-height: 1.7; margin-bottom: 1.3rem; max-width: 380px; }
+.pf-pdesc { font-size: .83rem; color: #9E9890; line-height: 1.7; margin-bottom: 1.3rem; max-width: 380px; font-weight: 300; }
 .pf-pmeta { display: flex; gap: 1.8rem; padding-top: 1.1rem; border-top: 1px solid rgba(245,242,238,.07); }
 .pf-mitem { display: flex; flex-direction: column; gap: .12rem; }
 .pf-mval { font-family: 'Barlow Condensed', sans-serif; font-size: 1.25rem; font-weight: 800; color: #F5F2EE; }
 .pf-mkey { font-size: .58rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: #6a6560; }
-.pf-pvisual { background: linear-gradient(135deg,#1a0800 0%,#2d0e00 50%,#1a0800 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid rgba(245,242,238,.06); position: relative; overflow: hidden; }
-.pf-pvisual::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 50%,rgba(200,75,17,.2) 0%,transparent 70%); }
-.pf-pvnum { font-family: 'Barlow Condensed', sans-serif; font-size: 5rem; font-weight: 900; color: rgba(200,75,17,.15); line-height: 1; position: relative; z-index: 1; }
+.pf-pvisual {
+  background: linear-gradient(135deg,#1a0800 0%,#2d0e00 50%,#1a0800 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-left: 1px solid rgba(245,242,238,.06); position: relative; overflow: hidden;
+}
+.pf-pvisual::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 70% at 50% 50%,rgba(200,75,17,.25) 0%,transparent 70%); }
+.pf-pvnum { font-family: 'Barlow Condensed', sans-serif; font-size: 5rem; font-weight: 900; color: rgba(200,75,17,.18); line-height: 1; position: relative; z-index: 1; }
 .pf-pvlbl { font-size: .58rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #C84B11; position: relative; z-index: 1; margin-top: .3rem; }
-.pf-coming-card { background: #F0EDE8; border: 1px solid rgba(17,17,17,.1); max-width: 700px; margin-top: 1rem; padding: 1.5rem 2.2rem; display: flex; align-items: center; gap: 1.5rem; opacity: .7; }
-.pf-coming-badge { font-size: .58rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #9E9890; border: 1px solid rgba(17,17,17,.15); padding: .25rem .7rem; white-space: nowrap; }
+
+/* Coming soon cards */
+.pf-coming-card {
+  background: rgba(245,242,238,.03); border: 1px solid rgba(245,242,238,.07);
+  max-width: 700px; margin-top: 1rem; padding: 1.2rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.pf-coming-badge { font-size: .58rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #6a6560; border: 1px solid rgba(245,242,238,.1); padding: .25rem .7rem; white-space: nowrap; }
 .pf-coming-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; color: #6a6560; }
-.pf-cat-label { font-size: .65rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: #9E9890; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid rgba(17,17,17,.1); }
-.pf-coming-section { background: #F0EDE8; border: 1px solid rgba(17,17,17,.08); max-width: 700px; padding: 1.2rem 2rem; font-size: .82rem; color: #9E9890; font-style: italic; }
-.pf-btn-zone { background: #F7F5F2; padding: 1.5rem 3rem 3rem; }
+.pf-coming-section {
+  background: rgba(245,242,238,.02); border: 1px solid rgba(245,242,238,.06);
+  max-width: 700px; padding: 1.2rem 2rem; font-size: .82rem; color: #6a6560; font-style: italic;
+}
+.pf-rest { padding: 0 3rem 3rem; }
+
+/* Buttons */
 .stButton > button {
   font-family: 'Barlow', sans-serif !important; border-radius: 0 !important;
   font-size: .8rem !important; font-weight: 700 !important; letter-spacing: .1em !important;
   text-transform: uppercase !important; padding: .75rem 1.8rem !important;
-  transition: all .2s !important; border: 1px solid rgba(17,17,17,.2) !important;
-  background: transparent !important; color: #6a6560 !important;
+  transition: all .2s !important;
 }
-.stButton > button:hover { background: rgba(17,17,17,.05) !important; color: #111111 !important; border-color: rgba(17,17,17,.4) !important; }
-[data-testid="stBaseButton-primary"] { background: #C84B11 !important; }
-button[kind="primary"] { background: #C84B11 !important; color: #F5F2EE !important; border-color: #C84B11 !important; }
+/* Primary — laranja (botão aceder) */
+[data-testid="stBaseButton-primary"] > button,
+button[kind="primary"] {
+  background: #C84B11 !important; color: #F5F2EE !important;
+  border: none !important;
+}
+[data-testid="stBaseButton-primary"] > button:hover,
+button[kind="primary"]:hover { background: #E05515 !important; }
+/* Secondary — ghost (botão sair) */
+[data-testid="stBaseButton-secondary"] > button,
+button[kind="secondary"] {
+  background: transparent !important; color: #9E9890 !important;
+  border: 1px solid rgba(245,242,238,.15) !important;
+}
+[data-testid="stBaseButton-secondary"] > button:hover,
+button[kind="secondary"]:hover {
+  border-color: rgba(245,242,238,.35) !important; color: #F5F2EE !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
+    # ── Navbar ─────────────────────────────────────────────────────────────────
     st.markdown("""
 <div class="pf-anav">
   <div class="pf-anav-logo">Peak<span>Form</span></div>
   <div class="pf-anav-tag">Área do Atleta</div>
 </div>
+""", unsafe_allow_html=True)
+
+    # ── Header + programa card ─────────────────────────────────────────────────
+    st.markdown("""
 <div class="pf-amain">
   <div class="pf-atag">Os teus programas</div>
   <div class="pf-atitle">Área do Atleta</div>
@@ -422,31 +476,40 @@ button[kind="primary"] { background: #C84B11 !important; color: #F5F2EE !importa
       <div class="pf-pvlbl">Skills</div>
     </div>
   </div>
+</div>
+""", unsafe_allow_html=True)
+
+    # ── Botão Aceder — alinhado com o card (padding 3rem herdado do CSS) ────────
+    c_acc, _ = st.columns([3, 4])
+    with c_acc:
+        if st.button("Aceder ao Programa →", key="access_prog", type="primary",
+                     use_container_width=True):
+            st.session_state.page = "first_pullup"
+            st.rerun()
+
+    # ── Coming soon + outras categorias ───────────────────────────────────────
+    st.markdown("""
+<div class="pf-rest">
   <div class="pf-coming-card"><div class="pf-coming-badge">Em breve</div><div class="pf-coming-name">Bar Muscle-Up</div></div>
   <div class="pf-coming-card"><div class="pf-coming-badge">Em breve</div><div class="pf-coming-name">HSPU — Handstand Push-Up</div></div>
-  <div class="pf-cat-label">Strength</div>
+  <div class="pf-cat-label" style="margin-top:2.5rem;">Strength</div>
   <div class="pf-coming-section">Em desenvolvimento — programas de força e ciclos estruturados em breve.</div>
-  <div class="pf-cat-label">Engine</div>
+  <div class="pf-cat-label" style="margin-top:2rem;">Engine</div>
   <div class="pf-coming-section">Em desenvolvimento — programas de condicionamento e capacidade aeróbia em breve.</div>
-  <div class="pf-cat-label">Competition</div>
+  <div class="pf-cat-label" style="margin-top:2rem;">Competition</div>
   <div class="pf-coming-section">Em desenvolvimento — preparação competitiva para Open, ATHX e HYROX em breve.</div>
 </div>
 """, unsafe_allow_html=True)
 
-    st.markdown('<div class="pf-btn-zone">', unsafe_allow_html=True)
-    c1, c2, _ = st.columns([1.6, 1, 5])
-    with c1:
-        if st.button("Abrir programa →", key="open_prog", type="primary"):
-            st.session_state.page = "first_pullup"
-            st.rerun()
-    with c2:
-        if st.button("Sair", key="logout_btn"):
+    # ── Botão Sair ─────────────────────────────────────────────────────────────
+    c_sair, _ = st.columns([1, 6])
+    with c_sair:
+        if st.button("Sair", key="logout_btn", use_container_width=True):
             st.session_state.authenticated = False
             st.session_state.has_first_pullup_access = False
             st.session_state.login_error = False
             st.session_state.page = "landing"
             st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
