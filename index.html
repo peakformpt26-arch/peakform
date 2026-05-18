@@ -121,6 +121,27 @@ nav {
 .prog-coming p { font-size: 0.78rem; color: var(--gray2); line-height: 1.5; font-weight: 300; }
 .prog-coming-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray2); border: 1px solid rgba(245,242,238,0.1); padding: 0.3rem 0.8rem; margin-bottom: 1rem; }
 
+/* ── PROG CATEGORY TABS ── */
+.prog-cats-nav {
+  display: flex; overflow-x: auto; gap: 0;
+  border-bottom: 1px solid rgba(245,242,238,0.08);
+  margin-top: 2.5rem; scrollbar-width: none; -ms-overflow-style: none;
+}
+.prog-cats-nav::-webkit-scrollbar { display: none; }
+.prog-cat {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  padding: 0.85rem 1.5rem; margin-bottom: -1px;
+  font-family: 'Barlow', sans-serif; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray2);
+  cursor: pointer; white-space: nowrap; transition: color 0.2s, border-color 0.2s;
+}
+.prog-cat:hover { color: var(--white); }
+.prog-cat.active { color: var(--orange); border-bottom-color: var(--orange); }
+.prog-panel { display: none; }
+.prog-panel.active { display: block; }
+.prog-cat-desc { max-width: 600px; margin: 2rem auto; text-align: center; padding: 0 2rem; }
+.prog-cat-desc p { font-size: 0.88rem; color: var(--warm-gray); line-height: 1.7; font-weight: 300; }
+
 /* ── COMO FUNCIONA ── */
 .como-funciona { padding: 7rem 4rem; background: #141414; border-top: 1px solid rgba(245,242,238,0.06); }
 .como-funciona .section-header { margin-bottom: 3.5rem; }
@@ -419,48 +440,185 @@ footer p { font-size: 0.75rem; color: var(--warm-gray); letter-spacing: 0.08em; 
     <h2 class="section-title">PROGRAMAS PARA CADA OBJECTIVO.</h2>
     <p class="programas-sub">Skills, força, engine, competição e treino híbrido — organizados por foco para encontrares rapidamente o próximo passo.</p>
   </div>
-  <div class="prog-grid reveal">
-    <div class="prog-card featured">
-      <div class="prog-featured-content">
-        <div>
-          <div class="prog-badge"><span class="prog-badge-dot"></span>Disponível agora</div>
-          <div class="prog-nome">First<br><em>Pull-Up</em></div>
-          <p class="prog-desc">Programa de 6 semanas para conquistares a tua primeira strict pull-up com progressão estruturada, vídeos técnicos e critérios claros de evolução.</p>
-          <div class="prog-meta">
-            <div class="prog-meta-item"><div class="prog-meta-val">6</div><div class="prog-meta-key">Semanas</div></div>
-            <div class="prog-meta-item"><div class="prog-meta-val">3×</div><div class="prog-meta-key">Por semana</div></div>
-            <div class="prog-meta-item"><div class="prog-meta-val">~25'</div><div class="prog-meta-key">Por sessão</div></div>
-            <div class="prog-meta-item"><div class="prog-meta-val">3</div><div class="prog-meta-key">Fases</div></div>
+
+  <!-- ── Category tabs ── -->
+  <div class="prog-cats-nav reveal">
+    <button class="prog-cat active" data-cat="skills">Skills</button>
+    <button class="prog-cat" data-cat="strength">Strength</button>
+    <button class="prog-cat" data-cat="engine">Engine</button>
+    <button class="prog-cat" data-cat="competition">Competition</button>
+    <button class="prog-cat" data-cat="hyrox">HYROX / ATHX</button>
+    <button class="prog-cat" data-cat="coaching">Coaching 1:1</button>
+    <button class="prog-cat" data-cat="merch">Merch</button>
+  </div>
+
+  <!-- ── SKILLS ── -->
+  <div class="prog-panel active" id="panel-skills">
+    <div class="prog-grid reveal">
+      <div class="prog-card featured">
+        <div class="prog-featured-content">
+          <div>
+            <div class="prog-badge"><span class="prog-badge-dot"></span>Disponível agora</div>
+            <div class="prog-nome">First<br><em>Pull-Up</em></div>
+            <p class="prog-desc">Programa de 6 semanas para conquistares a tua primeira strict pull-up com progressão estruturada, vídeos técnicos e critérios claros de evolução.</p>
+            <div class="prog-meta">
+              <div class="prog-meta-item"><div class="prog-meta-val">6</div><div class="prog-meta-key">Semanas</div></div>
+              <div class="prog-meta-item"><div class="prog-meta-val">3×</div><div class="prog-meta-key">Por semana</div></div>
+              <div class="prog-meta-item"><div class="prog-meta-val">~25'</div><div class="prog-meta-key">Por sessão</div></div>
+              <div class="prog-meta-item"><div class="prog-meta-val">3</div><div class="prog-meta-key">Fases</div></div>
+            </div>
+            <ul class="prog-features">
+              <li>6 semanas de progressão estruturada</li>
+              <li>3 sessões por semana</li>
+              <li>Vídeos técnicos por exercício</li>
+              <li>Notas de coaching por sessão</li>
+              <li>Critérios claros para avançar de fase</li>
+            </ul>
           </div>
-          <ul class="prog-features">
-            <li>6 semanas de progressão estruturada</li>
-            <li>3 sessões por semana</li>
-            <li>Vídeos técnicos por exercício</li>
-            <li>Notas de coaching por sessão</li>
-            <li>Critérios claros para avançar de fase</li>
-          </ul>
+          <div class="prog-cta-wrap">
+            <button onclick="navParent('first_pullup')" class="prog-btn">Ver programa →</button>
+          </div>
         </div>
-        <div class="prog-cta-wrap">
-          <button onclick="navParent('first_pullup')" class="prog-btn">Ver programa →</button>
+        <div class="prog-featured-visual">
+          <div class="prog-visual-number">01</div>
+          <div class="prog-visual-label">Especialidade de skills</div>
         </div>
       </div>
-      <div class="prog-featured-visual">
-        <div class="prog-visual-number">01</div>
-        <div class="prog-visual-label">Especialidade de skills</div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">BMU</div><div class="prog-coming-badge">Em breve</div><h3>Bar Muscle-Up</h3><p>O próximo passo depois da pull-up. Progressão estruturada para dominar o movimento.</p></div>
       </div>
-    </div>
-    <div class="prog-card">
-      <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);">
-        <span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">RMU</div><div class="prog-coming-badge">Em breve</div><h3>Ring Muscle-Up</h3><p>Da tracção às argolas. Movimento técnico com progressão clara e feedback estruturado.</p></div>
       </div>
-      <div class="prog-coming">
-        <div class="prog-coming-icon">BMU</div>
-        <div class="prog-coming-badge">Em breve</div>
-        <h3>Bar Muscle-Up</h3>
-        <p>O próximo passo depois da pull-up. Progressão estruturada para dominar o movimento.</p>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">HSPU</div><div class="prog-coming-badge">Em breve</div><h3>HSPU</h3><p>Handstand Push-Up — força invertida com progressão desde o pike até ao HSPU estrito.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">HSW</div><div class="prog-coming-badge">Em breve</div><h3>Handstand Walk</h3><p>Controlo, equilíbrio e deslocamento invertido. Da parede ao andar livre.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">TTB</div><div class="prog-coming-badge">Em breve</div><h3>Toes-to-Bar</h3><p>Core, compressão e timing de kip. Programa completo para dominar o movimento.</p></div>
       </div>
     </div>
   </div>
+
+  <!-- ── STRENGTH ── -->
+  <div class="prog-panel" id="panel-strength">
+    <div class="prog-grid reveal">
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">SQT</div><div class="prog-coming-badge">Em breve</div><h3>Squat Program</h3><p>Ciclo de força centrado no agachamento. Progressão por blocos com foco em carga e técnica.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">PUL</div><div class="prog-coming-badge">Em breve</div><h3>Pulling Strength</h3><p>Força de tracção vertical e horizontal. Deadlift, rows e variações estruturadas por fase.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">UBS</div><div class="prog-coming-badge">Em breve</div><h3>Upper Body Strength</h3><p>Press, push e pull — ciclo de força para a parte superior do corpo com volume controlado.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ENGINE ── -->
+  <div class="prog-panel" id="panel-engine">
+    <div class="prog-grid reveal">
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">ENG</div><div class="prog-coming-badge">Em breve</div><h3>Engine Builder</h3><p>Capacidade aeróbia e limiar anaeróbio — base sólida para durar mais e recuperar melhor.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">PAC</div><div class="prog-coming-badge">Em breve</div><h3>Pacing Basics</h3><p>Aprende a gerir esforço em WODs longos, AMRAPs e eventos de tempo fixo.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">MXD</div><div class="prog-coming-badge">Em breve</div><h3>Mixed Modal Capacity</h3><p>Condicionamento combinado com ginástica, monoestrutural e força — para atletas completos.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPETITION ── -->
+  <div class="prog-panel" id="panel-competition">
+    <div class="prog-grid reveal">
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">OPN</div><div class="prog-coming-badge">Em breve</div><h3>Open Prep</h3><p>Preparação específica para o Open — skills, estratégia de WOD e gestão de esforço.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">RX</div><div class="prog-coming-badge">Em breve</div><h3>RX Athlete Prep</h3><p>Para quem quer competir em RX com consistência. Volume, skills e intensidade controlada.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">WOD</div><div class="prog-coming-badge">Em breve</div><h3>WOD Strategy</h3><p>Leitura de WODs, gestão de ritmo e tomada de decisão em competição — teoria e prática.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HYROX / ATHX ── -->
+  <div class="prog-panel" id="panel-hyrox">
+    <div class="prog-grid reveal">
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">HYB</div><div class="prog-coming-badge">Em breve</div><h3>Hybrid Engine</h3><p>Força + resistência em formato híbrido — base de treino para HYROX e ATHX.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">R+S</div><div class="prog-coming-badge">Em breve</div><h3>Running + Strength</h3><p>Combina corrida estruturada com trabalho de força — para atletas híbridos a qualquer nível.</p></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+        <div class="prog-coming"><div class="prog-coming-icon">STA</div><div class="prog-coming-badge">Em breve</div><h3>Stations Prep</h3><p>Preparação específica para as estações do HYROX — sled, SkiErg, wall balls e restantes.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COACHING 1:1 ── -->
+  <div class="prog-panel" id="panel-coaching">
+    <div class="prog-grid reveal">
+      <div class="prog-card featured" style="grid-column:span 3;">
+        <div class="prog-featured-content" style="border-right:none;">
+          <div>
+            <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+            <div class="prog-nome">Coaching<br><em>1:1</em></div>
+            <p class="prog-desc">Acompanhamento individual para quem quer evoluir com propósito, feedback directo e estratégia ajustada.</p>
+            <div class="prog-coming-badge" style="margin-top:1.5rem;">Em breve</div>
+          </div>
+        </div>
+        <div class="prog-featured-visual">
+          <div class="prog-visual-number" style="font-size:6rem;">1:1</div>
+          <div class="prog-visual-label">Coaching individual</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MERCH ── -->
+  <div class="prog-panel" id="panel-merch">
+    <div class="prog-grid reveal">
+      <div class="prog-card featured" style="grid-column:span 3;">
+        <div class="prog-featured-content" style="border-right:none;">
+          <div>
+            <div class="prog-badge" style="opacity:0.4;color:var(--warm-gray);"><span class="prog-badge-dot" style="background:var(--gray2)"></span>Em desenvolvimento</div>
+            <div class="prog-nome">Merch<br><em>PeakForm</em></div>
+            <p class="prog-desc">Roupa e material da marca PeakForm.</p>
+            <div class="prog-coming-badge" style="margin-top:1.5rem;">Em breve</div>
+          </div>
+        </div>
+        <div class="prog-featured-visual">
+          <div class="prog-visual-number" style="font-size:6rem;">PF</div>
+          <div class="prog-visual-label">Merch oficial</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!-- COMO FUNCIONA -->
@@ -699,6 +857,17 @@ const revealObserver = new IntersectionObserver(function(entries) {
 
 document.querySelectorAll('.reveal').forEach(function(el) {
   revealObserver.observe(el);
+});
+
+// ── Category tabs (Programas section) ──────────────────────────────────────
+document.querySelectorAll('.prog-cat').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.prog-cat').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.prog-panel').forEach(function(p) { p.classList.remove('active'); });
+    var panel = document.getElementById('panel-' + btn.dataset.cat);
+    if (panel) panel.classList.add('active');
+  });
 });
 </script>
 </body>
