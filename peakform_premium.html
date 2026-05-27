@@ -1671,6 +1671,77 @@ nav.scrolled {
 }
 .dash-nav-right button:hover { background: var(--orange-light); border-color: var(--orange-light); color: var(--white); transform: translateY(-1px); }
 .dash-wrap { padding: 3rem 4rem 4rem; max-width: 1440px; margin: 0 auto; }
+
+/* ── Admin area ─────────────────────────────────────────── */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.admin-stat-card {
+  background: rgba(245,242,238,0.04);
+  border: 1px solid rgba(245,242,238,0.08);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.admin-stat-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+}
+.admin-stat-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--orange);
+  line-height: 1;
+}
+.admin-section {
+  background: rgba(245,242,238,0.03);
+  border: 1px solid rgba(245,242,238,0.07);
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.5rem;
+}
+.admin-section-head {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(245,242,238,0.07);
+}
+.admin-section-head h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--white);
+}
+.admin-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+.admin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.9rem;
+  background: rgba(245,242,238,0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(245,242,238,0.05);
+}
+.admin-row span { font-size: 0.88rem; color: var(--white); font-weight: 500; text-transform: capitalize; }
+.admin-row strong { font-size: 0.88rem; color: var(--orange); font-weight: 700; }
+.admin-row small { font-size: 0.72rem; color: var(--warm-gray); }
+.admin-empty { font-size: 0.82rem; color: var(--warm-gray); padding: 0.5rem 0; }
+@media (max-width: 900px) {
+  .admin-stats-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 540px) {
+  .admin-stats-grid { grid-template-columns: 1fr; }
+}
 .dash-hero {
   display: flex;
   align-items: center;
@@ -5811,6 +5882,68 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   </section>
 </div>
 
+<div id="page-admin" class="pf-page">
+  <section class="athlete-dashboard">
+    <header class="dash-nav">
+      <div class="dash-brand" onclick="showPage('landing')">Peak<span>Form</span></div>
+      <div class="dash-nav-right">
+        <span>Área de Admin</span>
+        <button onclick="showPage('area')">Área do Atleta</button>
+        <button onclick="logoutUser()">Terminar sessão</button>
+      </div>
+    </header>
+    <main class="dash-wrap">
+
+      <section class="dash-hero">
+        <div>
+          <div class="dash-eyebrow">Painel de controlo</div>
+          <h2>Área de <em>Admin</em></h2>
+          <p>Visão geral dos interesses, pedidos e utilizadores registados na plataforma.</p>
+        </div>
+      </section>
+
+      <!-- Stats cards -->
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <span class="admin-stat-label">Utilizadores registados</span>
+          <span class="admin-stat-value" id="admin-stat-users">—</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-label">Interesses em programas</span>
+          <span class="admin-stat-value" id="admin-stat-programs">—</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-label">Notificações merch</span>
+          <span class="admin-stat-value" id="admin-stat-merch">—</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-label">Pedidos coach 1:1</span>
+          <span class="admin-stat-value" id="admin-stat-coach">—</span>
+        </div>
+      </div>
+
+      <!-- Programs breakdown -->
+      <div class="admin-section">
+        <div class="admin-section-head"><h3>Interesse por programa</h3></div>
+        <div id="admin-programs-list" class="admin-rows"></div>
+      </div>
+
+      <!-- Merch emails -->
+      <div class="admin-section">
+        <div class="admin-section-head"><h3>Notificações Merch</h3></div>
+        <div id="admin-merch-list" class="admin-rows"></div>
+      </div>
+
+      <!-- Coach 1:1 emails -->
+      <div class="admin-section">
+        <div class="admin-section-head"><h3>Pedidos Coach 1:1</h3></div>
+        <div id="admin-coach-list" class="admin-rows"></div>
+      </div>
+
+    </main>
+  </section>
+</div>
+
 <div id="page-area" class="pf-page">
   <section class="athlete-dashboard">
     <header class="dash-nav">
@@ -6165,8 +6298,81 @@ async function _checkAdmin(user) {
   try {
     const { data } = await _sb.from('profiles').select('is_admin').eq('id', user.id).single();
     const btn = document.getElementById('pf-nav-athlete-btn');
-    if (btn && data && data.is_admin) btn.textContent = 'Área de Admin';
+    if (btn && data && data.is_admin) {
+      btn.textContent = 'Área de Admin';
+      btn.setAttribute('onclick', 'goToAdminArea()');
+    }
   } catch(e) {}
+}
+
+async function goToAdminArea() {
+  if (!isLoggedIn) { showPage('login'); return; }
+  try {
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) { showPage('login'); return; }
+    const { data } = await _sb.from('profiles').select('is_admin').eq('id', user.id).single();
+    if (data && data.is_admin) {
+      showPage('admin');
+    } else {
+      showPage('area');
+    }
+  } catch(e) { showPage('area'); }
+}
+
+async function loadAdminData() {
+  try {
+    /* Contadores */
+    const [usersRes, programsRes, merchRes, coachRes] = await Promise.all([
+      _sb.from('profiles').select('*', { count: 'exact', head: true }),
+      _sb.from('program_interests').select('*', { count: 'exact', head: true }),
+      _sb.from('merch_interests').select('*', { count: 'exact', head: true }),
+      _sb.from('coach_interests').select('*', { count: 'exact', head: true }),
+    ]);
+    const el = id => document.getElementById(id);
+    if (el('admin-stat-users'))    el('admin-stat-users').textContent    = usersRes.count    ?? '—';
+    if (el('admin-stat-programs')) el('admin-stat-programs').textContent = programsRes.count ?? '—';
+    if (el('admin-stat-merch'))    el('admin-stat-merch').textContent    = merchRes.count    ?? '—';
+    if (el('admin-stat-coach'))    el('admin-stat-coach').textContent    = coachRes.count    ?? '—';
+
+    /* Interesse por programa */
+    const { data: progData } = await _sb.from('program_interests')
+      .select('program_name, created_at').order('created_at', { ascending: false });
+    const counts = {};
+    (progData || []).forEach(r => { counts[r.program_name] = (counts[r.program_name] || 0) + 1; });
+    const progList = el('admin-programs-list');
+    if (progList) {
+      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      progList.innerHTML = sorted.length
+        ? sorted.map(([name, count]) =>
+            `<div class="admin-row"><span>${name.replace(/-/g, ' ')}</span><strong>${count} ${count === 1 ? 'interesse' : 'interesses'}</strong></div>`
+          ).join('')
+        : '<p class="admin-empty">Sem dados ainda.</p>';
+    }
+
+    /* Merch */
+    const { data: merchData } = await _sb.from('merch_interests')
+      .select('email, created_at').order('created_at', { ascending: false });
+    const merchList = el('admin-merch-list');
+    if (merchList) {
+      merchList.innerHTML = (merchData || []).length
+        ? (merchData || []).map(r =>
+            `<div class="admin-row"><span>${r.email}</span><small>${new Date(r.created_at).toLocaleDateString('pt-PT')}</small></div>`
+          ).join('')
+        : '<p class="admin-empty">Sem notificações ainda.</p>';
+    }
+
+    /* Coach 1:1 */
+    const { data: coachData } = await _sb.from('coach_interests')
+      .select('email, created_at').order('created_at', { ascending: false });
+    const coachList = el('admin-coach-list');
+    if (coachList) {
+      coachList.innerHTML = (coachData || []).length
+        ? (coachData || []).map(r =>
+            `<div class="admin-row"><span>${r.email}</span><small>${new Date(r.created_at).toLocaleDateString('pt-PT')}</small></div>`
+          ).join('')
+        : '<p class="admin-empty">Sem pedidos ainda.</p>';
+    }
+  } catch(e) { console.error('Admin load error', e); }
 }
 
 function openProgram(program) {
@@ -7215,7 +7421,7 @@ function animateActivePage(page) {
 }
 
 function showPage(page) {
-  const protectedPages = ['area', 'program-pullup', 'program-bmu', 'session', 'movement', 'feedback'];
+  const protectedPages = ['area', 'admin', 'program-pullup', 'program-bmu', 'session', 'movement', 'feedback'];
   const publicPages = ['landing', 'login', 'register', 'support'];
 
   if (protectedPages.includes(page) && isLoggedIn !== true) {
@@ -7231,6 +7437,7 @@ function showPage(page) {
   if (target) target.classList.add('active');
   if (page === 'program-pullup' || page === 'program-bmu') setTimeout(initNativeSessionChecks, 0);
   if (page === 'area') setTimeout(updateDashboardProgress, 0);
+  if (page === 'admin') setTimeout(loadAdminData, 0);
   if (page === 'movement') setTimeout(renderMovementVideos, 0);
   setTimeout(() => animateActivePage(page), 20);
   window.scrollTo({ top: 0, behavior: 'smooth' });
