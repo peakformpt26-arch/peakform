@@ -5779,6 +5779,37 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   </section>
 </div>
 
+<div id="page-register" class="pf-page">
+  <section class="login-page-premium">
+    <div class="login-left">
+      <div class="login-brand" onclick="showPage('landing')">Peak<span>Form</span></div>
+      <div class="login-copy">
+        <div class="login-eyebrow">Junta-te à PeakForm</div>
+        <h2>Cria a tua conta de atleta.</h2>
+        <p>Acede aos programas de treino, acompanha o teu progresso semana a semana e faz parte da comunidade PeakForm.</p>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-top">
+          <span>PeakForm Registo</span>
+        </div>
+        <h3>Criar conta</h3>
+        <p>Preenche os dados abaixo para criar a tua conta de atleta.</p>
+        <div id="register-error" class="login-error" aria-live="polite"></div>
+        <label for="register-name">Nome</label>
+        <input id="register-name" type="text" placeholder="o teu nome" autocomplete="name" />
+        <label for="register-email">Email</label>
+        <input id="register-email" type="email" placeholder="o teu email" autocomplete="email" />
+        <label for="register-password">Password</label>
+        <input id="register-password" type="password" placeholder="mínimo 6 caracteres" autocomplete="new-password" />
+        <button onclick="registerUser()">Criar conta</button>
+        <button class="back" onclick="showPage('login')">Já tenho conta</button>
+      </div>
+    </div>
+  </section>
+</div>
+
 <div id="page-area" class="pf-page">
   <section class="athlete-dashboard">
     <header class="dash-nav">
@@ -5970,6 +6001,12 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 
 <script>
 
+/* ── Supabase ─────────────────────────────────────────── */
+const _sb = supabase.createClient(
+  'https://goljaqahtffwvytrkpja.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvbGphcWFodGZmd3Z5dHJrcGphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MDc4NjUsImV4cCI6MjA5NTQ4Mzg2NX0.Uvg8e4-3BwVfsqd8vs8uzOUwEwYWVF0mmyTMDr2Wnsw'
+);
+
 const PF_STORAGE_KEY = 'peakform-prototype-state-v1';
 
 function loadPeakFormState() {
@@ -6005,28 +6042,33 @@ function goToAthleteArea() {
   showPage('login');
 }
 
-function loginUser() {
-  const email = document.getElementById('login-email');
-  const password = document.getElementById('login-password');
-  const error = document.getElementById('login-error');
+async function loginUser() {
+  const emailEl   = document.getElementById('login-email');
+  const passwordEl = document.getElementById('login-password');
+  const error     = document.getElementById('login-error');
+  const btn       = document.querySelector('#page-login .login-card button:not(.ghost):not(.back)');
 
-  if (!email || !password) {
-    isLoggedIn = true;
-    showPage('area');
-    return;
-  }
-
-  const emailValue = email.value.trim();
-  const passwordValue = password.value.trim();
+  error.classList.remove('active');
+  const emailValue    = emailEl ? emailEl.value.trim() : '';
+  const passwordValue = passwordEl ? passwordEl.value.trim() : '';
 
   if (!emailValue || !passwordValue) {
-    error.textContent = 'Preenche o email e a password ou usa o acesso de teste.';
+    error.textContent = 'Preenche o email e a password.';
     error.classList.add('active');
     return;
   }
 
-  if (emailValue !== 'atleta@peakform.pt' || passwordValue !== 'peakform') {
-    error.textContent = 'Dados inválidos no protótipo. Usa: atleta@peakform.pt / peakform.';
+  if (btn) { btn.textContent = 'A entrar...'; btn.disabled = true; }
+
+  const { data, error: authError } = await _sb.auth.signInWithPassword({
+    email: emailValue,
+    password: passwordValue,
+  });
+
+  if (btn) { btn.textContent = 'Entrar na área de atleta'; btn.disabled = false; }
+
+  if (authError) {
+    error.textContent = 'Email ou password incorretos. Verifica os teus dados.';
     error.classList.add('active');
     return;
   }
@@ -6034,24 +6076,74 @@ function loginUser() {
   error.classList.remove('active');
   isLoggedIn = true;
   updateStoredState('isLoggedIn', true);
+  _updateGreeting(data.user);
   showPage('area');
 }
 
-function fillDemoLogin() {
-  const email = document.getElementById('login-email');
-  const password = document.getElementById('login-password');
-  const error = document.getElementById('login-error');
-  if (email) email.value = 'atleta@peakform.pt';
-  if (password) password.value = 'peakform';
-  if (error) error.classList.remove('active');
+async function registerUser() {
+  const nameEl     = document.getElementById('register-name');
+  const emailEl    = document.getElementById('register-email');
+  const passwordEl = document.getElementById('register-password');
+  const error      = document.getElementById('register-error');
+  const btn        = document.querySelector('#page-register .login-card button:not(.back)');
+
+  error.classList.remove('active');
+  const name     = nameEl ? nameEl.value.trim() : '';
+  const email    = emailEl ? emailEl.value.trim() : '';
+  const password = passwordEl ? passwordEl.value.trim() : '';
+
+  if (!name || !email || !password) {
+    error.textContent = 'Preenche todos os campos.';
+    error.classList.add('active');
+    return;
+  }
+  if (password.length < 6) {
+    error.textContent = 'A password deve ter pelo menos 6 caracteres.';
+    error.classList.add('active');
+    return;
+  }
+
+  if (btn) { btn.textContent = 'A criar conta...'; btn.disabled = true; }
+
+  const { error: authError } = await _sb.auth.signUp({
+    email,
+    password,
+    options: { data: { name } }
+  });
+
+  if (btn) { btn.textContent = 'Criar conta'; btn.disabled = false; }
+
+  if (authError) {
+    error.textContent = authError.message === 'User already registered'
+      ? 'Este email já tem uma conta. Faz login.'
+      : authError.message;
+    error.classList.add('active');
+    return;
+  }
+
+  if (nameEl) nameEl.value = '';
+  if (emailEl) emailEl.value = '';
+  if (passwordEl) passwordEl.value = '';
+  showPeakFormToast('Conta criada!', 'Verifica o teu email para confirmar a conta e depois faz login.', '✓');
+  showPage('login');
 }
 
-function logoutUser() {
+async function logoutUser() {
+  await _sb.auth.signOut();
   isLoggedIn = false;
   peakFormState.isLoggedIn = false;
   savePeakFormState();
-  showPeakFormToast('Sessão terminada', 'Voltaste à homepage. Para entrar na Área do Atleta será necessário fazer login.', '↺');
+  showPeakFormToast('Sessão terminada', 'Voltaste à homepage.', '↺');
   showPage('landing');
+}
+
+function _updateGreeting(user) {
+  if (!user) return;
+  const name = user.user_metadata?.name || user.email || '';
+  const first = name.split(' ')[0];
+  document.querySelectorAll('.dash-eyebrow').forEach(el => {
+    if (el.textContent.startsWith('Olá')) el.textContent = `Olá, ${first}`;
+  });
 }
 
 function openProgram(program) {
@@ -7090,7 +7182,7 @@ function animateActivePage(page) {
 
 function showPage(page) {
   const protectedPages = ['area', 'program-pullup', 'program-bmu', 'session', 'movement', 'feedback'];
-  const publicPages = ['landing', 'login', 'support'];
+  const publicPages = ['landing', 'login', 'register', 'support'];
 
   if (protectedPages.includes(page) && isLoggedIn !== true) {
     page = 'login';
@@ -7116,6 +7208,38 @@ restoreStoredPublicActions();
 if (isLoggedIn) {
   updateDashboardProgress();
 }
+
+/* ── Verificar sessão Supabase no arranque ─────────────── */
+_sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    isLoggedIn = true;
+    updateStoredState('isLoggedIn', true);
+    _updateGreeting(session.user);
+    updateDashboardProgress();
+  } else {
+    /* Sessão expirada — proteger páginas privadas */
+    isLoggedIn = false;
+    updateStoredState('isLoggedIn', false);
+    const active = document.querySelector('.pf-page.active');
+    if (active) {
+      const pageId = active.id.replace('page-', '');
+      const protectedPages = ['area','program-pullup','program-bmu','session','movement','feedback'];
+      if (protectedPages.includes(pageId)) showPage('login');
+    }
+  }
+});
+
+/* Manter sessão sincronizada */
+_sb.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    isLoggedIn = true;
+    updateStoredState('isLoggedIn', true);
+    _updateGreeting(session.user);
+  } else {
+    isLoggedIn = false;
+    updateStoredState('isLoggedIn', false);
+  }
+});
 
 window.addEventListener('scroll', () => {
   const nav = document.getElementById('main-nav');
