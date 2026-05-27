@@ -5769,22 +5769,17 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <div class="login-card">
         <div class="login-card-top">
           <span>PeakForm Login</span>
-          <small>Prototype access</small>
         </div>
         <h3>Login</h3>
-        <p>Usa os dados de teste ou entra diretamente para visualizar o dashboard do atleta.</p>
+        <p>Entra na tua área de atleta e acede aos teus programas de treino.</p>
         <div id="login-error" class="login-error" aria-live="polite"></div>
         <label for="login-email">Email</label>
-        <input id="login-email" type="email" placeholder="atleta@peakform.pt" autocomplete="email" />
+        <input id="login-email" type="email" placeholder="o teu email" autocomplete="email" />
         <label for="login-password">Password</label>
-        <input id="login-password" type="password" placeholder="peakform" autocomplete="current-password" />
+        <input id="login-password" type="password" placeholder="a tua password" autocomplete="current-password" />
         <button onclick="loginUser()">Entrar na área</button>
-        <button class="ghost" onclick="fillDemoLogin()">Usar acesso de teste</button>
+        <button class="ghost" onclick="showPage('register')">Criar conta</button>
         <button class="back" onclick="showPage('landing')">Voltar à homepage</button>
-        <div class="login-test-data">
-          <span>Dados de teste</span>
-          <code>atleta@peakform.pt / peakform</code>
-        </div>
       </div>
     </div>
   </section>
