@@ -6891,6 +6891,13 @@ function voteProgram(button) {
     button.classList.add('is-voted');
     button.textContent = 'Interesse registado';
     programVotes[voteKey] = true;
+    /* Guardar no Supabase */
+    try {
+      _sb.auth.getUser().then(function(r) {
+        var userId = (r && r.data && r.data.user) ? r.data.user.id : null;
+        _sb.from('program_interests').insert({ program_name: voteKey, user_id: userId });
+      });
+    } catch(e) {}
   }
 
   vote.dataset.votes = currentVotes;
@@ -6934,6 +6941,10 @@ function submitCoachInterest(button) {
   coachInterest.submitted = true;
   coachInterest.email = input.value.trim();
   updateStoredState('coachInterest', coachInterest);
+
+  /* Guardar no Supabase */
+  try { _sb.from('coach_interests').insert({ email: input.value.trim() }); } catch(e) {}
+
   form.classList.remove('active');
   if (success) success.classList.add('active');
   if (mainButton) {
@@ -7619,6 +7630,12 @@ window.addEventListener('scroll', () => {
     var success = document.getElementById('merch-notify-success');
     var input   = document.getElementById('merch-notify-email');
     if (!form || !success || !input) return;
+    var email = input.value.trim();
+    if (!email) return;
+
+    /* Guardar no Supabase */
+    try { window._sb && window._sb.from('merch_interests').insert({ email: email }); } catch(e) {}
+
     form.style.display = 'none';
     success.style.display = 'flex';
     success.style.opacity = '1';
