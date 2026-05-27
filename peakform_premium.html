@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 
 .pf-page { display: none; }
@@ -6043,10 +6044,10 @@ function goToAthleteArea() {
 }
 
 async function loginUser() {
-  const emailEl   = document.getElementById('login-email');
+  const emailEl    = document.getElementById('login-email');
   const passwordEl = document.getElementById('login-password');
-  const error     = document.getElementById('login-error');
-  const btn       = document.querySelector('#page-login .login-card button:not(.ghost):not(.back)');
+  const error      = document.getElementById('login-error');
+  const btn        = document.querySelector('#page-login .login-card button:not(.ghost):not(.back)');
 
   error.classList.remove('active');
   const emailValue    = emailEl ? emailEl.value.trim() : '';
@@ -6060,24 +6061,30 @@ async function loginUser() {
 
   if (btn) { btn.textContent = 'A entrar...'; btn.disabled = true; }
 
-  const { data, error: authError } = await _sb.auth.signInWithPassword({
-    email: emailValue,
-    password: passwordValue,
-  });
+  try {
+    const { data, error: authError } = await _sb.auth.signInWithPassword({
+      email: emailValue,
+      password: passwordValue,
+    });
 
-  if (btn) { btn.textContent = 'Entrar na área de atleta'; btn.disabled = false; }
+    if (btn) { btn.textContent = 'Entrar na área de atleta'; btn.disabled = false; }
 
-  if (authError) {
-    error.textContent = 'Email ou password incorretos. Verifica os teus dados.';
+    if (authError) {
+      error.textContent = 'Email ou password incorretos.';
+      error.classList.add('active');
+      return;
+    }
+
+    error.classList.remove('active');
+    isLoggedIn = true;
+    updateStoredState('isLoggedIn', true);
+    _updateGreeting(data.user);
+    showPage('area');
+  } catch (e) {
+    if (btn) { btn.textContent = 'Entrar na área de atleta'; btn.disabled = false; }
+    error.textContent = 'Erro de ligação. Tenta novamente.';
     error.classList.add('active');
-    return;
   }
-
-  error.classList.remove('active');
-  isLoggedIn = true;
-  updateStoredState('isLoggedIn', true);
-  _updateGreeting(data.user);
-  showPage('area');
 }
 
 async function registerUser() {
@@ -6105,27 +6112,33 @@ async function registerUser() {
 
   if (btn) { btn.textContent = 'A criar conta...'; btn.disabled = true; }
 
-  const { error: authError } = await _sb.auth.signUp({
-    email,
-    password,
-    options: { data: { name } }
-  });
+  try {
+    const { error: authError } = await _sb.auth.signUp({
+      email,
+      password,
+      options: { data: { name } }
+    });
 
-  if (btn) { btn.textContent = 'Criar conta'; btn.disabled = false; }
+    if (btn) { btn.textContent = 'Criar conta'; btn.disabled = false; }
 
-  if (authError) {
-    error.textContent = authError.message === 'User already registered'
-      ? 'Este email já tem uma conta. Faz login.'
-      : authError.message;
+    if (authError) {
+      error.textContent = authError.message === 'User already registered'
+        ? 'Este email já tem uma conta. Faz login.'
+        : authError.message;
+      error.classList.add('active');
+      return;
+    }
+
+    if (nameEl) nameEl.value = '';
+    if (emailEl) emailEl.value = '';
+    if (passwordEl) passwordEl.value = '';
+    showPeakFormToast('Conta criada!', 'Verifica o teu email para confirmar a conta e depois faz login.', '✓');
+    showPage('login');
+  } catch (e) {
+    if (btn) { btn.textContent = 'Criar conta'; btn.disabled = false; }
+    error.textContent = 'Erro de ligação. Tenta novamente.';
     error.classList.add('active');
-    return;
   }
-
-  if (nameEl) nameEl.value = '';
-  if (emailEl) emailEl.value = '';
-  if (passwordEl) passwordEl.value = '';
-  showPeakFormToast('Conta criada!', 'Verifica o teu email para confirmar a conta e depois faz login.', '✓');
-  showPage('login');
 }
 
 async function logoutUser() {
