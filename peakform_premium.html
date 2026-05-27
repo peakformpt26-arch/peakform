@@ -6279,6 +6279,7 @@ async function logoutUser() {
   await _sb.auth.signOut();
   isLoggedIn = false;
   peakFormState.isLoggedIn = false;
+  peakFormState.isAdmin = false;
   savePeakFormState();
   showPeakFormToast('Sessão terminada', 'Voltaste à homepage.', '↺');
   showPage('landing');
@@ -6297,11 +6298,9 @@ async function _checkAdmin(user) {
   if (!user) return;
   try {
     const { data } = await _sb.from('profiles').select('is_admin').eq('id', user.id).single();
-    const btn = document.getElementById('pf-nav-athlete-btn');
-    if (btn && data && data.is_admin) {
-      btn.textContent = 'Área de Admin';
-      btn.setAttribute('onclick', 'goToAdminArea()');
-    }
+    const isAdmin = !!(data && data.is_admin);
+    updateStoredState('isAdmin', isAdmin);
+    if (typeof window.pfSyncNavAuth === 'function') window.pfSyncNavAuth();
   } catch(e) {}
 }
 
@@ -7714,12 +7713,25 @@ window.addEventListener('scroll', () => {
   // ── Nav auth state sync ───────────────────────────────────────────────────
   function pfSyncNavAuth() {
     var loggedIn = false;
+    var isAdmin  = false;
     try {
       var state = JSON.parse(localStorage.getItem('peakform-prototype-state-v1') || '{}');
       loggedIn = state.isLoggedIn === true;
+      isAdmin  = state.isAdmin    === true;
     } catch(e) {}
     document.body.classList.toggle('pf-logged-in', loggedIn);
+    var btn = document.getElementById('pf-nav-athlete-btn');
+    if (btn && loggedIn) {
+      if (isAdmin) {
+        btn.textContent = 'Área de Admin';
+        btn.setAttribute('onclick', 'goToAdminArea()');
+      } else {
+        btn.textContent = 'Área do Atleta';
+        btn.setAttribute('onclick', 'goToAthleteArea()');
+      }
+    }
   }
+  window.pfSyncNavAuth = pfSyncNavAuth;
 
   // Run immediately on load
   pfSyncNavAuth();
