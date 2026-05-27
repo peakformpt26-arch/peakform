@@ -6079,6 +6079,7 @@ async function loginUser() {
     isLoggedIn = true;
     updateStoredState('isLoggedIn', true);
     _updateGreeting(data.user);
+    _checkAdmin(data.user);
     showPage('area');
   } catch (e) {
     if (btn) { btn.textContent = 'Entrar na área de atleta'; btn.disabled = false; }
@@ -6157,6 +6158,15 @@ function _updateGreeting(user) {
   document.querySelectorAll('.dash-eyebrow').forEach(el => {
     if (el.textContent.startsWith('Olá')) el.textContent = `Olá, ${first}`;
   });
+}
+
+async function _checkAdmin(user) {
+  if (!user) return;
+  try {
+    const { data } = await _sb.from('profiles').select('is_admin').eq('id', user.id).single();
+    const btn = document.getElementById('pf-nav-athlete-btn');
+    if (btn && data && data.is_admin) btn.textContent = 'Área de Admin';
+  } catch(e) {}
 }
 
 function openProgram(program) {
@@ -7239,6 +7249,7 @@ _sb.auth.getSession().then(({ data: { session } }) => {
     isLoggedIn = true;
     updateStoredState('isLoggedIn', true);
     _updateGreeting(session.user);
+    _checkAdmin(session.user);
     updateDashboardProgress();
   } else {
     /* Sessão expirada — proteger páginas privadas */
@@ -7259,6 +7270,7 @@ _sb.auth.onAuthStateChange((event, session) => {
     isLoggedIn = true;
     updateStoredState('isLoggedIn', true);
     _updateGreeting(session.user);
+    _checkAdmin(session.user);
   } else {
     isLoggedIn = false;
     updateStoredState('isLoggedIn', false);
