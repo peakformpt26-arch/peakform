@@ -6513,19 +6513,54 @@ async function loadUserPrograms() {
 }
 
 function renderDashboardPrograms() {
+  /* ── Lista de programas ─────────────────────────────────── */
   const rows = document.querySelectorAll('#program-list-container [data-program-slug]');
   let hasAny = false;
   rows.forEach(function(row) {
     const slug = row.getAttribute('data-program-slug');
-    if (userPrograms.includes(slug)) {
-      row.style.display = '';
-      hasAny = true;
-    } else {
-      row.style.display = 'none';
-    }
+    if (userPrograms.includes(slug)) { row.style.display = ''; hasAny = true; }
+    else row.style.display = 'none';
   });
-  const empty = document.getElementById('dashboard-programs-empty');
-  if (empty) empty.style.display = hasAny ? 'none' : '';
+  const listEmpty = document.getElementById('dashboard-programs-empty');
+  if (listEmpty) listEmpty.style.display = hasAny ? 'none' : '';
+
+  /* ── Cards do dashboard ─────────────────────────────────── */
+  const continueBtn     = document.getElementById('dashboard-continue-btn');
+  const activeProgCard  = document.querySelector('#page-area .dash-active-program');
+  const nextSessionCard = document.querySelector('#page-area .dash-next-session');
+  const heroTitle       = document.getElementById('dashboard-hero-title');
+  const heroText        = document.getElementById('dashboard-hero-text');
+
+  if (!hasAny) {
+    /* Sem programas — estado de onboarding */
+    if (heroTitle) heroTitle.innerHTML = 'Bem-vindo à <em>Área do Atleta</em>';
+    if (heroText)  heroText.textContent = 'Ainda não tens nenhum programa ativo. Explora os planos disponíveis e começa a tua evolução.';
+    if (continueBtn)     continueBtn.style.display = 'none';
+    if (activeProgCard)  activeProgCard.style.display = 'none';
+    if (nextSessionCard) nextSessionCard.style.display = 'none';
+    /* CTA → pricing */
+    if (!document.getElementById('dash-empty-cta')) {
+      const heroSection = document.querySelector('#page-area .dash-hero > div');
+      if (heroSection) {
+        const btn = document.createElement('button');
+        btn.id = 'dash-empty-cta';
+        btn.textContent = 'Explorar programas';
+        btn.style.cssText = 'margin-top:.9rem;background:var(--orange);border:none;border-radius:50px;color:#fff;font-family:inherit;font-size:.85rem;font-weight:700;padding:.65rem 1.6rem;cursor:pointer;display:inline-block;';
+        btn.onclick = function() {
+          showPage('landing');
+          setTimeout(function(){ document.getElementById('planos')?.scrollIntoView({behavior:'smooth'}); }, 120);
+        };
+        heroSection.appendChild(btn);
+      }
+    }
+  } else {
+    /* Tem programas — restaurar estado normal */
+    if (continueBtn)     continueBtn.style.display = '';
+    if (activeProgCard)  activeProgCard.style.display = '';
+    if (nextSessionCard) nextSessionCard.style.display = '';
+    const existingCta = document.getElementById('dash-empty-cta');
+    if (existingCta) existingCta.remove();
+  }
 }
 
 /* ── Admin: conceder acesso por user_id ── */
