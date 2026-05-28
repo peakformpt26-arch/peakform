@@ -7350,12 +7350,14 @@ function voteProgram(button) {
     button.textContent = 'Interesse registado ✓';
     programVotes[voteKey] = true;
     /* Guardar no Supabase */
-    try {
-      _sb.auth.getUser().then(function(r) {
+    (async function() {
+      try {
+        var r = await _sb.auth.getUser();
         var userId = (r && r.data && r.data.user) ? r.data.user.id : null;
-        _sb.from('program_interests').insert({ program_name: voteKey, user_id: userId });
-      });
-    } catch(e) {}
+        var res = await _sb.from('program_interests').insert({ program_name: voteKey, user_id: userId });
+        if (res.error) console.warn('[PeakForm] program_interests insert error:', res.error.message, res.error.code);
+      } catch(e) { console.warn('[PeakForm] voteProgram exception:', e); }
+    })();
     showPeakFormToast('Interesse registado', 'Avisamos quando o programa lançar.', '✓');
   }
 
