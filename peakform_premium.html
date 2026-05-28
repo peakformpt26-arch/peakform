@@ -5328,18 +5328,19 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
         <li>Canais definidos para dúvidas pontuais sobre o programa.</li>
       </ul>
       <div class="program-card-footer">
-        <button onclick="openProgram('pullup')">Ver programa</button>
-        <small>Acesso pela Área do Atleta</small>
+        <div class="pf-prog-price-tag">€15 <span>· pagamento único</span></div>
+        <button id="pullup-card-btn" onclick="openProgram('pullup')">Comprar · €15</button>
+        <small id="pullup-card-sub">Acesso imediato após pagamento</small>
       </div>
     </article>
-    <article class="public-program-card featured" data-category="gymnastics">
-      <div class="program-badge">Disponível agora</div>
+    <article class="public-program-card" data-category="gymnastics">
+      <div class="program-badge">Brevemente · €15</div>
       <h3>Bar Muscle-Up</h3>
       <p>Programa de 6 semanas para atletas que já têm base de pull-ups e querem desenvolver o Bar Muscle-Up com pulling power, timing no kip e transição eficiente.</p>
       <div class="program-meta-public"><span>6 semanas</span><span>Gymnastics</span><span>Nível 2</span></div>
       <div class="program-card-footer">
-        <button onclick="openProgram('bmu')">Ver programa</button>
-        <small>Requisitos: 5 strict pull-ups · 20-30s dead hang · 3 chest-to-bar</small>
+        <button id="bmu-card-btn" onclick="openProgram('bmu')" class="pf-prog-btn-soon">Em breve</button>
+        <small id="bmu-card-sub">Requisitos: 5 strict pull-ups · 20-30s dead hang · 3 chest-to-bar</small>
       </div>
     </article>
     <article class="public-program-card locked" data-category="gymnastics">
@@ -5409,68 +5410,53 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   </div>
 </section>
 
-<!-- PLANOS — flat 3-column grid -->
-<section id="planos" style="background:var(--black)">
-  <div class="planos-header reveal">
-    <div class="section-label">Planos de Acesso</div>
-    <h2 class="planos-title">Escolhe o<br>teu <em>plano.</em></h2>
+<!-- PLANOS -->
+<section class="pricing-section" id="planos">
+  <div class="pricing-header">
+    <div class="section-kicker">Preços</div>
+    <h2>Programas a partir de <em>€15.</em></h2>
+    <p>Compra o programa que precisas. Sem subscrições, sem compromisso. Acesso permanente após compra.</p>
   </div>
-  <div class="planos-grid">
-    <div class="plano-card reveal">
-      <div class="plano-type">Programa Individual</div>
-      <div class="plano-name">Single</div>
-      <div class="plano-price">
-        <span class="price-currency">€</span>
-        <span class="price-amount">19</span>
-        <span class="price-period">/ programa</span>
-      </div>
-      <p class="plano-desc">Acesso completo a um programa específico, sem subscrição. Ideal para experimentar.</p>
-      <ul class="plano-features">
-        <li>Acesso permanente ao programa</li>
-        <li>Vídeos tutoriais e notas de coaching</li>
-        <li>Sessões organizadas por fase</li>
-        <li>Critérios claros de progressão</li>
+  <div class="pricing-grid">
+    <article class="pricing-card featured">
+      <span>Gymnastics · Strength · Engine</span>
+      <h3>Individual</h3>
+      <div class="pricing-price"><small>€</small><strong>15</strong><em>/programa</em></div>
+      <p>6 semanas de progressão estruturada. Um programa, um objetivo, acesso permanente.</p>
+      <ul>
+        <li>3 sessões por semana, semana a semana</li>
+        <li>Progressão definida com critérios claros</li>
+        <li>Registo de RPE, notas e sessões concluídas</li>
+        <li>Suporte técnico pontual sobre o programa</li>
       </ul>
-      <button class="plano-cta" onclick="goToAthleteArea()">Começar</button>
-    </div>
-
-    <div class="plano-card featured reveal">
-      <div class="plano-badge">Mais popular</div>
-      <div class="plano-type">Acesso Completo</div>
-      <div class="plano-name">Pro</div>
-      <div class="plano-price">
-        <span class="price-currency">€</span>
-        <span class="price-amount">12</span>
-        <span class="price-period">/ mês</span>
-      </div>
-      <p class="plano-desc">Acesso ilimitado a todos os programas, futuros lançamentos e actualizações da plataforma.</p>
-      <ul class="plano-features">
-        <li>Todos os programas incluídos</li>
-        <li>Novos programas sem custo adicional</li>
-        <li>Área do Atleta completa</li>
-        <li>Registo de progresso, RPE e notas</li>
-        <li>Acesso antecipado a lançamentos</li>
+      <button onclick="document.getElementById('programas')?.scrollIntoView({behavior:'smooth'})">Ver programas →</button>
+    </article>
+    <article class="pricing-card">
+      <span>Competição · Open · HYROX · ATHX</span>
+      <h3>Competition</h3>
+      <div class="pricing-price"><small>€</small><strong>5</strong><em>/semana</em></div>
+      <p>12 semanas de preparação completa. €60 por ciclo — menos de dois cafés por semana de treino.</p>
+      <ul>
+        <li>Preparação estruturada de 12 semanas</li>
+        <li>Open 2027 · HYROX · ATHX disponíveis</li>
+        <li>Pacing, standards e gestão de esforço</li>
+        <li>Acesso permanente após compra</li>
       </ul>
-      <button class="plano-cta" onclick="goToAthleteArea()">Começar</button>
-    </div>
-
-    <div class="plano-card reveal">
-      <div class="plano-type">Acompanhamento Directo</div>
-      <div class="plano-name">Coach</div>
-      <div class="plano-price">
-        <span class="price-currency">€</span>
-        <span class="price-amount">60</span>
-        <span class="price-period">/ mês</span>
-      </div>
-      <p class="plano-desc">Coaching 1:1 com programação personalizada, acompanhamento directo e vagas limitadas.</p>
-      <ul class="plano-features">
+      <button class="pf-pricing-btn-soon" disabled>Em breve</button>
+    </article>
+    <article class="pricing-card">
+      <span>Acompanhamento directo · Vagas limitadas</span>
+      <h3>Coach 1:1</h3>
+      <div class="pricing-price pf-price-blur" aria-hidden="true"><small>€</small><strong>—</strong><em>/mês</em></div>
+      <p>Programação personalizada, call quinzenal e acesso a grupo privado com os coaches.</p>
+      <ul>
         <li>Programação 100% personalizada</li>
-        <li>Feedback directo de coaching</li>
-        <li>Comunicação contínua</li>
-        <li>Análise de evolução e prioridades</li>
+        <li>Call quinzenal com o teu coach</li>
+        <li>Grupo privado WhatsApp com a equipa</li>
+        <li>Análise de evolução contínua</li>
       </ul>
-      <div class="coming-soon-label">Em Breve</div>
-    </div>
+      <button onclick="toggleCoachInterestFromPricing(this)">Saber mais →</button>
+    </article>
   </div>
 </section>
 
