@@ -5358,7 +5358,14 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <h3>Coach 1:1</h3>
       <p>Coaching individual com programação personalizada, acompanhamento direto e vagas limitadas.</p>
       <div class="program-meta-public"><span>Coaching</span><span>Personalizado</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="toggleCoachInterest(this)">Tenho interesse</button><small>Vagas limitadas</small></div>
+      <div class="coach-interest-form">
+        <label>Insere o teu email</label>
+        <input type="email" placeholder="o-teu-email@exemplo.pt" />
+        <button class="coach-submit" onclick="submitCoachInterest(this)">Notifica-me</button>
+        <div class="coach-form-message">Insere um email válido para registarmos o teu interesse.</div>
+      </div>
+      <div class="coach-interest-success">Interesse registado. Entraremos em contacto quando houver vaga.</div>
     </article>
     <article class="public-program-card locked" data-category="merch">
       <div class="program-badge">Em breve</div>
@@ -7093,12 +7100,11 @@ function getProgramVoteKey(card) {
 }
 
 function voteProgram(button) {
-  const card = button.closest('.public-program-card');
+  /* Funciona tanto em .public-program-card (landing) como em .pf-pm-card (modal) */
+  const card = button.closest('.public-program-card') || button.closest('.pf-pm-card');
   const vote = card ? card.querySelector('.vote-count') : null;
-  if (!vote) return;
-
-  const voteKey = getProgramVoteKey(card);
-  let currentVotes = Number(vote.dataset.votes || 0);
+  const voteKey = card ? getProgramVoteKey(card) : 'unknown';
+  let currentVotes = vote ? Number(vote.dataset.votes || 0) : 0;
   const isVoted = button.dataset.voted === 'true';
 
   if (isVoted) {
@@ -7111,7 +7117,7 @@ function voteProgram(button) {
     currentVotes += 1;
     button.dataset.voted = 'true';
     button.classList.add('is-voted');
-    button.textContent = 'Interesse registado';
+    button.textContent = 'Interesse registado ✓';
     programVotes[voteKey] = true;
     /* Guardar no Supabase */
     try {
@@ -7120,10 +7126,13 @@ function voteProgram(button) {
         _sb.from('program_interests').insert({ program_name: voteKey, user_id: userId });
       });
     } catch(e) {}
+    showPeakFormToast('Interesse registado', 'Avisamos quando o programa lançar.', '✓');
   }
 
-  vote.dataset.votes = currentVotes;
-  vote.textContent = currentVotes + ' interessados';
+  if (vote) {
+    vote.dataset.votes = currentVotes;
+    vote.textContent = currentVotes + ' interessados';
+  }
   updateStoredState('programVotes', programVotes);
 }
 
@@ -7864,29 +7873,29 @@ window.addEventListener('scroll', () => {
 (function(){
   window.submitMerchNotify = function(e) {
     e.preventDefault();
-    var form    = document.getElementById('merch-notify-form');
-    var success = document.getElementById('merch-notify-success');
-    var input   = document.getElementById('merch-notify-email');
-    if (!form || !success || !input) return;
+    var form  = document.getElementById('merch-notify-form');
+    var input = document.getElementById('merch-notify-email');
+    if (!form || !input) return;
     var email = input.value.trim();
     if (!email) return;
 
     /* Guardar no Supabase */
-    try { window._sb && window._sb.from('merch_interests').insert({ email: email }); } catch(e) {}
+    try { _sb.from('merch_interests').insert({ email: email }); } catch(err) {}
 
-    form.style.display = 'none';
-    success.style.display = 'flex';
-    success.style.opacity = '1';
-    success.style.transition = 'opacity .5s';
-    setTimeout(function() {
-      success.style.opacity = '0';
-      setTimeout(function() {
-        success.style.display = 'none';
-        input.value = '';
-        form.style.display = 'flex';
-        success.style.opacity = '1';
-      }, 500);
-    }, 3000);
+    input.value = '';
+
+    /* Fechar painel merch */
+    var panel   = document.getElementById('merch-panel');
+    var overlay = document.getElementById('merch-overlay');
+    var trigger = document.getElementById('merch-trigger');
+    if (panel)   panel.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    if (trigger) trigger.classList.remove('active');
+
+    /* Toast de confirmação visível */
+    if (typeof showPeakFormToast === 'function') {
+      showPeakFormToast('Registado!', 'Avisamos quando a merch lançar.', '✓');
+    }
   };
 })();
 
