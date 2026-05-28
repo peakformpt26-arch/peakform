@@ -6509,13 +6509,20 @@ async function loadUserPrograms() {
       .eq('status', 'active');
     userPrograms = (data || []).map(r => r.program_slug);
     /* Garantir que o activeDashboardProgram é um que o user possui */
-    if (!activeDashboardProgram || !userPrograms.includes(activeDashboardProgram)) {
-      activeDashboardProgram = userPrograms[0] || 'pullup';
-      updateStoredState('activeDashboardProgram', activeDashboardProgram);
+    if (userPrograms.length > 0) {
+      if (!activeDashboardProgram || !userPrograms.includes(activeDashboardProgram)) {
+        activeDashboardProgram = userPrograms[0];
+        updateStoredState('activeDashboardProgram', activeDashboardProgram);
+      }
+    } else {
+      /* Sem programas — limpar estado */
+      activeDashboardProgram = null;
+      updateStoredState('activeDashboardProgram', null);
     }
   } catch(e) { userPrograms = []; }
   renderDashboardPrograms();
-  updateDashboardProgress();
+  /* Só atualizar progresso se tiver programas — evita sobrescrever o estado de onboarding */
+  if (userPrograms.length > 0) updateDashboardProgress();
 }
 
 function renderDashboardPrograms() {
