@@ -6479,6 +6479,11 @@ async function loadAdminData() {
                 ${chips || '<small style="color:rgba(245,242,238,.28);font-size:.69rem;">sem programas</small>'}
               </div>
               ${grantUI}
+              <button onclick="adminDeleteUser('${p.id}', '${p.email}')"
+                title="Eliminar conta"
+                style="background:rgba(180,30,30,.12);border:1px solid rgba(180,30,30,.35);border-radius:4px;color:#e05555;font-size:.7rem;padding:.28rem .65rem;cursor:pointer;white-space:nowrap;flex-shrink:0;">
+                🗑 Eliminar
+              </button>
             </div>`;
           }).join('')
         : '<p class="admin-empty">Nenhum utilizador registado ainda.</p>';
@@ -6543,6 +6548,17 @@ async function adminRevokeAccess(id) {
   const { error } = await _sb.from('user_programs').delete().eq('id', id);
   if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
   showPeakFormToast('Acesso revogado', 'O acesso foi removido.', '✓');
+  loadAdminData();
+}
+
+async function adminDeleteUser(userId, email) {
+  if (!confirm(`Eliminar a conta de ${email}?\n\nEsta ação é permanente e não pode ser desfeita.`)) return;
+  const { error } = await _sb.rpc('admin_delete_user', { target_user_id: userId });
+  if (error) {
+    showPeakFormToast('Erro ao eliminar', error.message, '✗');
+    return;
+  }
+  showPeakFormToast('Conta eliminada', `A conta de ${email} foi removida permanentemente.`, '✓');
   loadAdminData();
 }
 
