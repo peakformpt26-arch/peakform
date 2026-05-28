@@ -6402,33 +6402,48 @@ async function loadAdminData() {
     const progList = el('admin-programs-list');
     if (progList) {
       const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      const btnStyle = 'background:rgba(180,30,30,.12);border:1px solid rgba(180,30,30,.3);border-radius:4px;color:#e05555;font-size:.65rem;padding:.2rem .5rem;cursor:pointer;white-space:nowrap;';
       progList.innerHTML = sorted.length
         ? sorted.map(([name, count]) =>
-            `<div class="admin-row"><span>${name.replace(/-/g, ' ')}</span><strong>${count} ${count === 1 ? 'interesse' : 'interesses'}</strong></div>`
+            `<div class="admin-row" style="justify-content:space-between;align-items:center;gap:.5rem;">
+               <span style="flex:1">${name.replace(/-/g, ' ')}</span>
+               <strong style="white-space:nowrap">${count} ${count === 1 ? 'interesse' : 'interesses'}</strong>
+               <button onclick="adminResetProgramInterest('${name}')" style="${btnStyle}" title="Apagar todos os interesses deste programa">🗑 Reset</button>
+             </div>`
           ).join('')
         : '<p class="admin-empty">Sem dados ainda.</p>';
     }
 
     /* Merch */
     const { data: merchData } = await _sb.from('merch_interests')
-      .select('email, created_at').order('created_at', { ascending: false });
+      .select('id, email, created_at').order('created_at', { ascending: false });
     const merchList = el('admin-merch-list');
     if (merchList) {
+      const btnStyle = 'background:rgba(180,30,30,.12);border:1px solid rgba(180,30,30,.3);border-radius:4px;color:#e05555;font-size:.65rem;padding:.2rem .5rem;cursor:pointer;flex-shrink:0;';
       merchList.innerHTML = (merchData || []).length
         ? (merchData || []).map(r =>
-            `<div class="admin-row"><span>${r.email}</span><small>${new Date(r.created_at).toLocaleDateString('pt-PT')}</small></div>`
+            `<div class="admin-row" style="justify-content:space-between;align-items:center;gap:.5rem;">
+               <span style="flex:1">${r.email}</span>
+               <small style="white-space:nowrap">${new Date(r.created_at).toLocaleDateString('pt-PT')}</small>
+               <button onclick="adminDeleteMerchInterest('${r.id}')" style="${btnStyle}" title="Apagar este registo">🗑</button>
+             </div>`
           ).join('')
         : '<p class="admin-empty">Sem notificações ainda.</p>';
     }
 
     /* Coach 1:1 */
     const { data: coachData } = await _sb.from('coach_interests')
-      .select('email, created_at').order('created_at', { ascending: false });
+      .select('id, email, created_at').order('created_at', { ascending: false });
     const coachList = el('admin-coach-list');
     if (coachList) {
+      const btnStyle = 'background:rgba(180,30,30,.12);border:1px solid rgba(180,30,30,.3);border-radius:4px;color:#e05555;font-size:.65rem;padding:.2rem .5rem;cursor:pointer;flex-shrink:0;';
       coachList.innerHTML = (coachData || []).length
         ? (coachData || []).map(r =>
-            `<div class="admin-row"><span>${r.email}</span><small>${new Date(r.created_at).toLocaleDateString('pt-PT')}</small></div>`
+            `<div class="admin-row" style="justify-content:space-between;align-items:center;gap:.5rem;">
+               <span style="flex:1">${r.email}</span>
+               <small style="white-space:nowrap">${new Date(r.created_at).toLocaleDateString('pt-PT')}</small>
+               <button onclick="adminDeleteCoachInterest('${r.id}')" style="${btnStyle}" title="Apagar este registo">🗑</button>
+             </div>`
           ).join('')
         : '<p class="admin-empty">Sem pedidos ainda.</p>';
     }
@@ -6607,6 +6622,28 @@ async function adminDeleteUser(userId, email) {
     return;
   }
   showPeakFormToast('Conta eliminada', `A conta de ${email} foi removida permanentemente.`, '✓');
+  loadAdminData();
+}
+
+async function adminResetProgramInterest(programName) {
+  if (!confirm(`Apagar todos os interesses de "${programName.replace(/-/g, ' ')}"?\n\nOs dados serão removidos permanentemente.`)) return;
+  const { error } = await _sb.from('program_interests').delete().eq('program_name', programName);
+  if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
+  showPeakFormToast('Reset feito', `Interesses de "${programName.replace(/-/g, ' ')}" apagados.`, '✓');
+  loadAdminData();
+}
+
+async function adminDeleteMerchInterest(id) {
+  const { error } = await _sb.from('merch_interests').delete().eq('id', id);
+  if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
+  showPeakFormToast('Removido', 'Registo de merch apagado.', '✓');
+  loadAdminData();
+}
+
+async function adminDeleteCoachInterest(id) {
+  const { error } = await _sb.from('coach_interests').delete().eq('id', id);
+  if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
+  showPeakFormToast('Removido', 'Pedido coach apagado.', '✓');
   loadAdminData();
 }
 
