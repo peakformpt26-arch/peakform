@@ -7309,16 +7309,19 @@ async function submitFeedbackForm() {
     recommend: val('feedback-recommend') || null,
   };
 
-  const { error } = await _sb.from('program_feedback').insert(payload);
-
-  if (btn) { btn.disabled = false; btn.textContent = 'Enviar feedback'; }
-
-  if (error) {
-    showPeakFormToast('Erro', 'Não foi possível enviar o feedback. Tenta novamente.', '❌');
-    console.warn('[PeakForm] feedback insert error:', error.message);
-    return;
+  try {
+    const { error } = await _sb.from('program_feedback').insert(payload);
+    if (error) {
+      console.warn('[PeakForm] feedback insert error:', error.message, error.code);
+      showPeakFormToast('Erro ao guardar', error.message, '❌');
+    }
+  } catch(e) {
+    console.warn('[PeakForm] feedback exception:', e);
+    showPeakFormToast('Erro', 'Não foi possível guardar o feedback no servidor.', '❌');
   }
 
+  /* Independentemente do resultado, mostra sucesso ao atleta e guarda localmente */
+  if (btn) { btn.disabled = false; btn.textContent = 'Enviar feedback'; }
   if (success) success.classList.add('active');
   const label = document.getElementById('feedback-kicker');
   const key = label ? label.textContent : 'feedback';
