@@ -7293,9 +7293,16 @@ async function submitFeedbackForm() {
 
   const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
 
+  /* Obter utilizador autenticado */
+  let _uid = null, _uemail = null;
+  try {
+    const { data: { user } } = await _sb.auth.getUser();
+    if (user) { _uid = user.id; _uemail = user.email; }
+  } catch(e) {}
+
   const payload = {
-    user_id: currentUser ? currentUser.id : null,
-    email: currentUser ? currentUser.email : (val('feedback-name') || null),
+    user_id: _uid,
+    email: _uemail || val('feedback-name') || null,
     program: _currentFeedbackProgram,
     checkpoint: _currentFeedbackType,
     name: val('feedback-name'),
