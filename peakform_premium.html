@@ -6297,11 +6297,18 @@ function _updateGreeting(user) {
 async function _checkAdmin(user) {
   if (!user) return;
   try {
-    const { data } = await _sb.from('profiles').select('is_admin').eq('id', user.id).single();
+    const { data, error } = await _sb.from('profiles').select('is_admin').eq('id', user.id).single();
+    if (error) { console.warn('[PF] _checkAdmin query error:', error.message); }
     const isAdmin = !!(data && data.is_admin);
     updateStoredState('isAdmin', isAdmin);
+    /* Atualizar botão diretamente — não depender apenas de pfSyncNavAuth */
+    const btn = document.getElementById('pf-nav-athlete-btn');
+    if (btn && isAdmin) {
+      btn.textContent = 'Área de Admin';
+      btn.setAttribute('onclick', 'goToAdminArea()');
+    }
     if (typeof window.pfSyncNavAuth === 'function') window.pfSyncNavAuth();
-  } catch(e) {}
+  } catch(e) { console.warn('[PF] _checkAdmin error:', e); }
 }
 
 async function goToAdminArea() {
