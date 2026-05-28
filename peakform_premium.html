@@ -7375,6 +7375,15 @@ function toggleCoachInterest(button) {
   form.classList.toggle('active');
   button.classList.toggle('is-voted');
   button.textContent = form.classList.contains('active') ? 'Inserir email' : 'Tenho interesse';
+  /* Pré-preencher email se utilizador estiver logado */
+  if (form.classList.contains('active')) {
+    const input = form.querySelector('input[type="email"]');
+    if (input && !input.value) {
+      _sb.auth.getUser().then(function(r) {
+        if (r && r.data && r.data.user && r.data.user.email) input.value = r.data.user.email;
+      });
+    }
+  }
 }
 
 function submitCoachInterest(button) {
@@ -7406,7 +7415,12 @@ function submitCoachInterest(button) {
   updateStoredState('coachInterest', coachInterest);
 
   /* Guardar no Supabase */
-  try { _sb.from('coach_interests').insert({ email: input.value.trim() }); } catch(e) {}
+  (async function(email) {
+    try {
+      var res = await _sb.from('coach_interests').insert({ email: email });
+      if (res.error) console.warn('[PeakForm] coach_interests insert error:', res.error.message);
+    } catch(e) { console.warn('[PeakForm] coach interest exception:', e); }
+  })(input.value.trim());
 
   form.classList.remove('active');
   if (success) success.classList.add('active');
@@ -8118,6 +8132,21 @@ window.addEventListener('scroll', () => {
 
 
 (function(){
+  /* Pré-preencher email quando o painel merch abre */
+  var _merchTrigger = document.getElementById('merch-trigger');
+  if (_merchTrigger) {
+    _merchTrigger.addEventListener('click', function() {
+      setTimeout(function() {
+        var input = document.getElementById('merch-notify-email');
+        if (input && !input.value) {
+          _sb.auth.getUser().then(function(r) {
+            if (r && r.data && r.data.user && r.data.user.email) input.value = r.data.user.email;
+          });
+        }
+      }, 60);
+    });
+  }
+
   window.submitMerchNotify = function(e) {
     e.preventDefault();
     var form  = document.getElementById('merch-notify-form');
@@ -8127,7 +8156,12 @@ window.addEventListener('scroll', () => {
     if (!email) return;
 
     /* Guardar no Supabase */
-    try { _sb.from('merch_interests').insert({ email: email }); } catch(err) {}
+    (async function(em) {
+      try {
+        var res = await _sb.from('merch_interests').insert({ email: em });
+        if (res.error) console.warn('[PeakForm] merch_interests insert error:', res.error.message);
+      } catch(err) { console.warn('[PeakForm] merch notify exception:', err); }
+    })(email);
 
     input.value = '';
 
@@ -8148,6 +8182,20 @@ window.addEventListener('scroll', () => {
 
 
 (function(){
+  /* Pré-preencher email coach quando o input aparece no modal (MutationObserver) */
+  var _grid = document.getElementById('pf-pm-grid');
+  if (_grid && window.MutationObserver) {
+    new MutationObserver(function() {
+      var input = _grid.querySelector('.pf-pm-coach-input');
+      if (input && !input.dataset.prefilled) {
+        input.dataset.prefilled = '1';
+        _sb.auth.getUser().then(function(r) {
+          if (r && r.data && r.data.user && r.data.user.email) input.value = r.data.user.email;
+        });
+      }
+    }).observe(_grid, { childList: true, subtree: true });
+  }
+
   window.submitCoachInterestModal = function(btn) {
     var card  = btn.closest ? btn.closest('.pf-pm-card') : null;
     var input = card ? card.querySelector('.pf-pm-coach-input') : null;
@@ -8159,7 +8207,12 @@ window.addEventListener('scroll', () => {
       return;
     }
     /* Guardar no Supabase */
-    try { _sb.from('coach_interests').insert({ email: email }); } catch(e) {}
+    (async function(em) {
+      try {
+        var res = await _sb.from('coach_interests').insert({ email: em });
+        if (res.error) console.warn('[PeakForm] coach_interests modal insert error:', res.error.message);
+      } catch(e) { console.warn('[PeakForm] coach modal exception:', e); }
+    })(email);
 
     /* Fechar modal e mostrar toast */
     if (typeof window.pfCloseProgModal === 'function') window.pfCloseProgModal();
