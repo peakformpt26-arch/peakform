@@ -1736,6 +1736,10 @@ nav.scrolled {
 .admin-row strong { font-size: 0.88rem; color: var(--orange); font-weight: 700; }
 .admin-row small { font-size: 0.72rem; color: var(--warm-gray); }
 .admin-empty { font-size: 0.82rem; color: var(--warm-gray); padding: 0.5rem 0; }
+.fb-detail-row { display: grid; grid-template-columns: 110px 1fr; gap: .3rem .7rem; padding: .3rem 0; border-bottom: 1px solid rgba(245,242,238,.05); font-size: .8rem; }
+.fb-detail-row span { color: rgba(245,242,238,.4); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; align-self: start; padding-top: .1rem; }
+.fb-detail-row strong { color: #f5f2ee; font-weight: 600; }
+.fb-detail-row p { color: rgba(245,242,238,.75); line-height: 1.5; margin: 0; white-space: pre-wrap; }
 @media (max-width: 900px) {
   .admin-stats-grid { grid-template-columns: 1fr 1fr; }
 }
@@ -6002,6 +6006,10 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
           <span class="admin-stat-label">Pedidos coach 1:1</span>
           <span class="admin-stat-value" id="admin-stat-coach">—</span>
         </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-label">Feedbacks recebidos</span>
+          <span class="admin-stat-value" id="admin-stat-feedback">—</span>
+        </div>
       </div>
 
       <!-- Programs breakdown -->
@@ -6020,6 +6028,12 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <div class="admin-section">
         <div class="admin-section-head"><h3>Pedidos Coach 1:1</h3></div>
         <div id="admin-coach-list" class="admin-rows"></div>
+      </div>
+
+      <!-- Feedbacks -->
+      <div class="admin-section">
+        <div class="admin-section-head"><h3>Feedbacks dos Atletas</h3></div>
+        <div id="admin-feedback-list" class="admin-rows"></div>
       </div>
 
       <!-- Users list with access management -->
@@ -6426,17 +6440,19 @@ async function goToAdminArea() {
 async function loadAdminData() {
   try {
     /* Contadores */
-    const [usersRes, programsRes, merchRes, coachRes] = await Promise.all([
+    const [usersRes, programsRes, merchRes, coachRes, feedbackRes] = await Promise.all([
       _sb.from('profiles').select('*', { count: 'exact', head: true }),
       _sb.from('program_interests').select('*', { count: 'exact', head: true }),
       _sb.from('merch_interests').select('*', { count: 'exact', head: true }),
       _sb.from('coach_interests').select('*', { count: 'exact', head: true }),
+      _sb.from('program_feedback').select('*', { count: 'exact', head: true }),
     ]);
     const el = id => document.getElementById(id);
     if (el('admin-stat-users'))    el('admin-stat-users').textContent    = usersRes.count    ?? '—';
     if (el('admin-stat-programs')) el('admin-stat-programs').textContent = programsRes.count ?? '—';
     if (el('admin-stat-merch'))    el('admin-stat-merch').textContent    = merchRes.count    ?? '—';
     if (el('admin-stat-coach'))    el('admin-stat-coach').textContent    = coachRes.count    ?? '—';
+    if (el('admin-stat-feedback')) el('admin-stat-feedback').textContent = feedbackRes.count ?? '—';
 
     /* Interesse por programa */
     const { data: progData } = await _sb.from('program_interests')
@@ -6491,6 +6507,47 @@ async function loadAdminData() {
           ).join('')
         : '<p class="admin-empty">Sem pedidos ainda.</p>';
     }
+    /* Feedbacks */
+    const { data: feedbackData } = await _sb.from('program_feedback')
+      .select('*').order('created_at', { ascending: false });
+    const feedbackList = el('admin-feedback-list');
+    if (feedbackList) {
+      const delStyle = 'background:rgba(180,30,30,.12);border:1px solid rgba(180,30,30,.3);border-radius:4px;color:#e05555;font-size:.65rem;padding:.2rem .5rem;cursor:pointer;flex-shrink:0;';
+      const programLabel = p => p === 'bmu' ? 'Bar Muscle-Up' : 'Pull-Up';
+      const checkpointLabel = c => c === 'week6' ? 'Semana 6 · Final' : 'Semana 3 · Intermédio';
+      feedbackList.innerHTML = (feedbackData || []).length
+        ? (feedbackData || []).map(r => {
+            const date = new Date(r.created_at).toLocaleDateString('pt-PT');
+            const id = 'fb-detail-' + r.id.replace(/-/g,'');
+            const rows = [
+              r.program_rating   && `<div class="fb-detail-row"><span>Programa</span><strong>${r.program_rating}</strong></div>`,
+              r.platform_rating  && `<div class="fb-detail-row"><span>Plataforma</span><strong>${r.platform_rating}</strong></div>`,
+              r.difficulty       && `<div class="fb-detail-row"><span>Dificuldades</span><p>${r.difficulty}</p></div>`,
+              r.questions        && `<div class="fb-detail-row"><span>Dúvidas/Bloqueios</span><p>${r.questions}</p></div>`,
+              r.improvements     && `<div class="fb-detail-row"><span>Melhorias</span><p>${r.improvements}</p></div>`,
+              r.pullup_result    && `<div class="fb-detail-row"><span>Resultado</span><strong>${r.pullup_result}</strong></div>`,
+              r.why_not          && `<div class="fb-detail-row"><span>O que faltou</span><p>${r.why_not}</p></div>`,
+              r.recommend        && `<div class="fb-detail-row"><span>Recomenda?</span><strong>${r.recommend}</strong></div>`,
+            ].filter(Boolean).join('');
+            return `<div class="admin-row" style="flex-direction:column;align-items:stretch;gap:.5rem;padding:.75rem .9rem;">
+              <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">
+                <span style="flex:1;font-weight:600;">${r.email || '—'}</span>
+                <span style="background:rgba(200,75,17,.12);border:1px solid rgba(200,75,17,.25);border-radius:4px;color:var(--orange);font-size:.65rem;font-weight:700;padding:.15rem .45rem;">${programLabel(r.program)}</span>
+                <span style="background:rgba(245,242,238,.06);border:1px solid rgba(245,242,238,.1);border-radius:4px;color:rgba(245,242,238,.6);font-size:.65rem;padding:.15rem .45rem;">${checkpointLabel(r.checkpoint)}</span>
+                <small style="white-space:nowrap;color:rgba(245,242,238,.4);">${date}</small>
+                <button onclick="document.getElementById('${id}').style.display=document.getElementById('${id}').style.display==='none'?'block':'none'"
+                  style="background:rgba(245,242,238,.06);border:1px solid rgba(245,242,238,.1);border-radius:4px;color:rgba(245,242,238,.55);font-size:.65rem;padding:.2rem .5rem;cursor:pointer;">Ver detalhes</button>
+                <button onclick="adminDeleteFeedback('${r.id}')" style="${delStyle}" title="Apagar este feedback">🗑</button>
+              </div>
+              <div id="${id}" style="display:none;padding:.6rem .5rem 0;border-top:1px solid rgba(245,242,238,.07);margin-top:.25rem;">
+                ${r.name ? `<div class="fb-detail-row"><span>Nome</span><strong>${r.name}</strong></div>` : ''}
+                ${rows}
+              </div>
+            </div>`;
+          }).join('')
+        : '<p class="admin-empty">Sem feedbacks ainda.</p>';
+    }
+
     /* Utilizadores registados + acessos */
     const { data: allProfiles } = await _sb.from('profiles')
       .select('id, email, name, created_at')
@@ -6688,6 +6745,14 @@ async function adminDeleteMerchInterest(email) {
   const { error } = await _sb.from('merch_interests').delete().eq('email', email);
   if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
   showPeakFormToast('Removido', `Registo de ${email} apagado.`, '✓');
+  loadAdminData();
+}
+
+async function adminDeleteFeedback(id) {
+  if (!confirm('Apagar este feedback? Esta ação não pode ser revertida.')) return;
+  const { error } = await _sb.from('program_feedback').delete().eq('id', id);
+  if (error) { showPeakFormToast('Erro', error.message, '❌'); return; }
+  showPeakFormToast('Apagado', 'Feedback removido.', '🗑');
   loadAdminData();
 }
 
@@ -7179,7 +7244,12 @@ function openSession() {
   openNextDashboardSession();
 }
 
+var _currentFeedbackType = 'week3';
+var _currentFeedbackProgram = 'pullup';
+
 function openFeedbackForm(type, program = 'pullup') {
+  _currentFeedbackType = type;
+  _currentFeedbackProgram = program;
   const navLabel = document.getElementById('feedback-nav-label');
   const kicker = document.getElementById('feedback-kicker');
   const title = document.getElementById('feedback-title');
@@ -7216,8 +7286,39 @@ function openFeedbackForm(type, program = 'pullup') {
   showPage('feedback');
 }
 
-function submitFeedbackForm() {
+async function submitFeedbackForm() {
   const success = document.getElementById('feedback-success');
+  const btn = document.querySelector('#page-feedback .feedback-form-actions button:not(.secondary)');
+  if (btn) { btn.disabled = true; btn.textContent = 'A enviar…'; }
+
+  const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+
+  const payload = {
+    user_id: currentUser ? currentUser.id : null,
+    email: currentUser ? currentUser.email : (val('feedback-name') || null),
+    program: _currentFeedbackProgram,
+    checkpoint: _currentFeedbackType,
+    name: val('feedback-name'),
+    program_rating: val('feedback-program-rating'),
+    platform_rating: val('feedback-platform-rating'),
+    difficulty: val('feedback-difficulty'),
+    questions: val('feedback-questions'),
+    improvements: val('feedback-improvements'),
+    pullup_result: val('feedback-pullup-result') || null,
+    why_not: val('feedback-why-not') || null,
+    recommend: val('feedback-recommend') || null,
+  };
+
+  const { error } = await _sb.from('program_feedback').insert(payload);
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Enviar feedback'; }
+
+  if (error) {
+    showPeakFormToast('Erro', 'Não foi possível enviar o feedback. Tenta novamente.', '❌');
+    console.warn('[PeakForm] feedback insert error:', error.message);
+    return;
+  }
+
   if (success) success.classList.add('active');
   const label = document.getElementById('feedback-kicker');
   const key = label ? label.textContent : 'feedback';
