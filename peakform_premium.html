@@ -4303,6 +4303,37 @@ article.movement-library-card,
   color: var(--muted2) !important; font-size: .88rem !important;
 }
 
+/* Coach 1:1 inline email form inside programs modal */
+.pf-pm-coach-form {
+  display: flex !important; flex-direction: column !important;
+  gap: .45rem !important; margin-top: auto !important;
+  padding-top: .75rem !important;
+}
+.pf-pm-coach-label {
+  font-size: .62rem !important; font-weight: 700 !important;
+  letter-spacing: .12em !important; text-transform: uppercase !important;
+  color: var(--orange) !important;
+}
+.pf-pm-coach-input {
+  width: 100% !important; background: rgba(7,7,7,.5) !important;
+  border: 1px solid rgba(245,242,238,.15) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--cream) !important; font-family: var(--font-body) !important;
+  font-size: .8rem !important; padding: .55rem .8rem !important;
+  outline: none !important; transition: border-color .2s !important;
+}
+.pf-pm-coach-input:focus { border-color: rgba(200,75,17,.5) !important; }
+.pf-pm-coach-input::placeholder { color: var(--muted2) !important; }
+.pf-pm-coach-submit {
+  width: 100% !important; padding: .55rem !important;
+  background: var(--orange) !important; border: none !important;
+  border-radius: 50px !important; color: #fff !important;
+  font-family: var(--font-body) !important; font-size: .78rem !important;
+  font-weight: 700 !important; cursor: pointer !important;
+  transition: background .2s !important; margin-top: .1rem !important;
+}
+.pf-pm-coach-submit:hover { background: var(--orange-lt) !important; }
+
 /* ══════════════════════════════════════════════════════════════════════════════
    TOAST / SHARED FEEDBACK
 ══════════════════════════════════════════════════════════════════════════════ */
@@ -7705,14 +7736,27 @@ window.addEventListener('scroll', () => {
           var btnText   = btnEl   ? btnEl.textContent   : 'Ver programa';
           var btnClick  = btnEl   ? (btnEl.getAttribute('onclick') || '') : '';
           var isFeatured = c.classList.contains('featured');
+          var isCoach = c.getAttribute('data-category') === 'coaching';
           var card = document.createElement('article');
           card.className = 'pf-pm-card' + (isFeatured ? ' featured' : '');
           card.style.animation = 'pfCardIn .38s var(--ease-out) ' + (i * 70) + 'ms both';
-          card.innerHTML =
-            '<div class="program-badge">' + badge + '</div>' +
-            '<h3>' + titleHTML + '</h3>' +
-            '<p>' + descText + '</p>' +
-            '<button onclick="pfCloseProgModal();' + btnClick.replace(/"/g, '&quot;') + '">' + btnText + '</button>';
+          if (isCoach) {
+            card.innerHTML =
+              '<div class="program-badge">' + badge + '</div>' +
+              '<h3>' + titleHTML + '</h3>' +
+              '<p>' + descText + '</p>' +
+              '<div class="pf-pm-coach-form">' +
+                '<label class="pf-pm-coach-label">Insere o teu email</label>' +
+                '<input type="email" class="pf-pm-coach-input" placeholder="o-teu-email@exemplo.pt" />' +
+                '<button class="pf-pm-coach-submit" onclick="submitCoachInterestModal(this)">Notifica-me</button>' +
+              '</div>';
+          } else {
+            card.innerHTML =
+              '<div class="program-badge">' + badge + '</div>' +
+              '<h3>' + titleHTML + '</h3>' +
+              '<p>' + descText + '</p>' +
+              '<button onclick="pfCloseProgModal();' + btnClick.replace(/"/g, '&quot;') + '">' + btnText + '</button>';
+          }
           grid.appendChild(card);
         });
       }
@@ -7895,6 +7939,29 @@ window.addEventListener('scroll', () => {
     /* Toast de confirmação visível */
     if (typeof showPeakFormToast === 'function') {
       showPeakFormToast('Registado!', 'Avisamos quando a merch lançar.', '✓');
+    }
+  };
+})();
+
+
+(function(){
+  window.submitCoachInterestModal = function(btn) {
+    var card  = btn.closest ? btn.closest('.pf-pm-card') : null;
+    var input = card ? card.querySelector('.pf-pm-coach-input') : null;
+    if (!input) return;
+    var email = input.value.trim();
+    if (!email || !email.includes('@')) {
+      input.style.borderColor = 'rgba(200,75,17,.6)';
+      input.focus();
+      return;
+    }
+    /* Guardar no Supabase */
+    try { _sb.from('coach_interests').insert({ email: email }); } catch(e) {}
+
+    /* Fechar modal e mostrar toast */
+    if (typeof window.pfCloseProgModal === 'function') window.pfCloseProgModal();
+    if (typeof showPeakFormToast === 'function') {
+      showPeakFormToast('Registado!', 'Entraremos em contacto quando houver vaga.', '✓');
     }
   };
 })();
