@@ -6425,7 +6425,7 @@ async function loadAdminData() {
             `<div class="admin-row" style="justify-content:space-between;align-items:center;gap:.5rem;">
                <span style="flex:1">${r.email}</span>
                <small style="white-space:nowrap">${new Date(r.created_at).toLocaleDateString('pt-PT')}</small>
-               <button onclick="adminDeleteMerchInterest('${r.id}')" style="${btnStyle}" title="Apagar este registo">🗑</button>
+               <button onclick="adminDeleteMerchInterest('${r.email}')" style="${btnStyle}" title="Apagar este registo">🗑</button>
              </div>`
           ).join('')
         : '<p class="admin-empty">Sem notificações ainda.</p>';
@@ -6442,7 +6442,7 @@ async function loadAdminData() {
             `<div class="admin-row" style="justify-content:space-between;align-items:center;gap:.5rem;">
                <span style="flex:1">${r.email}</span>
                <small style="white-space:nowrap">${new Date(r.created_at).toLocaleDateString('pt-PT')}</small>
-               <button onclick="adminDeleteCoachInterest('${r.id}')" style="${btnStyle}" title="Apagar este registo">🗑</button>
+               <button onclick="adminDeleteCoachInterest('${r.email}')" style="${btnStyle}" title="Apagar este registo">🗑</button>
              </div>`
           ).join('')
         : '<p class="admin-empty">Sem pedidos ainda.</p>';
@@ -6473,7 +6473,7 @@ async function loadAdminData() {
             const chips = owned.map(a =>
               `<span style="display:inline-flex;align-items:center;gap:.3rem;background:rgba(200,75,17,.12);border:1px solid rgba(200,75,17,.32);border-radius:4px;color:var(--orange);font-size:.68rem;font-weight:700;padding:.18rem .55rem;">
                 ${progNames[a.slug] || a.slug}
-                <button onclick="adminRevokeAccess('${a.id}')" title="Revogar"
+                <button onclick="adminRevokeAccess('${a.id}','${a.slug}','${p.email}')" title="Revogar"
                   style="background:none;border:none;color:rgba(200,75,17,.65);cursor:pointer;font-size:.7rem;padding:0;line-height:1;">✕</button>
               </span>`
             ).join('');
@@ -6484,7 +6484,7 @@ async function loadAdminData() {
                     style="background:#0d0d0e;border:1px solid rgba(245,242,238,.1);border-radius:6px;color:#f5f2ee;font-size:.72rem;padding:.28rem .55rem;cursor:pointer;">
                     ${missing.map(s => `<option value="${s}">${progNames[s]}</option>`).join('')}
                   </select>
-                  <button onclick="adminGrantAccessById('${p.id}', document.getElementById('gp-${p.id}').value)"
+                  <button onclick="adminGrantAccessById('${p.id}', document.getElementById('gp-${p.id}').value, '${p.email}')"
                     style="background:rgba(200,75,17,.1);border:1px solid rgba(200,75,17,.3);border-radius:4px;color:var(--orange);font-size:.7rem;padding:.28rem .65rem;cursor:pointer;white-space:nowrap;">
                     + Dar acesso
                   </button>
@@ -6592,7 +6592,10 @@ function renderDashboardPrograms() {
 }
 
 /* ── Admin: conceder acesso por user_id ── */
-async function adminGrantAccessById(userId, slug) {
+async function adminGrantAccessById(userId, slug, email) {
+  const progNames = { pullup: 'Pull-Up', bmu: 'Bar Muscle-Up' };
+  const progLabel = progNames[slug] || slug;
+  if (!confirm(`Conceder acesso ao programa ${progLabel} à conta ${email || userId}?`)) return;
   const { error } = await _sb.from('user_programs').insert({
     user_id: userId, program_slug: slug, status: 'active'
   });
@@ -6601,16 +6604,18 @@ async function adminGrantAccessById(userId, slug) {
   } else if (error) {
     showPeakFormToast('Erro', error.message, '✗');
   } else {
-    const progNames = { pullup: 'Pull-Up', bmu: 'Bar Muscle-Up' };
-    showPeakFormToast('Acesso concedido!', `Acesso ao ${progNames[slug] || slug} foi atribuído.`, '✓');
+    showPeakFormToast('Acesso concedido!', `Acesso ao ${progLabel} foi atribuído.`, '✓');
     loadAdminData();
   }
 }
 
-async function adminRevokeAccess(id) {
+async function adminRevokeAccess(id, slug, email) {
+  const progNames = { pullup: 'Pull-Up', bmu: 'Bar Muscle-Up' };
+  const progLabel = progNames[slug] || slug;
+  if (!confirm(`Revogar acesso ao programa ${progLabel} da conta ${email || ''}?\n\nO utilizador perderá o acesso imediatamente.`)) return;
   const { error } = await _sb.from('user_programs').delete().eq('id', id);
   if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
-  showPeakFormToast('Acesso revogado', 'O acesso foi removido.', '✓');
+  showPeakFormToast('Acesso revogado', `Acesso ao ${progLabel} removido.`, '✓');
   loadAdminData();
 }
 
@@ -6633,17 +6638,19 @@ async function adminResetProgramInterest(programName) {
   loadAdminData();
 }
 
-async function adminDeleteMerchInterest(id) {
-  const { error } = await _sb.from('merch_interests').delete().eq('id', id);
+async function adminDeleteMerchInterest(email) {
+  if (!confirm(`Apagar o registo de notificação merch de ${email}?`)) return;
+  const { error } = await _sb.from('merch_interests').delete().eq('email', email);
   if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
-  showPeakFormToast('Removido', 'Registo de merch apagado.', '✓');
+  showPeakFormToast('Removido', `Registo de ${email} apagado.`, '✓');
   loadAdminData();
 }
 
-async function adminDeleteCoachInterest(id) {
-  const { error } = await _sb.from('coach_interests').delete().eq('id', id);
+async function adminDeleteCoachInterest(email) {
+  if (!confirm(`Apagar o pedido Coach 1:1 de ${email}?`)) return;
+  const { error } = await _sb.from('coach_interests').delete().eq('email', email);
   if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
-  showPeakFormToast('Removido', 'Pedido coach apagado.', '✓');
+  showPeakFormToast('Removido', `Pedido de ${email} apagado.`, '✓');
   loadAdminData();
 }
 
