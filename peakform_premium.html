@@ -5978,23 +5978,10 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
         <div id="admin-coach-list" class="admin-rows"></div>
       </div>
 
-      <!-- Access management -->
+      <!-- Users list with access management -->
       <div class="admin-section">
-        <div class="admin-section-head"><h3>Gerir Acessos a Programas</h3></div>
-        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center;">
-          <input type="email" id="admin-grant-email" placeholder="email do atleta"
-            style="flex:1;min-width:200px;background:rgba(245,242,238,.04);border:1px solid rgba(245,242,238,.1);border-radius:8px;color:#f5f2ee;font-size:.82rem;padding:.55rem .85rem;outline:none;" />
-          <select id="admin-grant-program"
-            style="background:rgba(245,242,238,.04);border:1px solid rgba(245,242,238,.1);border-radius:8px;color:#f5f2ee;font-size:.82rem;padding:.55rem .85rem;outline:none;cursor:pointer;">
-            <option value="pullup">Pull-Up</option>
-            <option value="bmu">Bar Muscle-Up</option>
-          </select>
-          <button onclick="adminGrantAccess()"
-            style="background:var(--orange);border:none;border-radius:50px;color:#fff;font-size:.78rem;font-weight:700;padding:.55rem 1.3rem;cursor:pointer;white-space:nowrap;">
-            Conceder acesso
-          </button>
-        </div>
-        <div id="admin-access-list" class="admin-rows"></div>
+        <div class="admin-section-head"><h3>Utilizadores Registados</h3></div>
+        <div id="admin-users-list" class="admin-rows"></div>
       </div>
 
     </main>
@@ -6439,39 +6426,62 @@ async function loadAdminData() {
           ).join('')
         : '<p class="admin-empty">Sem pedidos ainda.</p>';
     }
-    /* Acessos a programas */
-    const { data: accessData } = await _sb.from('user_programs')
-      .select('id, user_id, program_slug, purchased_at, status')
-      .eq('status', 'active')
-      .order('purchased_at', { ascending: false });
+    /* Utilizadores registados + acessos */
+    const { data: allProfiles } = await _sb.from('profiles')
+      .select('id, email, name, created_at')
+      .order('created_at', { ascending: false });
 
-    /* Buscar emails dos profiles correspondentes */
-    const uids = [...new Set((accessData || []).map(r => r.user_id))];
-    let profileMap = {};
-    if (uids.length > 0) {
-      const { data: profs } = await _sb.from('profiles').select('id, email').in('id', uids);
-      (profs || []).forEach(p => { profileMap[p.id] = p.email; });
-    }
+    const { data: allAccess } = await _sb.from('user_programs')
+      .select('id, user_id, program_slug')
+      .eq('status', 'active');
 
-    const accessList = el('admin-access-list');
+    /* Mapa user_id → [{slug, id}] */
+    const accessMap = {};
+    (allAccess || []).forEach(r => {
+      if (!accessMap[r.user_id]) accessMap[r.user_id] = [];
+      accessMap[r.user_id].push({ slug: r.program_slug, id: r.id });
+    });
+
     const progNames = { pullup: 'Pull-Up', bmu: 'Bar Muscle-Up' };
-    if (accessList) {
-      accessList.innerHTML = (accessData || []).length
-        ? (accessData || []).map(r => {
-            const email = profileMap[r.user_id] || r.user_id.slice(0, 8) + '…';
-            const prog  = progNames[r.program_slug] || r.program_slug;
-            const date  = new Date(r.purchased_at).toLocaleDateString('pt-PT');
-            return `<div class="admin-row" style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
-              <span style="flex:1;min-width:140px;">${email}</span>
-              <strong style="color:var(--orange);font-size:.78rem;">${prog}</strong>
-              <small>${date}</small>
-              <button onclick="adminRevokeAccess('${r.id}')"
-                style="background:rgba(200,75,17,.1);border:1px solid rgba(200,75,17,.3);border-radius:4px;color:var(--orange);font-size:.7rem;padding:.22rem .6rem;cursor:pointer;">
-                Revogar
-              </button>
+    const allSlugs  = ['pullup', 'bmu'];
+    const usersList = el('admin-users-list');
+    if (usersList) {
+      usersList.innerHTML = (allProfiles || []).length
+        ? (allProfiles || []).map(p => {
+            const owned = (accessMap[p.id] || []);
+            const chips = owned.map(a =>
+              `<span style="display:inline-flex;align-items:center;gap:.3rem;background:rgba(200,75,17,.12);border:1px solid rgba(200,75,17,.32);border-radius:4px;color:var(--orange);font-size:.68rem;font-weight:700;padding:.18rem .55rem;">
+                ${progNames[a.slug] || a.slug}
+                <button onclick="adminRevokeAccess('${a.id}')" title="Revogar"
+                  style="background:none;border:none;color:rgba(200,75,17,.65);cursor:pointer;font-size:.7rem;padding:0;line-height:1;">✕</button>
+              </span>`
+            ).join('');
+            const missing = allSlugs.filter(s => !owned.find(a => a.slug === s));
+            const grantUI = missing.length > 0
+              ? `<div style="display:flex;gap:.35rem;align-items:center;flex-shrink:0;">
+                  <select id="gp-${p.id}"
+                    style="background:#0d0d0e;border:1px solid rgba(245,242,238,.1);border-radius:6px;color:#f5f2ee;font-size:.72rem;padding:.28rem .55rem;cursor:pointer;">
+                    ${missing.map(s => `<option value="${s}">${progNames[s]}</option>`).join('')}
+                  </select>
+                  <button onclick="adminGrantAccessById('${p.id}', document.getElementById('gp-${p.id}').value)"
+                    style="background:rgba(200,75,17,.1);border:1px solid rgba(200,75,17,.3);border-radius:4px;color:var(--orange);font-size:.7rem;padding:.28rem .65rem;cursor:pointer;white-space:nowrap;">
+                    + Dar acesso
+                  </button>
+                </div>`
+              : `<small style="color:rgba(245,242,238,.28);font-size:.69rem;">todos os programas</small>`;
+            const date = new Date(p.created_at).toLocaleDateString('pt-PT');
+            return `<div class="admin-row" style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;padding:.75rem 0;border-bottom:1px solid rgba(245,242,238,.05);">
+              <div style="flex:1;min-width:180px;">
+                <strong style="display:block;font-size:.82rem;color:#f5f2ee;">${p.email}</strong>
+                <small style="color:rgba(245,242,238,.38);font-size:.68rem;">${p.name || '—'} · registado ${date}</small>
+              </div>
+              <div style="display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;min-width:80px;">
+                ${chips || '<small style="color:rgba(245,242,238,.28);font-size:.69rem;">sem programas</small>'}
+              </div>
+              ${grantUI}
             </div>`;
           }).join('')
-        : '<p class="admin-empty">Nenhum acesso atribuído ainda.</p>';
+        : '<p class="admin-empty">Nenhum utilizador registado ainda.</p>';
     }
 
   } catch(e) { console.error('Admin load error', e); }
@@ -6513,33 +6523,18 @@ function renderDashboardPrograms() {
   if (empty) empty.style.display = hasAny ? 'none' : '';
 }
 
-/* ── Admin: conceder e revogar acesso ── */
-async function adminGrantAccess() {
-  const emailEl = document.getElementById('admin-grant-email');
-  const progEl  = document.getElementById('admin-grant-program');
-  if (!emailEl || !progEl) return;
-  const email = emailEl.value.trim();
-  const slug  = progEl.value;
-  if (!email || !email.includes('@')) {
-    showPeakFormToast('Erro', 'Insere um email válido.', '✗');
-    return;
-  }
-  /* Encontrar utilizador pelo email */
-  const { data: profile } = await _sb.from('profiles').select('id').eq('email', email).single();
-  if (!profile) {
-    showPeakFormToast('Não encontrado', `${email} não tem conta na plataforma.`, '✗');
-    return;
-  }
+/* ── Admin: conceder acesso por user_id ── */
+async function adminGrantAccessById(userId, slug) {
   const { error } = await _sb.from('user_programs').insert({
-    user_id: profile.id, program_slug: slug, status: 'active'
+    user_id: userId, program_slug: slug, status: 'active'
   });
   if (error && error.code === '23505') {
-    showPeakFormToast('Já tem acesso', `${email} já tem acesso ao ${slug}.`, '✓');
+    showPeakFormToast('Já tem acesso', 'Este utilizador já tem acesso a este programa.', '✓');
   } else if (error) {
     showPeakFormToast('Erro', error.message, '✗');
   } else {
-    showPeakFormToast('Acesso concedido', `${email} tem agora acesso ao programa ${slug}.`, '✓');
-    emailEl.value = '';
+    const progNames = { pullup: 'Pull-Up', bmu: 'Bar Muscle-Up' };
+    showPeakFormToast('Acesso concedido!', `Acesso ao ${progNames[slug] || slug} foi atribuído.`, '✓');
     loadAdminData();
   }
 }
