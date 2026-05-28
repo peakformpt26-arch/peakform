@@ -5994,6 +5994,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <div class="dash-brand" onclick="showPage('landing')">Peak<span>Form</span></div>
       <div class="dash-nav-right">
         <span>Área do Atleta</span>
+        <button id="area-nav-admin-btn" onclick="goToAdminArea()" style="display:none">Área de Admin</button>
         <button onclick="openMovementLibrary('all')">Movement Library</button>
         <button onclick="logoutUser()">Terminar sessão</button>
       </div>
@@ -6329,6 +6330,8 @@ async function logoutUser() {
   peakFormState.isLoggedIn = false;
   peakFormState.isAdmin = false;
   savePeakFormState();
+  const areaAdminBtn = document.getElementById('area-nav-admin-btn');
+  if (areaAdminBtn) areaAdminBtn.style.display = 'none';
   showPeakFormToast('Sessão terminada', 'Voltaste à homepage.', '↺');
   showPage('landing');
 }
@@ -6355,6 +6358,9 @@ async function _checkAdmin(user) {
       btn.textContent = 'Área de Admin';
       btn.setAttribute('onclick', 'goToAdminArea()');
     }
+    /* Mostrar/esconder botão "Área de Admin" dentro da área do atleta */
+    const areaAdminBtn = document.getElementById('area-nav-admin-btn');
+    if (areaAdminBtn) areaAdminBtn.style.display = isAdmin ? '' : 'none';
     if (typeof window.pfSyncNavAuth === 'function') window.pfSyncNavAuth();
   } catch(e) { console.warn('[PF] _checkAdmin error:', e); }
 }
