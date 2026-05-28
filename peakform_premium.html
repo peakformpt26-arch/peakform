@@ -6517,7 +6517,7 @@ async function loadAdminData() {
 async function loadUserPrograms() {
   try {
     const { data: { user } } = await _sb.auth.getUser();
-    if (!user) { userPrograms = []; renderDashboardPrograms(); return; }
+    if (!user) { userPrograms = []; renderDashboardPrograms(); refreshProgramCards(); return; }
     const { data } = await _sb.from('user_programs')
       .select('program_slug')
       .eq('user_id', user.id)
@@ -6536,6 +6536,7 @@ async function loadUserPrograms() {
     }
   } catch(e) { userPrograms = []; }
   renderDashboardPrograms();
+  refreshProgramCards();
   /* Só atualizar progresso se tiver programas — evita sobrescrever o estado de onboarding */
   if (userPrograms.length > 0) updateDashboardProgress();
 }
@@ -6655,24 +6656,41 @@ async function adminDeleteCoachInterest(email) {
 }
 
 function openProgram(program) {
-  if (!isLoggedIn) {
-    showPage('login');
-    return;
-  }
   const slug = program === 'bmu' ? 'bmu' : 'pullup';
-  if (!userPrograms.includes(slug)) {
-    /* Sem acesso — redirecionar para pricing */
-    showPage('landing');
-    setTimeout(function() {
-      const planos = document.getElementById('planos');
-      if (planos) planos.scrollIntoView({ behavior: 'smooth' });
-    }, 120);
-    showPeakFormToast('Sem acesso', 'Adquire este programa para acederes ao conteúdo.', '🔒');
+  if (userPrograms.includes(slug)) {
+    activeDashboardProgram = slug;
+    updateStoredState('activeDashboardProgram', activeDashboardProgram);
+    showPage(slug === 'bmu' ? 'program-bmu' : 'program-pullup');
     return;
   }
-  activeDashboardProgram = slug;
-  updateStoredState('activeDashboardProgram', activeDashboardProgram);
-  showPage(slug === 'bmu' ? 'program-bmu' : 'program-pullup');
+  if (slug === 'pullup') {
+    if (typeof window.openCheckoutModal === 'function') window.openCheckoutModal();
+    return;
+  }
+  /* bmu ou outros sem acesso */
+  showPeakFormToast('Em breve', 'Bar Muscle-Up estará disponível para compra brevemente.', '⏳');
+}
+
+function refreshProgramCards() {
+  var pullupBtn = document.getElementById('pullup-card-btn');
+  var pullupSub = document.getElementById('pullup-card-sub');
+  if (pullupBtn) {
+    if (userPrograms.includes('pullup')) {
+      pullupBtn.textContent = 'Ver programa';
+      pullupBtn.classList.remove('pf-prog-btn-buy');
+      if (pullupSub) pullupSub.textContent = 'Acesso pela Área do Atleta';
+    } else {
+      pullupBtn.textContent = 'Comprar · €15';
+      pullupBtn.classList.add('pf-prog-btn-buy');
+      if (pullupSub) pullupSub.textContent = 'Acesso imediato após pagamento';
+    }
+  }
+  var bmuBtn = document.getElementById('bmu-card-btn');
+  if (bmuBtn && userPrograms.includes('bmu')) {
+    bmuBtn.textContent = 'Ver programa';
+    bmuBtn.disabled = false;
+    bmuBtn.classList.remove('pf-prog-btn-soon');
+  }
 }
 
 function continueActiveProgram() {
@@ -8263,6 +8281,131 @@ window.addEventListener('scroll', () => {
     if (typeof showPeakFormToast === 'function') {
       showPeakFormToast('Registado!', 'Entraremos em contacto quando houver vaga.', '✓');
     }
+  };
+})();
+
+
+(function(){
+  /* ── CSS ── */
+  var _style = document.createElement('style');
+  _style.textContent =
+    '#pf-checkout-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;' +
+    'background:rgba(0,0,0,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);' +
+    'opacity:0;pointer-events:none;transition:opacity .25s ease;}' +
+    '#pf-checkout-overlay.active{opacity:1;pointer-events:all;}' +
+    '.pf-co-sheet{background:#131313;border:1px solid rgba(245,242,238,.08);border-radius:18px;' +
+    'padding:2.25rem 2rem 2rem;max-width:400px;width:92%;position:relative;' +
+    'box-shadow:0 24px 64px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04);}' +
+    '.pf-co-close{position:absolute;top:1rem;right:1rem;background:none;' +
+    'border:1px solid rgba(245,242,238,.12);border-radius:50%;width:28px;height:28px;' +
+    'color:rgba(245,242,238,.4);font-size:.75rem;cursor:pointer;' +
+    'display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s;}' +
+    '.pf-co-close:hover{border-color:#c84b11;color:#c84b11;}' +
+    '.pf-co-badge{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.12em;' +
+    'text-transform:uppercase;color:#c84b11;background:rgba(200,75,17,.1);' +
+    'border:1px solid rgba(200,75,17,.25);border-radius:4px;padding:.2rem .55rem;margin-bottom:1rem;}' +
+    '.pf-co-sheet h3{font-family:var(--font-head,sans-serif);font-size:1.55rem;font-weight:900;' +
+    'color:#f5f2ee;text-transform:uppercase;letter-spacing:-.01em;margin:0 0 .65rem;line-height:1;}' +
+    '.pf-co-sheet h3 em{color:#c84b11;font-style:normal;}' +
+    '.pf-co-meta{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}' +
+    '.pf-co-meta span{font-size:.65rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;' +
+    'color:rgba(245,242,238,.4);background:rgba(245,242,238,.05);border-radius:4px;padding:.18rem .5rem;}' +
+    '.pf-co-includes{list-style:none;margin:0 0 1.4rem;padding:0;}' +
+    '.pf-co-includes li{font-size:.79rem;color:rgba(245,242,238,.65);padding:.32rem 0;' +
+    'border-bottom:1px solid rgba(245,242,238,.06);display:flex;align-items:center;gap:.5rem;}' +
+    '.pf-co-includes li:last-child{border-bottom:none;}' +
+    '.pf-co-includes li::before{content:"\2713";color:#c84b11;font-weight:700;flex-shrink:0;}' +
+    '.pf-co-price-row{display:flex;align-items:baseline;gap:.35rem;margin-bottom:.3rem;}' +
+    '.pf-co-price-row strong{font-family:var(--font-head,sans-serif);font-size:2.4rem;' +
+    'font-weight:900;color:#f5f2ee;line-height:1;}' +
+    '.pf-co-price-row small{font-size:.75rem;color:rgba(245,242,238,.38);}' +
+    '.pf-co-price-sub{font-size:.65rem;color:rgba(245,242,238,.3);margin-bottom:1.4rem;}' +
+    '.pf-co-cta{width:100%;padding:.85rem;background:#c84b11;border:none;border-radius:50px;' +
+    'color:#fff;font-family:var(--font-body,sans-serif);font-size:.88rem;font-weight:700;' +
+    'cursor:pointer;letter-spacing:.04em;transition:background .2s,transform .15s;}' +
+    '.pf-co-cta:hover{background:#e05c1a;transform:translateY(-1px);}' +
+    '.pf-co-soon-state{display:none;text-align:center;padding:.25rem 0;}' +
+    '.pf-co-soon-state.active{display:block;}' +
+    '.pf-co-main-state.hidden{display:none;}' +
+    '.pf-co-soon-state h4{font-family:var(--font-head,sans-serif);font-size:1.05rem;font-weight:900;' +
+    'color:#f5f2ee;margin:0 0 .45rem;text-transform:uppercase;letter-spacing:-.01em;}' +
+    '.pf-co-soon-state p{font-size:.78rem;color:rgba(245,242,238,.5);margin:0 0 1.25rem;line-height:1.55;}' +
+    '.pf-co-contact-btns{display:flex;flex-direction:column;gap:.6rem;}' +
+    '.pf-co-contact-btns a{display:block;padding:.75rem;border-radius:50px;font-family:var(--font-body,sans-serif);' +
+    'font-size:.84rem;font-weight:700;text-align:center;text-decoration:none;transition:opacity .15s;}' +
+    '.pf-co-contact-btns a:hover{opacity:.85;}' +
+    '.pf-co-btn-whatsapp{background:#25D366;color:#fff;}' +
+    '.pf-co-btn-email{background:rgba(245,242,238,.07);color:#f5f2ee;border:1px solid rgba(245,242,238,.14);}' +
+    /* program cards */
+    '.pf-prog-price-tag{font-family:var(--font-head,sans-serif);font-size:1.15rem;font-weight:900;' +
+    'color:#f5f2ee;margin-bottom:.45rem;}' +
+    '.pf-prog-price-tag span{font-size:.72rem;font-weight:400;color:rgba(245,242,238,.38);}' +
+    '.pf-prog-btn-soon{background:rgba(245,242,238,.06)!important;border:1px solid rgba(245,242,238,.1)!important;' +
+    'color:rgba(245,242,238,.35)!important;cursor:default!important;}' +
+    '.pf-prog-btn-soon:hover{transform:none!important;box-shadow:none!important;}' +
+    /* pricing blur */
+    '.pf-price-blur strong{filter:blur(7px);user-select:none;pointer-events:none;}' +
+    '.pf-pricing-btn-soon{background:rgba(245,242,238,.06)!important;border:1px solid rgba(245,242,238,.1)!important;' +
+    'color:rgba(245,242,238,.35)!important;cursor:default!important;}' +
+    '.pf-pricing-btn-soon:hover{transform:none!important;box-shadow:none!important;}';
+  document.head.appendChild(_style);
+
+  /* ── Modal HTML ── */
+  var _overlay = document.createElement('div');
+  _overlay.id = 'pf-checkout-overlay';
+  _overlay.innerHTML =
+    '<div class="pf-co-sheet">' +
+      '<button class="pf-co-close" onclick="pfCloseCheckout()" aria-label="Fechar">×</button>' +
+      '<div class="pf-co-main-state">' +
+        '<div class="pf-co-badge">Gymnastics · Iniciante / Intermédio</div>' +
+        '<h3>Pull-Up <em>Program</em></h3>' +
+        '<div class="pf-co-meta">' +
+          '<span>6 semanas</span><span>18 sessões</span><span>3× por semana</span>' +
+        '</div>' +
+        '<ul class="pf-co-includes">' +
+          '<li>Progressão estruturada semana a semana</li>' +
+          '<li>Registo de RPE, notas e sessões concluídas</li>' +
+          '<li>Vídeos técnicos e notas de coaching</li>' +
+          '<li>Suporte técnico pontual sobre o programa</li>' +
+        '</ul>' +
+        '<div class="pf-co-price-row"><strong>€15</strong><small>· pagamento único</small></div>' +
+        '<p class="pf-co-price-sub">Acesso permanente · sem subscrição</p>' +
+        '<button class="pf-co-cta" onclick="handleCheckoutCTA()">Avançar para pagamento →</button>' +
+      '</div>' +
+      '<div class="pf-co-soon-state">' +
+        '<h4>Brevemente disponível</h4>' +
+        '<p>Estamos a preparar o checkout seguro.<br>Entretanto, contacta-nos para acederes já ao programa.</p>' +
+        '<div class="pf-co-contact-btns">' +
+          '<a href="https://wa.me/351910000000?text=Ol%C3%A1%21%20Quero%20aceder%20ao%20Pull-Up%20Program" class="pf-co-btn-whatsapp" target="_blank">💬 WhatsApp</a>' +
+          '<a href="mailto:peakformpt26@gmail.com?subject=Acesso%20Pull-Up%20Program" class="pf-co-btn-email">✉ Email</a>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(_overlay);
+
+  _overlay.addEventListener('click', function(e) {
+    if (e.target === _overlay) pfCloseCheckout();
+  });
+
+  window.openCheckoutModal = function() {
+    var main = _overlay.querySelector('.pf-co-main-state');
+    var soon = _overlay.querySelector('.pf-co-soon-state');
+    if (main) main.classList.remove('hidden');
+    if (soon) soon.classList.remove('active');
+    _overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.pfCloseCheckout = function() {
+    _overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  window.handleCheckoutCTA = function() {
+    var main = _overlay.querySelector('.pf-co-main-state');
+    var soon = _overlay.querySelector('.pf-co-soon-state');
+    if (main) main.classList.add('hidden');
+    if (soon) soon.classList.add('active');
   };
 })();
 
