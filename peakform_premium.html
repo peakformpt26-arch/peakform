@@ -7890,7 +7890,7 @@ function animateActivePage(page) {
   staggerContainers.forEach(el => el.classList.add('pf-stagger'));
 }
 
-function showPage(page) {
+function showPage(page, _fromHistory) {
   const protectedPages = ['area', 'admin', 'program-pullup', 'program-bmu', 'session', 'movement', 'feedback'];
   const publicPages = ['landing', 'login', 'register', 'support'];
 
@@ -7911,7 +7911,20 @@ function showPage(page) {
   if (page === 'movement') setTimeout(renderMovementVideos, 0);
   setTimeout(() => animateActivePage(page), 20);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (!_fromHistory) {
+    history.pushState({ page }, '', '#' + page);
+  }
 }
+
+// Botão retroceder do browser
+window.addEventListener('popstate', function(e) {
+  const page = (e.state && e.state.page) ? e.state.page : 'landing';
+  showPage(page, true);
+});
+
+// Definir estado inicial no histórico
+history.replaceState({ page: 'landing' }, '', '#landing');
 
 animateActivePage('landing');
 initDefaultProgramFilter();
