@@ -8049,18 +8049,28 @@ function showPage(page, _fromHistory) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   if (!_fromHistory) {
-    history.pushState({ page }, '', '#' + page);
+    try {
+      var _hw = (window.top && window.top !== window) ? window.top : window;
+      _hw.history.pushState({ page: page }, '', '#' + page);
+    } catch(e) {
+      history.pushState({ page: page }, '', '#' + page);
+    }
   }
 }
 
-// Botão retroceder do browser
-window.addEventListener('popstate', function(e) {
-  const page = (e.state && e.state.page) ? e.state.page : 'landing';
-  showPage(page, true);
-});
-
-// Definir estado inicial no histórico
-history.replaceState({ page: 'landing' }, '', '#landing');
+// Botão retroceder — ouve no frame principal (Streamlit ou direto)
+(function() {
+  var _hw = (window.top && window.top !== window) ? window.top : window;
+  _hw.addEventListener('popstate', function(e) {
+    var page = (e.state && e.state.page) ? e.state.page : 'landing';
+    showPage(page, true);
+  });
+  try {
+    _hw.history.replaceState({ page: 'landing' }, '', '#landing');
+  } catch(e) {
+    history.replaceState({ page: 'landing' }, '', '#landing');
+  }
+})();
 
 animateActivePage('landing');
 initDefaultProgramFilter();
