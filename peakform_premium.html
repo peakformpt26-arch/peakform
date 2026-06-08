@@ -5925,6 +5925,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
         <button onclick="loginUser()">Entrar na área de atleta</button>
         <button class="ghost" onclick="showPage('register')">Criar conta</button>
         <button class="back" onclick="showPage('landing')">Voltar à homepage</button>
+        <p style="text-align:center;margin-top:4px;margin-bottom:0"><a href="#" onclick="event.preventDefault();showPage('forgot')" style="color:var(--orange);font-size:0.85rem;text-decoration:none;opacity:0.85">Esqueci a password</a></p>
       </div>
     </div>
   </section>
@@ -5956,6 +5957,62 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
         <input id="register-password" type="password" placeholder="mínimo 6 caracteres" autocomplete="new-password" />
         <button onclick="registerUser()">Criar conta</button>
         <button class="back" onclick="showPage('login')">Já tenho conta</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-forgot" class="pf-page">
+  <section class="login-page-premium">
+    <div class="login-left">
+      <div class="login-brand" onclick="showPage('landing')">Peak<span>Form</span></div>
+      <div class="login-copy">
+        <h2>Recupera o acesso à tua conta.</h2>
+        <p>Indica o email da tua conta e enviamos um link para definires uma nova password. Verifica também a pasta de spam caso não recebas o email em alguns minutos.</p>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-top">
+          <span>Recuperar password</span>
+        </div>
+        <h3>Esqueceste a password?</h3>
+        <p>Envia-nos o teu email e receberes um link para criar uma nova password.</p>
+        <div id="forgot-error" class="login-error" aria-live="polite"></div>
+        <div id="forgot-success" style="display:none;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:14px 16px;color:#22c55e;font-size:0.92rem;margin-bottom:12px;line-height:1.5">
+          ✓ Email enviado! Verifica a tua caixa de entrada e clica no link para definires a nova password.
+        </div>
+        <label for="forgot-email">Email</label>
+        <input id="forgot-email" type="email" placeholder="o teu email" autocomplete="email" />
+        <button onclick="sendPasswordReset()">Enviar link de reset</button>
+        <button class="back" onclick="showPage('login')">Voltar ao login</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-reset-password" class="pf-page">
+  <section class="login-page-premium">
+    <div class="login-left">
+      <div class="login-brand" onclick="showPage('landing')">Peak<span>Form</span></div>
+      <div class="login-copy">
+        <h2>Define a tua nova password.</h2>
+        <p>Escolhe uma password segura com pelo menos 6 caracteres. Depois de guardar, entras automaticamente na tua área de atleta.</p>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-top">
+          <span>Nova password</span>
+        </div>
+        <h3>Nova password</h3>
+        <p>Escolhe uma nova password para a tua conta PeakForm.</p>
+        <div id="reset-error" class="login-error" aria-live="polite"></div>
+        <label for="reset-password">Nova password</label>
+        <input id="reset-password" type="password" placeholder="mínimo 6 caracteres" autocomplete="new-password" />
+        <label for="reset-password-confirm">Confirmar password</label>
+        <input id="reset-password-confirm" type="password" placeholder="repete a password" autocomplete="new-password" />
+        <button onclick="confirmPasswordReset()">Guardar nova password</button>
       </div>
     </div>
   </section>
@@ -6273,6 +6330,85 @@ function goToAthleteArea() {
     return;
   }
   showPage('login');
+}
+
+async function sendPasswordReset() {
+  const emailEl  = document.getElementById('forgot-email');
+  const errorEl  = document.getElementById('forgot-error');
+  const successEl = document.getElementById('forgot-success');
+  const btn = document.querySelector('#page-forgot .login-card button:not(.back)');
+  errorEl.classList.remove('active');
+  successEl.style.display = 'none';
+  const email = emailEl ? emailEl.value.trim() : '';
+  if (!email) {
+    errorEl.textContent = 'Introduz o teu email.';
+    errorEl.classList.add('active');
+    return;
+  }
+  if (btn) { btn.textContent = 'A enviar...'; btn.disabled = true; }
+  try {
+    const { error } = await _sb.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://www.peakform.pt/#reset-password'
+    });
+    if (btn) { btn.textContent = 'Enviar link de reset'; btn.disabled = false; }
+    if (error) {
+      errorEl.textContent = 'Não foi possível enviar o email. Verifica o endereço e tenta novamente.';
+      errorEl.classList.add('active');
+    } else {
+      if (emailEl) emailEl.value = '';
+      successEl.style.display = 'block';
+    }
+  } catch(e) {
+    if (btn) { btn.textContent = 'Enviar link de reset'; btn.disabled = false; }
+    errorEl.textContent = 'Erro de ligação. Tenta novamente.';
+    errorEl.classList.add('active');
+  }
+}
+
+async function confirmPasswordReset() {
+  const passEl    = document.getElementById('reset-password');
+  const confirmEl = document.getElementById('reset-password-confirm');
+  const errorEl   = document.getElementById('reset-error');
+  const btn = document.querySelector('#page-reset-password .login-card button');
+  errorEl.classList.remove('active');
+  const pass    = passEl ? passEl.value.trim() : '';
+  const confirm = confirmEl ? confirmEl.value.trim() : '';
+  if (!pass || !confirm) {
+    errorEl.textContent = 'Preenche os dois campos.';
+    errorEl.classList.add('active');
+    return;
+  }
+  if (pass.length < 6) {
+    errorEl.textContent = 'A password deve ter pelo menos 6 caracteres.';
+    errorEl.classList.add('active');
+    return;
+  }
+  if (pass !== confirm) {
+    errorEl.textContent = 'As passwords não coincidem.';
+    errorEl.classList.add('active');
+    return;
+  }
+  if (btn) { btn.textContent = 'A guardar...'; btn.disabled = true; }
+  try {
+    const { data, error } = await _sb.auth.updateUser({ password: pass });
+    if (btn) { btn.textContent = 'Guardar nova password'; btn.disabled = false; }
+    if (error) {
+      errorEl.textContent = 'Não foi possível atualizar a password. O link pode ter expirado — pede um novo.';
+      errorEl.classList.add('active');
+    } else {
+      if (passEl) passEl.value = '';
+      if (confirmEl) confirmEl.value = '';
+      showPeakFormToast('Password atualizada', 'A tua nova password foi guardada com sucesso.', '✓');
+      isLoggedIn = true;
+      updateStoredState('isLoggedIn', true);
+      if (data.user) { _updateGreeting(data.user); _checkAdmin(data.user); }
+      showPage('area');
+    }
+  } catch(e) {
+    if (btn) { btn.textContent = 'Guardar nova password'; btn.disabled = false; }
+    errorEl.textContent = 'Erro de ligação. Tenta novamente.';
+    errorEl.classList.add('active');
+  }
 }
 
 async function loginUser() {
@@ -7892,7 +8028,7 @@ function animateActivePage(page) {
 
 function showPage(page, _fromHistory) {
   const protectedPages = ['area', 'admin', 'program-pullup', 'program-bmu', 'session', 'movement', 'feedback'];
-  const publicPages = ['landing', 'login', 'register', 'support'];
+  const publicPages = ['landing', 'login', 'register', 'support', 'forgot', 'reset-password'];
 
   if (protectedPages.includes(page) && isLoggedIn !== true) {
     page = 'login';
@@ -7956,6 +8092,11 @@ _sb.auth.getSession().then(({ data: { session } }) => {
 
 /* Manter sessão sincronizada */
 _sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    // Utilizador veio do link de reset — mostra página para definir nova password
+    showPage('reset-password');
+    return;
+  }
   if (session) {
     isLoggedIn = true;
     updateStoredState('isLoggedIn', true);
