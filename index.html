@@ -3572,6 +3572,26 @@ h2 em { color: var(--orange) !important; }
 article.movement-library-card,
 .dash-panel.movement-library-card { display: none !important; }
 
+/* ── Área de Atleta: tabs + PRs ── */
+.area-tabs { position: static !important; top: auto !important; left: auto !important; right: auto !important; width: auto !important; z-index: auto !important; backdrop-filter: none !important; background: transparent !important; display: flex !important; gap: .4rem !important; margin-bottom: 2.2rem !important; border-bottom: 1px solid var(--border) !important; }
+.area-tabs button { background: transparent !important; border: none !important; color: var(--muted) !important; font-family: var(--font-body) !important; font-size: .9rem !important; font-weight: 600 !important; padding: .7rem 1.1rem !important; cursor: pointer !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px !important; transition: color .2s, border-color .2s !important; }
+.area-tabs button:hover { color: var(--cream) !important; }
+.area-tabs button.active { color: var(--orange) !important; border-bottom-color: var(--orange) !important; }
+.pr-section { max-width: 920px; }
+.pr-head h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin: 0 0 .35rem; color: var(--cream); }
+.pr-head p { font-size: .88rem; color: var(--muted); line-height: 1.6; margin: 0 0 1.9rem; max-width: 580px; }
+.pr-group { margin-bottom: 1.9rem; }
+.pr-group-title { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); margin: 0 0 .85rem; }
+.pr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .75rem; }
+.pr-item { display: flex; flex-direction: column; gap: .3rem; }
+.pr-item label { font-size: .82rem; color: var(--cream); font-weight: 500; }
+.pr-item input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--cream); font-family: var(--font-body); font-size: .9rem; padding: .5rem .7rem; transition: border-color .2s; }
+.pr-item input:focus { outline: none; border-color: var(--orange); }
+.pr-item input::placeholder { color: var(--muted2); }
+.pr-save-btn { margin-top: 1rem; background: var(--orange); border: none; border-radius: 50px; color: #fff; font-family: var(--font-body); font-size: .85rem; font-weight: 700; padding: .65rem 1.7rem; cursor: pointer; transition: background .2s; }
+.pr-save-btn:hover { background: var(--orange-lt); }
+.pr-save-btn:disabled { opacity: .6; cursor: default; }
+
 /* ══════════════════════════════════════════════════════════════════════════════
    INNER PAGES — GLOBAL NAV
 ══════════════════════════════════════════════════════════════════════════════ */
@@ -6251,6 +6271,13 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
     </header>
 
     <main class="dash-wrap">
+      <nav class="area-tabs">
+        <button data-tab="programas" class="active" onclick="switchAreaTab('programas')">Programas</button>
+        <button data-tab="pessoal" onclick="switchAreaTab('pessoal')">Área Pessoal</button>
+        <button data-tab="conta" onclick="switchAreaTab('conta')">Conta</button>
+      </nav>
+
+      <div class="area-tab-panel" id="area-tab-programas">
       <section class="dash-hero">
         <div>
           <div class="dash-eyebrow">Olá, Ruben</div>
@@ -6408,32 +6435,48 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
           </div>
           <button class="panel-main-btn">Guardar registo</button>
         </article>
+      </section>
+      </div><!-- /area-tab-programas -->
 
-        <article class="dash-panel coach-note support-panel-card">
-          <div class="panel-header">
-            <div>
-              <h3>Dúvidas do programa</h3>
+      <div class="area-tab-panel" id="area-tab-pessoal" style="display:none">
+        <section class="pr-section">
+          <div class="pr-head">
+            <h3>Os meus recordes pessoais</h3>
+            <p>Regista os teus PRs. Ficam guardados na tua conta e podes atualizá-los sempre que bateres um novo recorde.</p>
+          </div>
+          <div id="pr-groups"></div>
+          <button class="pr-save-btn" onclick="saveAthletePRs()">Guardar alterações</button>
+        </section>
+      </div><!-- /area-tab-pessoal -->
+
+      <div class="area-tab-panel" id="area-tab-conta" style="display:none">
+        <section class="dash-two-col">
+          <article class="dash-panel coach-note support-panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Dúvidas do programa</h3>
+              </div>
             </div>
-          </div>
-          <p class="support-panel-copy">Usa este espaço quando precisares de desbloquear uma dúvida concreta do programa, sem transformar o plano num acompanhamento diário.</p>
-          <div class="support-panel-steps">
-            <div><span>01</span><strong>Contexto</strong></div>
-            <div><span>02</span><strong>Bloqueio</strong></div>
-            <div><span>03</span><strong>Resposta</strong></div>
-          </div>
-          <button class="panel-main-btn" onclick="openSupportForm('general')">Enviar dúvida</button>
-        </article>
-      </section>
+            <p class="support-panel-copy">Usa este espaço quando precisares de desbloquear uma dúvida concreta do programa, sem transformar o plano num acompanhamento diário.</p>
+            <div class="support-panel-steps">
+              <div><span>01</span><strong>Contexto</strong></div>
+              <div><span>02</span><strong>Bloqueio</strong></div>
+              <div><span>03</span><strong>Resposta</strong></div>
+            </div>
+            <button class="panel-main-btn" onclick="openSupportForm('general')">Enviar dúvida</button>
+          </article>
+        </section>
 
-      <section class="dash-account-section" style="margin-top:2.5rem;padding-top:1.75rem;border-top:1px solid var(--border);">
-        <h3 style="font-size:.95rem;font-weight:700;margin:0 0 .35rem;color:var(--cream);">Conta e privacidade</h3>
-        <p style="font-size:.82rem;color:var(--warm-gray);line-height:1.6;max-width:560px;margin:0 0 1rem;">
-          Podes eliminar a tua conta a qualquer momento. Esta ação remove de forma permanente o teu perfil e todos os dados associados (feedback, registos e contactos). Não pode ser revertida.
-        </p>
-        <button onclick="deleteMyAccount()" style="background:rgba(180,30,30,.1);border:1px solid rgba(180,30,30,.35);border-radius:50px;color:#e05555;font-size:.78rem;font-weight:700;padding:.55rem 1.3rem;cursor:pointer;transition:background .2s;">
-          Eliminar a minha conta e dados
-        </button>
-      </section>
+        <section class="dash-account-section" style="margin-top:2.5rem;padding-top:1.75rem;border-top:1px solid var(--border);">
+          <h3 style="font-size:.95rem;font-weight:700;margin:0 0 .35rem;color:var(--cream);">Conta e privacidade</h3>
+          <p style="font-size:.82rem;color:var(--warm-gray);line-height:1.6;max-width:560px;margin:0 0 1rem;">
+            Podes eliminar a tua conta a qualquer momento. Esta ação remove de forma permanente o teu perfil e todos os dados associados (feedback, registos e contactos). Não pode ser revertida.
+          </p>
+          <button onclick="deleteMyAccount()" style="background:rgba(180,30,30,.1);border:1px solid rgba(180,30,30,.35);border-radius:50px;color:#e05555;font-size:.78rem;font-weight:700;padding:.55rem 1.3rem;cursor:pointer;transition:background .2s;">
+            Eliminar a minha conta e dados
+          </button>
+        </section>
+      </div><!-- /area-tab-conta -->
     </main>
   </section>
 </div>
@@ -6702,6 +6745,111 @@ async function deleteMyAccount() {
   } catch (e) {
     showPeakFormToast('Erro', 'Erro de ligação. Tenta novamente.', '❌');
   }
+}
+
+/* ── Área de Atleta: tabs ──────────────────────────────── */
+function switchAreaTab(tab) {
+  ['programas', 'pessoal', 'conta'].forEach(t => {
+    const panel = document.getElementById('area-tab-' + t);
+    if (panel) panel.style.display = (t === tab) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.area-tabs button').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-tab') === tab);
+  });
+  if (tab === 'pessoal') loadAthletePRs();
+}
+
+/* ── Recordes pessoais (PRs) ───────────────────────────── */
+const PF_PR_MOVEMENTS = [
+  { group: 'Levantamentos', unit: 'kg', items: [
+    { key: 'back_squat',     label: 'Back Squat' },
+    { key: 'front_squat',    label: 'Front Squat' },
+    { key: 'overhead_squat', label: 'Overhead Squat' },
+    { key: 'deadlift',       label: 'Deadlift' },
+    { key: 'shoulder_press', label: 'Shoulder Press' },
+    { key: 'push_press',     label: 'Push Press' },
+    { key: 'bench_press',    label: 'Bench Press' },
+    { key: 'clean',          label: 'Clean' },
+    { key: 'power_clean',    label: 'Power Clean' },
+    { key: 'snatch',         label: 'Snatch' },
+    { key: 'clean_jerk',     label: 'Clean & Jerk' },
+  ]},
+  { group: 'Ginástica', unit: 'reps', items: [
+    { key: 'max_pullups', label: 'Pull-ups (máx.)' },
+    { key: 'max_ttb',     label: 'Toes-to-Bar (máx.)' },
+    { key: 'max_hspu',    label: 'HSPU (máx.)' },
+    { key: 'max_bmu',     label: 'Bar Muscle-ups (máx.)' },
+    { key: 'max_rmu',     label: 'Ring Muscle-ups (máx.)' },
+  ]},
+  { group: 'Engine', unit: 'tempo / cal', items: [
+    { key: 'row_500',  label: '500m Row' },
+    { key: 'row_2k',   label: '2km Row' },
+    { key: 'run_1k',   label: '1km Corrida' },
+    { key: 'run_5k',   label: '5km Corrida' },
+    { key: 'bike_cal', label: 'Assault Bike (cal/min)' },
+  ]},
+];
+
+function renderPRInputs() {
+  const container = document.getElementById('pr-groups');
+  if (!container || container.dataset.rendered) return;
+  let html = '';
+  PF_PR_MOVEMENTS.forEach(g => {
+    html += '<div class="pr-group"><div class="pr-group-title">' + g.group + '</div><div class="pr-grid">';
+    g.items.forEach(it => {
+      html += '<div class="pr-item"><label for="pr-' + it.key + '">' + it.label + '</label>' +
+              '<input id="pr-' + it.key + '" type="text" placeholder="' + g.unit + '" data-key="' + it.key + '"></div>';
+    });
+    html += '</div></div>';
+  });
+  container.innerHTML = html;
+  container.dataset.rendered = '1';
+}
+
+async function loadAthletePRs() {
+  renderPRInputs();
+  try {
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return;
+    const { data, error } = await _sb.from('athlete_prs').select('movement_key, value').eq('user_id', user.id);
+    if (error) return;
+    (data || []).forEach(row => {
+      const input = document.getElementById('pr-' + row.movement_key);
+      if (input) input.value = row.value || '';
+    });
+  } catch (e) {}
+}
+
+async function saveAthletePRs() {
+  const btn = document.querySelector('.pr-save-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'A guardar...'; }
+  try {
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) {
+      showPeakFormToast('Sessão expirada', 'Inicia sessão novamente para guardar.', '❌');
+      if (btn) { btn.disabled = false; btn.textContent = 'Guardar alterações'; }
+      return;
+    }
+    const rows = [];
+    document.querySelectorAll('#pr-groups input[data-key]').forEach(input => {
+      const val = input.value.trim();
+      if (val) rows.push({ user_id: user.id, movement_key: input.getAttribute('data-key'), value: val });
+    });
+    if (rows.length === 0) {
+      showPeakFormToast('Nada para guardar', 'Preenche pelo menos um recorde.', 'ℹ️');
+      if (btn) { btn.disabled = false; btn.textContent = 'Guardar alterações'; }
+      return;
+    }
+    const { error } = await _sb.from('athlete_prs').upsert(rows, { onConflict: 'user_id,movement_key' });
+    if (error) {
+      showPeakFormToast('Erro', 'Não foi possível guardar os recordes.', '❌');
+    } else {
+      showPeakFormToast('Guardado', 'Os teus recordes foram atualizados.', '✓');
+    }
+  } catch (e) {
+    showPeakFormToast('Erro', 'Erro de ligação. Tenta novamente.', '❌');
+  }
+  if (btn) { btn.disabled = false; btn.textContent = 'Guardar alterações'; }
 }
 
 function _updateGreeting(user) {
@@ -8233,7 +8381,7 @@ function showPage(page, _fromHistory) {
   const target = document.getElementById(`page-${page}`);
   if (target) target.classList.add('active');
   if (page === 'program-pullup' || page === 'program-bmu') setTimeout(initNativeSessionChecks, 0);
-  if (page === 'area') setTimeout(loadUserPrograms, 0);
+  if (page === 'area') { setTimeout(loadUserPrograms, 0); setTimeout(function(){ switchAreaTab('programas'); }, 0); }
   if (page === 'admin') setTimeout(loadAdminData, 0);
   if (page === 'movement') setTimeout(renderMovementVideos, 0);
   setTimeout(() => animateActivePage(page), 20);
