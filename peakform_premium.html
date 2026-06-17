@@ -5515,9 +5515,13 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 </section>
 
 <!-- FOOTER -->
-<footer class="site-footer" style="background:var(--surface);border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between">
+<footer class="site-footer" style="background:var(--surface);border-top:1px solid var(--border);padding:36px 48px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
   <div class="nav-logo" style="cursor:pointer" onclick="showPage('landing')">Peak<span>Form</span></div>
-  <div style="font-size:11px;color:var(--muted);letter-spacing:.06em">© 2025 PeakForm. Todos os direitos reservados.</div>
+  <div style="font-size:12px;color:var(--muted);line-height:1.8">
+    PeakForm &middot; NIF 999999990 &middot; geral@peakform.pt &middot; +351 910 000 000<br>
+    <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener" style="color:var(--muted);text-decoration:underline">Livro de Reclamações</a>
+  </div>
+  <div style="font-size:11px;color:var(--muted2);letter-spacing:.06em">© 2025 PeakForm. Todos os direitos reservados.</div>
 </footer>
 </div>
 
@@ -6293,6 +6297,16 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
           <button class="panel-main-btn" onclick="openSupportForm('general')">Enviar dúvida</button>
         </article>
       </section>
+
+      <section class="dash-account-section" style="margin-top:2.5rem;padding-top:1.75rem;border-top:1px solid var(--border);">
+        <h3 style="font-size:.95rem;font-weight:700;margin:0 0 .35rem;color:var(--cream);">Conta e privacidade</h3>
+        <p style="font-size:.82rem;color:var(--warm-gray);line-height:1.6;max-width:560px;margin:0 0 1rem;">
+          Podes eliminar a tua conta a qualquer momento. Esta ação remove de forma permanente o teu perfil e todos os dados associados (feedback, registos e contactos). Não pode ser revertida.
+        </p>
+        <button onclick="deleteMyAccount()" style="background:rgba(180,30,30,.1);border:1px solid rgba(180,30,30,.35);border-radius:50px;color:#e05555;font-size:.78rem;font-weight:700;padding:.55rem 1.3rem;cursor:pointer;transition:background .2s;">
+          Eliminar a minha conta e dados
+        </button>
+      </section>
     </main>
   </section>
 </div>
@@ -6530,6 +6544,27 @@ async function logoutUser() {
   if (areaAdminBtn) areaAdminBtn.style.display = 'none';
   showPeakFormToast('Sessão terminada', 'Voltaste à homepage.', '↺');
   showPage('landing');
+}
+
+async function deleteMyAccount() {
+  if (!confirm('Eliminar a tua conta e todos os dados associados? Esta ação é permanente e não pode ser revertida.')) return;
+  if (!confirm('Tens a certeza? Vais perder o acesso ao teu programa e todos os registos. Confirmar eliminação?')) return;
+  try {
+    const { error } = await _sb.rpc('delete_my_account');
+    if (error) {
+      showPeakFormToast('Erro', 'Não foi possível eliminar a conta. Tenta novamente ou contacta o suporte.', '❌');
+      return;
+    }
+    await _sb.auth.signOut();
+    isLoggedIn = false;
+    peakFormState.isLoggedIn = false;
+    peakFormState.isAdmin = false;
+    savePeakFormState();
+    showPeakFormToast('Conta eliminada', 'A tua conta e dados foram removidos. Obrigado por teres treinado connosco.', '✓');
+    showPage('landing');
+  } catch (e) {
+    showPeakFormToast('Erro', 'Erro de ligação. Tenta novamente.', '❌');
+  }
 }
 
 function _updateGreeting(user) {
