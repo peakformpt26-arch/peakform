@@ -8472,7 +8472,6 @@ window.addEventListener('scroll', () => {
         '<div class="pf-pm-head-text">',
           '<span class="pf-pm-kicker" id="pf-pm-kicker"></span>',
           '<h3 class="pf-pm-title" id="pf-pm-title"></h3>',
-          '<p class="pf-pm-desc" id="pf-pm-desc"></p>',
         '</div>',
         '<button class="pf-pm-close" onclick="pfCloseProgModal()" aria-label="Fechar">&#x2715;</button>',
       '</div>',
@@ -8498,10 +8497,8 @@ window.addEventListener('scroll', () => {
     // Update modal header
     var kicker = document.getElementById('pf-pm-kicker');
     var title  = document.getElementById('pf-pm-title');
-    var desc   = document.getElementById('pf-pm-desc');
     if (kicker) kicker.textContent = 'Programas PeakForm';
     if (title)  title.textContent  = info.name;
-    if (desc)   desc.textContent   = info.desc;
 
     // Populate grid with compact cards
     var grid = document.getElementById('pf-pm-grid');
