@@ -6039,6 +6039,18 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <!-- Stats cards -->
       <div class="admin-stats-grid">
         <div class="admin-stat-card">
+          <span class="admin-stat-label">Visitas ao site</span>
+          <span class="admin-stat-value" id="admin-stat-views">—</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-label">Visitas hoje</span>
+          <span class="admin-stat-value" id="admin-stat-views-today">—</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-label">Visitas (7 dias)</span>
+          <span class="admin-stat-value" id="admin-stat-views-week">—</span>
+        </div>
+        <div class="admin-stat-card">
           <span class="admin-stat-label">Utilizadores registados</span>
           <span class="admin-stat-value" id="admin-stat-users">—</span>
         </div>
@@ -6565,15 +6577,24 @@ async function goToAdminArea() {
 
 async function loadAdminData() {
   try {
+    /* Datas para tráfego */
+    const _startToday = new Date(); _startToday.setHours(0,0,0,0);
+    const _start7d = new Date(Date.now() - 7*24*60*60*1000);
     /* Contadores */
-    const [usersRes, programsRes, merchRes, coachRes, feedbackRes] = await Promise.all([
+    const [usersRes, programsRes, merchRes, coachRes, feedbackRes, viewsRes, viewsTodayRes, viewsWeekRes] = await Promise.all([
       _sb.from('profiles').select('*', { count: 'exact', head: true }),
       _sb.from('program_interests').select('*', { count: 'exact', head: true }),
       _sb.from('merch_interests').select('*', { count: 'exact', head: true }),
       _sb.from('coach_interests').select('*', { count: 'exact', head: true }),
       _sb.from('program_feedback').select('*', { count: 'exact', head: true }),
+      _sb.from('page_views').select('*', { count: 'exact', head: true }),
+      _sb.from('page_views').select('*', { count: 'exact', head: true }).gte('created_at', _startToday.toISOString()),
+      _sb.from('page_views').select('*', { count: 'exact', head: true }).gte('created_at', _start7d.toISOString()),
     ]);
     const el = id => document.getElementById(id);
+    if (el('admin-stat-views'))       el('admin-stat-views').textContent       = viewsRes.count      ?? '—';
+    if (el('admin-stat-views-today')) el('admin-stat-views-today').textContent = viewsTodayRes.count ?? '—';
+    if (el('admin-stat-views-week'))  el('admin-stat-views-week').textContent  = viewsWeekRes.count  ?? '—';
     if (el('admin-stat-users'))    el('admin-stat-users').textContent    = usersRes.count    ?? '—';
     if (el('admin-stat-programs')) el('admin-stat-programs').textContent = programsRes.count ?? '—';
     if (el('admin-stat-merch'))    el('admin-stat-merch').textContent    = merchRes.count    ?? '—';
@@ -8122,6 +8143,15 @@ window.addEventListener('scroll', () => {
   const nav = document.getElementById('main-nav');
   if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
 });
+
+/* ── Registar visita ao site (uma vez por sessão) ─────── */
+(function countSiteVisit() {
+  try {
+    if (sessionStorage.getItem('pf-visit-counted')) return;
+    sessionStorage.setItem('pf-visit-counted', '1');
+    _sb.from('page_views').insert({ path: location.hash || '#landing' }).then(() => {}, () => {});
+  } catch (e) {}
+})();
 
 
 (function(){
