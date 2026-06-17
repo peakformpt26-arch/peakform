@@ -6781,12 +6781,12 @@ const PF_PR_MOVEMENTS = [
     { key: 'max_bmu',     label: 'Bar Muscle-ups (máx.)' },
     { key: 'max_rmu',     label: 'Ring Muscle-ups (máx.)' },
   ]},
-  { group: 'Engine', unit: 'tempo / cal', items: [
+  { group: 'Engine', unit: 'mm:ss', items: [
     { key: 'row_500',  label: '500m Row' },
     { key: 'row_2k',   label: '2km Row' },
     { key: 'run_1k',   label: '1km Corrida' },
     { key: 'run_5k',   label: '5km Corrida' },
-    { key: 'bike_cal', label: 'Assault Bike (cal/min)' },
+    { key: 'bike_cal', label: 'Assault Bike (máx. cal/min)', unit: 'calorias' },
   ]},
 ];
 
@@ -6798,7 +6798,7 @@ function renderPRInputs() {
     html += '<div class="pr-group"><div class="pr-group-title">' + g.group + '</div><div class="pr-grid">';
     g.items.forEach(it => {
       html += '<div class="pr-item"><label for="pr-' + it.key + '">' + it.label + '</label>' +
-              '<input id="pr-' + it.key + '" type="text" placeholder="' + g.unit + '" data-key="' + it.key + '"></div>';
+              '<input id="pr-' + it.key + '" type="text" placeholder="' + (it.unit || g.unit) + '" data-key="' + it.key + '"></div>';
     });
     html += '</div></div>';
   });
