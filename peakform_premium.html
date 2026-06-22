@@ -6290,6 +6290,16 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
         <div id="admin-leads-list" class="admin-rows"></div>
       </div>
 
+      <!-- Newsletter — subscritores (só os que consentiram) -->
+      <div class="admin-section">
+        <div class="admin-section-head" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+          <h3>Newsletter · <span id="newsletter-count">0</span> subscritores</h3>
+          <button onclick="copyNewsletterEmails()" style="background:var(--orange);border:none;border-radius:50px;color:#fff;font-size:.72rem;font-weight:700;padding:.4rem 1rem;cursor:pointer;">Copiar todos os emails</button>
+        </div>
+        <p style="font-size:.78rem;color:var(--warm-gray);margin:0 0 .6rem;">Emails que aceitaram receber a newsletter (sem duplicados). Copia e cola na plataforma de envio.</p>
+        <textarea id="newsletter-emails" readonly style="width:100%;min-height:120px;background:rgba(245,242,238,.04);border:1px solid var(--border);border-radius:8px;color:var(--cream);font-family:monospace;font-size:.82rem;padding:.7rem;resize:vertical;"></textarea>
+      </div>
+
       <!-- Feedbacks -->
       <div class="admin-section">
         <div class="admin-section-head"><h3>Feedbacks dos Atletas</h3></div>
@@ -7105,6 +7115,17 @@ async function loadAdminData() {
         : '<p class="admin-empty">Sem interessados ainda.</p>';
     }
 
+    /* Newsletter — emails únicos que consentiram */
+    const newsTa = el('newsletter-emails');
+    const newsCount = el('newsletter-count');
+    if (newsTa) {
+      const emails = [...new Set((leadsData || [])
+        .filter(r => r.newsletter_consent && r.email)
+        .map(r => r.email.trim().toLowerCase()))];
+      newsTa.value = emails.join('\n');
+      if (newsCount) newsCount.textContent = emails.length;
+    }
+
     /* Feedbacks */
     const { data: feedbackData } = await _sb.from('program_feedback')
       .select('*').order('created_at', { ascending: false });
@@ -7360,6 +7381,18 @@ async function adminDeleteCoachInterest(email) {
   if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
   showPeakFormToast('Removido', `Pedido de ${email} apagado.`, '✓');
   loadAdminData();
+}
+
+function copyNewsletterEmails() {
+  const ta = document.getElementById('newsletter-emails');
+  if (!ta || !ta.value.trim()) { showPeakFormToast('Lista vazia', 'Ainda não há subscritores da newsletter.', 'ℹ️'); return; }
+  const count = ta.value.trim().split('\n').length;
+  const done = () => showPeakFormToast('Copiado', `${count} email(s) copiado(s) para a área de transferência.`, '✓');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(ta.value).then(done, () => { ta.select(); document.execCommand('copy'); done(); });
+  } else {
+    ta.select(); document.execCommand('copy'); done();
+  }
 }
 
 async function adminDeleteLead(id) {
