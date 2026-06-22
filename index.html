@@ -3572,6 +3572,9 @@ h2 em { color: var(--orange) !important; }
 article.movement-library-card,
 .dash-panel.movement-library-card { display: none !important; }
 
+/* Hide static "X interessados" counter — interest is now captured by email */
+.vote-count { display: none !important; }
+
 /* ── Área de Atleta: tabs + PRs ── */
 .area-tabs { position: static !important; top: auto !important; left: auto !important; right: auto !important; width: auto !important; z-index: auto !important; backdrop-filter: none !important; background: transparent !important; display: flex !important; gap: .4rem !important; margin-bottom: 2.2rem !important; border-bottom: 1px solid var(--border) !important; }
 .area-tabs button { background: transparent !important; border: none !important; color: var(--muted) !important; font-family: var(--font-body) !important; font-size: .9rem !important; font-weight: 600 !important; padding: .7rem 1.1rem !important; cursor: pointer !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px !important; transition: color .2s, border-color .2s !important; }
@@ -5429,84 +5432,84 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <h3>Ring Muscle-Up</h3>
       <p>False grip, força de puxada, turnover. Quando o ring muscle-up for a próxima barreira.</p>
       <div class="program-meta-public"><span>Gymnastics</span><span>Skill Progression</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="gymnastics">
       <div class="program-badge">Em breve</div>
       <h3>Handstand Walk</h3>
       <p>Do kick-up ao caminhar com confiança. Equilíbrio, alinhamento e distância. Progressão real para Handstand Walk.</p>
       <div class="program-meta-public"><span>Gymnastics</span><span>Skill Progression</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="gymnastics">
       <div class="program-badge">Em breve</div>
       <h3>Skills Volume</h3>
       <p>Para quem já domina as skills e quer construir volume com qualidade. Consistência bate talento.</p>
       <div class="program-meta-public"><span>Gymnastics</span><span>Volume</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="strength">
       <div class="program-badge">Em breve</div>
       <h3>Strength Cycle</h3>
       <p>Um ciclo de força com estrutura. Squat, press, pull e hinge. Tudo o que um atleta funcional precisa para ficar mais forte em tudo.</p>
       <div class="program-meta-public"><span>Strength</span><span>Geral</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="strength">
       <div class="program-badge">Em breve</div>
       <h3>Squat Vol.1</h3>
       <p>Queres subir os números no squat? É isso. Progressão de carga, frequência e acessório para um squat mais forte.</p>
       <div class="program-meta-public"><span>Strength</span><span>Squat</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="strength">
       <div class="program-badge">Em breve</div>
       <h3>Weightlifting Vol.1</h3>
       <p>Posições, timing, extensão. Um ponto de entrada honesto no levantamento olímpico para atletas de CrossFit.</p>
       <div class="program-meta-public"><span>Strength</span><span>Weightlifting</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="engine">
       <div class="program-badge">Em breve</div>
       <h3>Engine Builder</h3>
       <p>O motor que falta à maioria dos atletas. Row, bike e corrida com estrutura real, para durar mais e recuperar mais rápido.</p>
       <div class="program-meta-public"><span>Engine</span><span>Complete</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="engine">
       <div class="program-badge">Em breve</div>
       <h3>Row Program</h3>
       <p>Para descer o teu 2K. Técnica, pacing e intervalos progressivos para melhorar mesmo na máquina.</p>
       <div class="program-meta-public"><span>Engine</span><span>Rowing</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="engine">
       <div class="program-badge">Em breve</div>
       <h3>Bike Program</h3>
       <p>Assault ou Echo. Potência, pacing e tolerância ao esforço máximo repetido. Para a bike não ser o teu ponto fraco.</p>
       <div class="program-meta-public"><span>Engine</span><span>Bike</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="competition">
       <div class="program-badge">Em breve</div>
       <h3>Open Prep 2027</h3>
       <p>Doze semanas para chegares ao Open preparado. Pacing, standards e os movimentos que sempre aparecem, sem surpresas em prova.</p>
       <div class="program-meta-public"><span>Competition</span><span>12 semanas</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="competition">
       <div class="program-badge">Em breve</div>
       <h3>HYROX</h3>
       <p>Corrida, stations, transições. Preparação para o HYROX com o que a prova realmente exige de ti.</p>
       <div class="program-meta-public"><span>Competition</span><span>12 semanas</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="competition">
       <div class="program-badge">Em breve</div>
       <h3>ATHX Prep 2027</h3>
       <p>Doze semanas para a época ATHX 2027. Volume, intensidade e especificidade para competir bem quando chegar a hora.</p>
       <div class="program-meta-public"><span>Competition</span><span>12 semanas</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card locked" data-category="coaching">
       <div class="program-badge">Vagas limitadas</div>
@@ -5543,7 +5546,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <h3>PeakForm Merch</h3>
       <p>Equipamento e vestuário para atletas que treinam a sério.</p>
       <div class="program-meta-public"><span>Merch</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="voteProgram(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     </div>
   </div>
@@ -9343,6 +9346,12 @@ window.addEventListener('scroll', () => {
   window.closeLeadModal = function(){
     var ov = document.getElementById('pf-lead-overlay');
     if (ov) ov.classList.remove('show');
+  };
+  window.openLeadFromCard = function(btn){
+    var card = btn.closest('.public-program-card') || btn.closest('.pf-pm-card');
+    var titleEl = card ? card.querySelector('h3') : null;
+    var name = titleEl ? titleEl.textContent.trim() : '';
+    openLeadModal(name || 'Programa');
   };
   window.submitLead = async function(){
     var input = document.getElementById('pf-lead-email');
