@@ -5127,6 +5127,28 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 .pf-cookie-more:hover { background: rgba(255,255,255,.04); }
 
 </style>
+<style>
+
+#pf-lead-overlay { position: fixed; inset: 0; z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1.2rem; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); }
+#pf-lead-overlay.show { display: flex; }
+.pf-lead-card { position: relative; width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem 1.8rem 1.8rem; box-shadow: 0 20px 50px rgba(0,0,0,.5); animation: pfLeadIn .28s ease-out; }
+@keyframes pfLeadIn { from { transform: translateY(16px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+.pf-lead-close { position: absolute; top: .8rem; right: .9rem; background: none; border: none; color: var(--muted2); font-size: 1.1rem; cursor: pointer; line-height: 1; padding: .2rem; }
+.pf-lead-close:hover { color: var(--cream); }
+.pf-lead-kicker { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin-bottom: .5rem; }
+.pf-lead-card h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--cream); margin: 0 0 .5rem; line-height: 1.1; }
+.pf-lead-card p { font-size: .88rem; color: var(--muted); line-height: 1.55; margin: 0 0 1.2rem; }
+.pf-lead-card p strong { color: var(--cream); }
+.pf-lead-error { display: none; font-size: .8rem; color: #e05555; margin-bottom: .6rem; }
+.pf-lead-error.show { display: block; }
+#pf-lead-email { width: 100%; background: rgba(245,242,238,0.04); border: 1px solid var(--border); border-radius: 10px; color: var(--cream); font-family: var(--font-body); font-size: .92rem; padding: .75rem .9rem; margin-bottom: .8rem; transition: border-color .2s; }
+#pf-lead-email:focus { outline: none; border-color: var(--orange); }
+#pf-lead-email::placeholder { color: var(--muted2); }
+.pf-lead-submit { width: 100%; background: var(--orange); border: none; border-radius: 50px; color: #fff; font-family: var(--font-body); font-size: .85rem; font-weight: 700; padding: .8rem; cursor: pointer; transition: background .2s; }
+.pf-lead-submit:hover { background: var(--orange-lt); }
+.pf-lead-submit:disabled { opacity: .6; cursor: default; }
+
+</style>
 </head>
 <body>
 <div class="pf-toast-container" id="pf-toast-container" aria-live="polite"></div>
@@ -5558,7 +5580,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
         <li>Pacing, standards e gestão de esforço</li>
         <li>Acesso permanente após compra</li>
       </ul>
-      <button class="pf-pricing-btn-soon" disabled>Em breve</button>
+      <button class="pf-pricing-btn-soon" onclick="openLeadModal('Competition')">Em breve · avisem-me</button>
     </article>
     <article class="pricing-card">
       <span>Acompanhamento directo · Vagas limitadas</span>
@@ -5571,7 +5593,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
         <li>Grupo privado WhatsApp com a equipa</li>
         <li>Análise de evolução contínua</li>
       </ul>
-      <button onclick="toggleCoachInterestFromPricing(this)">Saber mais →</button>
+      <button onclick="openLeadModal('Coach 1:1')">Saber mais</button>
     </article>
   </div>
 </section>
@@ -6232,6 +6254,10 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
           <span class="admin-stat-label">Feedbacks recebidos</span>
           <span class="admin-stat-value" id="admin-stat-feedback">—</span>
         </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-label">Lista de espera</span>
+          <span class="admin-stat-value" id="admin-stat-leads">—</span>
+        </div>
       </div>
 
       <!-- Programs breakdown -->
@@ -6250,6 +6276,12 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <div class="admin-section">
         <div class="admin-section-head"><h3>Pedidos Coach 1:1</h3></div>
         <div id="admin-coach-list" class="admin-rows"></div>
+      </div>
+
+      <!-- Lista de espera (interessados por programa) -->
+      <div class="admin-section">
+        <div class="admin-section-head"><h3>Lista de espera (interessados)</h3></div>
+        <div id="admin-leads-list" class="admin-rows"></div>
       </div>
 
       <!-- Feedbacks -->
@@ -6512,6 +6544,20 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   <div class="pf-cookie-actions">
     <button class="pf-cookie-accept" onclick="pfAcceptCookies()">Aceitar</button>
     <button class="pf-cookie-more" onclick="showPage('privacy')">Política de Privacidade</button>
+  </div>
+</div>
+
+
+
+<div id="pf-lead-overlay" role="dialog" aria-modal="true" aria-label="Lista de espera">
+  <div class="pf-lead-card">
+    <button class="pf-lead-close" onclick="closeLeadModal()" aria-label="Fechar">&#x2715;</button>
+    <span class="pf-lead-kicker">Lista de espera</span>
+    <h3 id="pf-lead-title">Avisamos-te quando lançar</h3>
+    <p>Deixa o teu email e és dos primeiros a saber quando <strong id="pf-lead-prog">este programa</strong> ficar disponível.</p>
+    <div id="pf-lead-error" class="pf-lead-error" aria-live="polite"></div>
+    <input id="pf-lead-email" type="email" placeholder="o teu email" autocomplete="email">
+    <button class="pf-lead-submit" onclick="submitLead()">Quero ser avisado</button>
   </div>
 </div>
 
@@ -6952,7 +6998,7 @@ async function loadAdminData() {
     const _startToday = new Date(); _startToday.setHours(0,0,0,0);
     const _start7d = new Date(Date.now() - 7*24*60*60*1000);
     /* Contadores */
-    const [usersRes, programsRes, merchRes, coachRes, feedbackRes, viewsRes, viewsTodayRes, viewsWeekRes] = await Promise.all([
+    const [usersRes, programsRes, merchRes, coachRes, feedbackRes, viewsRes, viewsTodayRes, viewsWeekRes, leadsRes] = await Promise.all([
       _sb.from('profiles').select('*', { count: 'exact', head: true }),
       _sb.from('program_interests').select('*', { count: 'exact', head: true }),
       _sb.from('merch_interests').select('*', { count: 'exact', head: true }),
@@ -6961,6 +7007,7 @@ async function loadAdminData() {
       _sb.from('page_views').select('*', { count: 'exact', head: true }),
       _sb.from('page_views').select('*', { count: 'exact', head: true }).gte('created_at', _startToday.toISOString()),
       _sb.from('page_views').select('*', { count: 'exact', head: true }).gte('created_at', _start7d.toISOString()),
+      _sb.from('interest_leads').select('*', { count: 'exact', head: true }),
     ]);
     const el = id => document.getElementById(id);
     if (el('admin-stat-views'))       el('admin-stat-views').textContent       = viewsRes.count      ?? '—';
@@ -6971,6 +7018,7 @@ async function loadAdminData() {
     if (el('admin-stat-merch'))    el('admin-stat-merch').textContent    = merchRes.count    ?? '—';
     if (el('admin-stat-coach'))    el('admin-stat-coach').textContent    = coachRes.count    ?? '—';
     if (el('admin-stat-feedback')) el('admin-stat-feedback').textContent = feedbackRes.count ?? '—';
+    if (el('admin-stat-leads'))    el('admin-stat-leads').textContent    = leadsRes.count    ?? '—';
 
     /* Interesse por programa */
     const { data: progData } = await _sb.from('program_interests')
@@ -7025,6 +7073,26 @@ async function loadAdminData() {
           ).join('')
         : '<p class="admin-empty">Sem pedidos ainda.</p>';
     }
+
+    /* Lista de espera (interest_leads) — agrupada por programa */
+    const { data: leadsData } = await _sb.from('interest_leads')
+      .select('id, email, program, created_at').order('created_at', { ascending: false });
+    const leadsList = el('admin-leads-list');
+    if (leadsList) {
+      const btnStyle = 'background:rgba(180,30,30,.12);border:1px solid rgba(180,30,30,.3);border-radius:4px;color:#e05555;font-size:.65rem;padding:.2rem .5rem;cursor:pointer;flex-shrink:0;';
+      const tagStyle = 'background:rgba(200,75,17,.12);border:1px solid rgba(200,75,17,.25);border-radius:4px;color:var(--orange);font-size:.65rem;font-weight:700;padding:.15rem .45rem;white-space:nowrap;';
+      leadsList.innerHTML = (leadsData || []).length
+        ? (leadsData || []).map(r =>
+            `<div class="admin-row" style="justify-content:space-between;align-items:center;gap:.5rem;">
+               <span style="flex:1">${r.email}</span>
+               <span style="${tagStyle}">${r.program || 'Geral'}</span>
+               <small style="white-space:nowrap">${new Date(r.created_at).toLocaleDateString('pt-PT')}</small>
+               <button onclick="adminDeleteLead('${r.id}')" style="${btnStyle}" title="Apagar este registo">🗑</button>
+             </div>`
+          ).join('')
+        : '<p class="admin-empty">Sem interessados ainda.</p>';
+    }
+
     /* Feedbacks */
     const { data: feedbackData } = await _sb.from('program_feedback')
       .select('*').order('created_at', { ascending: false });
@@ -7279,6 +7347,14 @@ async function adminDeleteCoachInterest(email) {
   const { error } = await _sb.from('coach_interests').delete().eq('email', email);
   if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
   showPeakFormToast('Removido', `Pedido de ${email} apagado.`, '✓');
+  loadAdminData();
+}
+
+async function adminDeleteLead(id) {
+  if (!confirm('Apagar este interessado da lista de espera?')) return;
+  const { error } = await _sb.from('interest_leads').delete().eq('id', id);
+  if (error) { showPeakFormToast('Erro', error.message, '✗'); return; }
+  showPeakFormToast('Removido', 'Registo apagado da lista.', '✓');
   loadAdminData();
 }
 
@@ -9049,9 +9125,9 @@ window.addEventListener('scroll', () => {
     '.pf-prog-btn-soon:hover{transform:none!important;box-shadow:none!important;}' +
     /* pricing blur */
     '.pf-price-blur strong{filter:blur(7px);user-select:none;pointer-events:none;}' +
-    '.pf-pricing-btn-soon{background:rgba(245,242,238,.06)!important;border:1px solid rgba(245,242,238,.1)!important;' +
-    'color:rgba(245,242,238,.35)!important;cursor:default!important;}' +
-    '.pf-pricing-btn-soon:hover{transform:none!important;box-shadow:none!important;}' +
+    '.pf-pricing-btn-soon{background:rgba(245,242,238,.06)!important;border:1px solid rgba(245,242,238,.18)!important;' +
+    'color:rgba(245,242,238,.7)!important;cursor:pointer!important;transition:border-color .2s,color .2s,background .2s!important;}' +
+    '.pf-pricing-btn-soon:hover{transform:none!important;box-shadow:none!important;border-color:var(--orange)!important;color:var(--cream)!important;}' +
     /* coach price row */
     '.pf-coach-price-row{display:flex;align-items:baseline;gap:.45rem;margin:.5rem 0 .9rem;}' +
     '.pf-coach-price-row small{color:rgba(245,242,238,.45);font-size:.78rem;}' +
@@ -9244,6 +9320,65 @@ window.addEventListener('scroll', () => {
   function init(){ document.querySelectorAll('input[type="password"]').forEach(addToggle); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+})();
+
+
+(function(){
+  var current = 'Geral';
+  window.openLeadModal = function(program){
+    current = program || 'Geral';
+    var progEl = document.getElementById('pf-lead-prog');
+    if (progEl) progEl.textContent = program ? program : 'o PeakForm';
+    var input = document.getElementById('pf-lead-email');
+    var err = document.getElementById('pf-lead-error');
+    if (err) { err.classList.remove('show'); err.textContent = ''; }
+    if (input) {
+      input.value = '';
+      try { _sb.auth.getUser().then(function(r){ if (r && r.data && r.data.user && r.data.user.email && !input.value) input.value = r.data.user.email; }); } catch(e){}
+    }
+    var ov = document.getElementById('pf-lead-overlay');
+    if (ov) ov.classList.add('show');
+    if (input) setTimeout(function(){ input.focus(); }, 60);
+  };
+  window.closeLeadModal = function(){
+    var ov = document.getElementById('pf-lead-overlay');
+    if (ov) ov.classList.remove('show');
+  };
+  window.submitLead = async function(){
+    var input = document.getElementById('pf-lead-email');
+    var err = document.getElementById('pf-lead-error');
+    var btn = document.querySelector('.pf-lead-submit');
+    var email = input ? input.value.trim() : '';
+    if (!email || email.indexOf('@') < 1) {
+      if (err) { err.textContent = 'Introduz um email válido.'; err.classList.add('show'); }
+      if (input) input.focus();
+      return;
+    }
+    if (btn) { btn.disabled = true; btn.textContent = 'A enviar...'; }
+    try {
+      var r = await _sb.auth.getUser();
+      var uid = (r && r.data && r.data.user) ? r.data.user.id : null;
+      var res = await _sb.from('interest_leads').insert({ email: email, program: current, user_id: uid });
+      if (res.error) {
+        if (err) { err.textContent = 'Não foi possível guardar. Tenta novamente.'; err.classList.add('show'); }
+        if (btn) { btn.disabled = false; btn.textContent = 'Quero ser avisado'; }
+        return;
+      }
+    } catch(e) {
+      if (err) { err.textContent = 'Erro de ligação. Tenta novamente.'; err.classList.add('show'); }
+      if (btn) { btn.disabled = false; btn.textContent = 'Quero ser avisado'; }
+      return;
+    }
+    if (btn) { btn.disabled = false; btn.textContent = 'Quero ser avisado'; }
+    closeLeadModal();
+    if (typeof showPeakFormToast === 'function') {
+      var msg = (current === 'Geral') ? 'Avisamos-te assim que houver novidades.' : 'Avisamos-te assim que ' + current + ' lançar.';
+      showPeakFormToast('Registado!', msg, '✓');
+    }
+  };
+  var ov = document.getElementById('pf-lead-overlay');
+  if (ov) ov.addEventListener('click', function(e){ if (e.target === ov) closeLeadModal(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLeadModal(); });
 })();
 
 </script>
