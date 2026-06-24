@@ -7379,7 +7379,7 @@ function openProgram(program) {
     return;
   }
   if (slug === 'pullup') {
-    if (typeof window.openCheckoutModal === 'function') window.openCheckoutModal();
+    if (typeof window.openCheckoutModal === 'function') window.openCheckoutModal('pullup');
     return;
   }
   /* bmu ou outros sem acesso */
@@ -8590,6 +8590,15 @@ _sb.auth.onAuthStateChange((event, session) => {
     _updateGreeting(session.user);
     _checkAdmin(session.user);
     loadUserPrograms();
+    /* Retomar checkout se o utilizador tinha tentado comprar antes de ter sessão */
+    if (event === 'SIGNED_IN') {
+      let pending = null;
+      try { pending = sessionStorage.getItem('pf-pending-checkout'); } catch(e) {}
+      if (pending) {
+        try { sessionStorage.removeItem('pf-pending-checkout'); } catch(e) {}
+        setTimeout(function() { if (typeof window.openCheckoutModal === 'function') window.openCheckoutModal(pending); }, 600);
+      }
+    }
   } else {
     isLoggedIn = false;
     userPrograms = [];
@@ -9211,7 +9220,8 @@ window.addEventListener('scroll', () => {
     if (e.target === _overlay) pfCloseCheckout();
   });
 
-  window.openCheckoutModal = function() {
+  window.openCheckoutModal = function(program) {
+    _overlay.setAttribute('data-program', program || 'pullup');
     var main = _overlay.querySelector('.pf-co-main-state');
     var soon = _overlay.querySelector('.pf-co-soon-state');
     if (main) main.classList.remove('hidden');
@@ -9225,11 +9235,37 @@ window.addEventListener('scroll', () => {
     document.body.style.overflow = '';
   };
 
-  window.handleCheckoutCTA = function() {
-    var main = _overlay.querySelector('.pf-co-main-state');
-    var soon = _overlay.querySelector('.pf-co-soon-state');
-    if (main) main.classList.add('hidden');
-    if (soon) soon.classList.add('active');
+  /* Stripe payment links por programa */
+  var PF_STRIPE_LINKS = {
+    pullup: 'https://buy.stripe.com/6oU6oz2Txbxs6YLdjz63K00'
+  };
+
+  window.handleCheckoutCTA = async function() {
+    var program = _overlay.getAttribute('data-program') || 'pullup';
+    var link = PF_STRIPE_LINKS[program];
+    if (!link) {
+      if (typeof showPeakFormToast === 'function') showPeakFormToast('Em breve', 'O checkout deste programa ainda não está disponível.', '⏳');
+      return;
+    }
+    var btn = _overlay.querySelector('.pf-co-cta');
+    if (btn) { btn.disabled = true; btn.textContent = 'A verificar...'; }
+    var user = null;
+    try { var r = await _sb.auth.getUser(); user = (r && r.data) ? r.data.user : null; } catch(e) {}
+    if (btn) { btn.disabled = false; btn.textContent = 'Avançar para pagamento →'; }
+
+    /* Sem sessão → criar conta / iniciar sessão primeiro */
+    if (!user) {
+      try { sessionStorage.setItem('pf-pending-checkout', program); } catch(e) {}
+      pfCloseCheckout();
+      if (typeof showPeakFormToast === 'function') showPeakFormToast('Cria a tua conta', 'Para comprares e teres o programa na tua conta, cria conta ou inicia sessão primeiro.', '👤');
+      if (typeof showPage === 'function') showPage('register');
+      return;
+    }
+
+    /* Com sessão → Stripe com referência ao utilizador + programa */
+    var url = link + '?client_reference_id=' + encodeURIComponent(user.id + '__' + program);
+    if (user.email) url += '&prefilled_email=' + encodeURIComponent(user.email);
+    window.location.href = url;
   };
 
   window.pfCheckoutGoBack = function() {
