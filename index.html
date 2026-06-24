@@ -4700,6 +4700,9 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 }
 .metodo-overlay.open, .coaches-overlay.open, .merch-overlay.open { opacity: 1 !important; pointer-events: all !important; }
 
+/* Panel close button — only shown on mobile overlay */
+.pf-panel-close { display: none !important; }
+
 /* Merch dropdown panel */
 .merch-panel {
   position: fixed !important; top: 60px !important; left: 0 !important; right: 0 !important;
@@ -5058,8 +5061,27 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   .btn-login { display: none !important; }
   .nav-hamburger { display: flex !important; }
   .nav-right { gap: 4px !important; }
-  /* Dropdown panels — disable on mobile */
+  /* Dropdown panels — closed on mobile, full-screen overlay when opened from hamburger */
   .coaches-panel, .metodo-panel, .merch-panel { display: none !important; }
+  .metodo-panel.open, .coaches-panel.open, .merch-panel.open {
+    display: block !important; position: fixed !important; inset: 54px 0 0 0 !important;
+    width: auto !important; height: auto !important; max-height: none !important; max-width: none !important;
+    overflow-y: auto !important; -webkit-overflow-scrolling: touch !important;
+    opacity: 1 !important; pointer-events: all !important; transform: none !important;
+    z-index: 9998 !important; background: rgba(7,7,7,.98) !important;
+    backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important;
+    border: none !important; border-radius: 0 !important; padding: 52px 1.25rem 36px !important;
+  }
+  .pf-panel-close {
+    display: flex !important; position: absolute !important; top: 12px !important; right: 14px !important;
+    align-items: center !important; justify-content: center !important;
+    width: 36px !important; height: 36px !important; background: none !important; border: none !important;
+    color: var(--cream) !important; font-size: 1.3rem !important; cursor: pointer !important; z-index: 3 !important;
+  }
+  .metodo-inner, .coaches-inner, .merch-inner { display: flex !important; flex-direction: column !important; gap: 1.4rem !important; max-width: 520px !important; margin: 0 auto !important; }
+  .metodo-steps, .coaches-panel-grid { display: flex !important; flex-direction: column !important; gap: 1rem !important; grid-template-columns: 1fr !important; }
+  .coaches-panel-card { border-right: none !important; border-bottom: 1px solid var(--border) !important; padding: 0 0 1rem !important; }
+  .coaches-panel-card:last-child { border-bottom: none !important; padding: 0 !important; }
   /* Hero */
   .hero { padding: clamp(70px,10vh,100px) 20px 48px !important; }
   .hero-headline { font-size: clamp(42px,11vw,64px) !important; }
@@ -5195,6 +5217,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 <!-- MERCH OVERLAY + PANEL -->
 <div class="merch-overlay" id="merch-overlay"></div>
 <div class="merch-panel" id="merch-panel">
+  <button class="pf-panel-close" onclick="pfCloseAllPanels()" aria-label="Fechar">&#x2715;</button>
   <div class="merch-inner">
     <div class="merch-intro">
       <div class="merch-panel-title">Feito para<br><em>Atletas.</em></div>
@@ -5238,6 +5261,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 <!-- COACHES OVERLAY + PANEL -->
 <div class="coaches-overlay" id="coaches-overlay"></div>
 <div class="coaches-panel" id="coaches-panel">
+  <button class="pf-panel-close" onclick="pfCloseAllPanels()" aria-label="Fechar">&#x2715;</button>
   <div class="coaches-inner">
     <div class="coaches-intro">
       <div class="coaches-panel-title">Coaches &amp;<br><em>Criadores.</em></div>
@@ -5261,6 +5285,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 <!-- MÉTODO OVERLAY + PANEL -->
 <div class="metodo-overlay" id="metodo-overlay"></div>
 <div class="metodo-panel" id="metodo-panel">
+  <button class="pf-panel-close" onclick="pfCloseAllPanels()" aria-label="Fechar">&#x2715;</button>
   <div class="metodo-inner">
     <div class="metodo-intro">
       <div class="metodo-title">Autónomo,<br>mas com <em>estrutura.</em></div>
@@ -5307,10 +5332,10 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 <div class="mobile-menu" id="mobile-menu">
   <ul>
     <li><a href="#programas" onclick="closeMobileMenu()">Programas</a></li>
-    <li><a href="#" onclick="closeMobileMenu()">Método</a></li>
-    <li><a href="#" onclick="closeMobileMenu()">Coaches</a></li>
+    <li><a href="#" onclick="event.preventDefault();closeMobileMenu();pfOpenPanel('metodo')">Método</a></li>
+    <li><a href="#" onclick="event.preventDefault();closeMobileMenu();pfOpenPanel('coaches')">Coaches</a></li>
     <li><a href="#planos" onclick="closeMobileMenu()">Planos</a></li>
-    <li><a href="#" onclick="closeMobileMenu()">Merch</a></li>
+    <li><a href="#" onclick="event.preventDefault();closeMobileMenu();pfOpenPanel('merch')">Merch</a></li>
   </ul>
   <div class="mobile-menu-actions">
     <a id="mobile-athlete-btn" class="mobile-menu-athlete" onclick="goToAthleteArea();closeMobileMenu()" style="display:none;cursor:pointer">Área do Atleta</a>
@@ -8916,6 +8941,21 @@ window.addEventListener('scroll', () => {
   var metodoCtrl  = makePanel('metodo-trigger',  'metodo-panel',  'metodo-overlay');
   var coachesCtrl = makePanel('coaches-trigger', 'coaches-panel', 'coaches-overlay');
   var merchCtrl   = makePanel('merch-trigger',   'merch-panel',   'merch-overlay');
+
+  /* Mobile: open/close panels as full-screen overlays from the hamburger menu */
+  window.pfCloseAllPanels = function() {
+    ['metodo','coaches','merch'].forEach(function(n){
+      var p=document.getElementById(n+'-panel'); if(p)p.classList.remove('open');
+      var o=document.getElementById(n+'-overlay'); if(o)o.classList.remove('open');
+      var t=document.getElementById(n+'-trigger'); if(t)t.classList.remove('active');
+    });
+    document.body.style.overflow = '';
+  };
+  window.pfOpenPanel = function(n) {
+    window.pfCloseAllPanels();
+    var p=document.getElementById(n+'-panel'); if(p)p.classList.add('open');
+    var o=document.getElementById(n+'-overlay'); if(o)o.classList.add('open');
+  };
 
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape'){ metodoCtrl.close(); coachesCtrl.close(); merchCtrl.close(); }
