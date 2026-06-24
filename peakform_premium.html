@@ -5641,7 +5641,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   <section class="program-detail-page">
     <header class="dash-nav">
       <div class="dash-brand" onclick="showPage('area')">Peak<span>Form</span></div>
-      <div class="dash-nav-right"><span>Pull-Up Program</span><button onclick="openMovementLibrary('pullup')">Movement Library</button><button onclick="showPage('area')">Voltar à Área do Atleta</button></div>
+      <div class="dash-nav-right"><span>Pull-Up Program</span><button onclick="showPage('area')">Voltar à Área do Atleta</button></div>
     </header>
     <main class="program-detail-wrap">
       <section class="program-detail-hero">
@@ -5702,7 +5702,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   <section class="program-detail-page">
     <header class="dash-nav">
       <div class="dash-brand" onclick="showPage('area')">Peak<span>Form</span></div>
-      <div class="dash-nav-right"><span>Bar Muscle-Up</span><button onclick="openMovementLibrary('bmu')">Movement Library</button><button onclick="showPage('area')">Voltar à Área do Atleta</button></div>
+      <div class="dash-nav-right"><span>Bar Muscle-Up</span><button onclick="showPage('area')">Voltar à Área do Atleta</button></div>
     </header>
     <main class="program-detail-wrap">
       <section class="program-detail-hero">
@@ -5767,7 +5767,7 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   <section class="session-detail-page">
     <header class="dash-nav">
       <div class="dash-brand" onclick="showPage('area')">Peak<span>Form</span></div>
-      <div class="dash-nav-right"><span id="session-nav-label">Sessão</span><button onclick="openMovementLibrary(currentSessionContext ? currentSessionContext.program : 'all')">Movement Library</button><button id="session-top-back" onclick="showPage('program-pullup')">Voltar ao programa</button></div>
+      <div class="dash-nav-right"><span id="session-nav-label">Sessão</span><button id="session-top-back" onclick="showPage('program-pullup')">Voltar ao programa</button></div>
     </header>
     <main class="session-detail-wrap">
       <section class="session-detail-hero">
@@ -5805,58 +5805,6 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
             <button onclick="completeCurrentSession()">Concluir sessão</button>
             <button class="secondary" onclick="backToCurrentProgram()">Voltar ao programa</button>
             <button class="secondary" onclick="showPage('dashboard')">Área do atleta</button>
-          </div>
-        </aside>
-      </section>
-    </main>
-  </section>
-</div>
-
-<div id="page-movement" class="pf-page">
-  <section class="movement-page">
-    <header class="dash-nav">
-      <div class="dash-brand" onclick="showPage('area')">Peak<span>Form</span></div>
-      <div class="dash-nav-right"><span>Movement Library</span><button onclick="showPage('area')">Voltar à Área do Atleta</button></div>
-    </header>
-    <main class="movement-wrap">
-      <section class="movement-hero">
-        <div>
-          <span>PeakForm · Vídeos técnicos</span>
-          <h2>Movement <em>Library</em></h2>
-          <p>Biblioteca interna com os vídeos dos programas ativos. Dentro da sessão vês o vídeo de cada exercício; aqui encontras tudo organizado por categoria e por programa comprado.</p>
-        </div>
-        <aside class="movement-hero-card">
-          <div><strong id="movement-total-count">14</strong><small>Vídeos no protótipo</small></div>
-          <div><strong>4</strong><small>Categorias base</small></div>
-          <div><strong>Drills</strong><small>Progressões técnicas</small></div>
-        </aside>
-      </section>
-      <section class="movement-tools">
-        <div class="movement-search">
-          <label for="movement-search-input">Pesquisar movimento</label>
-          <input id="movement-search-input" type="text" placeholder="Ex.: active hang, pull-up negativa, beat swing..." oninput="renderMovementVideos()" />
-        </div>
-        <div class="movement-filters" id="movement-filters">
-          <button class="movement-filter-btn active" onclick="setMovementFilter('all', this)">Os meus vídeos</button>
-          <button class="movement-filter-btn" onclick="setMovementFilter('gymnastics', this)">Gymnastics</button>
-          <button class="movement-filter-btn" onclick="setMovementFilter('strength', this)">Strength</button>
-          <button class="movement-filter-btn" onclick="setMovementFilter('engine', this)">Engine</button>
-          <button class="movement-filter-btn" onclick="setMovementFilter('mobility', this)">Mobility / Prep</button>
-        </div>
-      </section>
-      <section class="movement-content-grid">
-        <div class="movement-video-grid" id="movement-video-grid"></div>
-        <aside class="movement-preview-panel">
-          <div class="movement-preview-box" id="movement-preview-box">
-            <div class="video-player-visual"><span class="video-player-badge">Movement Library</span><span class="video-player-time">Demo</span></div>
-            <div class="video-player-copy"><strong>Leitor do vídeo</strong><p>Seleciona um movimento. Na versão real, este bloco recebe o vídeo incorporado.</p><div class="video-player-actions"><span>Execução</span><span>Pontos-chave</span><span>Erros comuns</span></div></div>
-          </div>
-          <span id="movement-preview-category">Seleciona um vídeo</span>
-          <h3 id="movement-preview-title">Movement Library</h3>
-          <p id="movement-preview-description">Usa a pesquisa ou os filtros para encontrar o drill certo. Cada vídeo terá demonstração, pontos-chave, erros comuns e progressões.</p>
-          <div class="movement-preview-meta">
-            <div><small>Tipo</small><strong id="movement-preview-type">Drill</strong></div>
-            <div><small>Aplicação</small><strong id="movement-preview-use">Programas PeakForm</strong></div>
           </div>
         </aside>
       </section>
@@ -6341,7 +6289,6 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
       <div class="dash-nav-right">
         <span>Área do Atleta</span>
         <button id="area-nav-admin-btn" onclick="goToAdminArea()" style="display:none">Área de Admin</button>
-        <button onclick="openMovementLibrary('all')">Movement Library</button>
         <button onclick="logoutUser()">Terminar sessão</button>
       </div>
     </header>
@@ -6468,29 +6415,6 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
               </div>
               <small class="program-status-pill">Bloqueado</small>
             </div>
-          </div>
-        </article>
-      </section>
-
-      <section class="movement-library-section">
-        <article class="dash-panel movement-library-card">
-          <div class="panel-header movement-header">
-            <div>
-              <span>Movement Library</span>
-              <h3>Biblioteca de vídeos técnicos</h3>
-              <p>Uma área separada com todos os vídeos da PeakForm: drills, progressões, standards, correções técnicas e demonstrações. Funciona como um canal interno organizado por tipo de movimento.</p>
-            </div>
-            <small>Vídeos · Drills · Progressões</small>
-          </div>
-          <button class="panel-main-btn" onclick="openMovementLibrary('all')" style="margin-bottom:1rem;">Abrir Movement Library</button>
-          <div class="movement-category-grid">
-            <button class="movement-category" onclick="selectDashboardMovementCategory('gymnastics', this)"><strong>Gymnastics</strong><span>Pull-Up, C2B, T2B, BMU, RMU, HSPU, Handstand Walk</span><em>Assiste a drills técnicos para ganhar controlo na barra, timing e posições sólidas.</em></button>
-            <button class="movement-category" onclick="selectDashboardMovementCategory('strength', this)"><strong>Strength</strong><span>Snatch, Clean & Jerk, Squat, Press, Deadlift</span><em>Consulta vídeos para refinar lifts, posições de força e acessórios com intenção.</em></button>
-            <button class="movement-category" onclick="selectDashboardMovementCategory('engine', this)"><strong>Engine</strong><span>Row, Bike, Ski, Run, Pacing, Intervals</span><em>Vê referências de ritmo, eficiência e gestão de esforço em máquinas e corrida.</em></button>
-            <button class="movement-category" onclick="selectDashboardMovementCategory('mobility', this)"><strong>Mobility</strong><span>Cat-Cow, Shoulder Prep, Hip Openers, Ankle Prep</span><em>Explora rotinas curtas para preparar posições e libertar amplitude útil ao treino.</em></button>
-          </div>
-          <p class="movement-preview-note is-hidden" id="dashboard-movement-note"></p>
-          <div class="video-preview-grid is-hidden" id="dashboard-video-preview-grid">
           </div>
         </article>
       </section>
@@ -8556,7 +8480,7 @@ function animateActivePage(page) {
 }
 
 function showPage(page, _fromHistory) {
-  const protectedPages = ['area', 'admin', 'program-pullup', 'program-bmu', 'session', 'movement', 'feedback'];
+  const protectedPages = ['area', 'admin', 'program-pullup', 'program-bmu', 'session', 'feedback'];
   const publicPages = ['landing', 'login', 'register', 'support', 'forgot', 'reset-password', 'privacy', 'terms'];
 
   if (protectedPages.includes(page) && isLoggedIn !== true) {
@@ -8573,7 +8497,6 @@ function showPage(page, _fromHistory) {
   if (page === 'program-pullup' || page === 'program-bmu') setTimeout(initNativeSessionChecks, 0);
   if (page === 'area') { setTimeout(loadUserPrograms, 0); setTimeout(function(){ switchAreaTab('programas'); }, 0); }
   if (page === 'admin') setTimeout(loadAdminData, 0);
-  if (page === 'movement') setTimeout(renderMovementVideos, 0);
   setTimeout(() => animateActivePage(page), 20);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -8623,7 +8546,7 @@ _sb.auth.getSession().then(({ data: { session } }) => {
     const active = document.querySelector('.pf-page.active');
     if (active) {
       const pageId = active.id.replace('page-', '');
-      const protectedPages = ['area','program-pullup','program-bmu','session','movement','feedback'];
+      const protectedPages = ['area','program-pullup','program-bmu','session','feedback'];
       if (protectedPages.includes(pageId)) showPage('login');
     }
   }
