@@ -4420,8 +4420,9 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 /* Hero — flex-column, content starts from top so it never clips */
 .hero {
   display: flex !important; flex-direction: column !important;
-  justify-content: flex-start !important; align-items: unset !important;
-  padding: clamp(100px,14vh,160px) 48px 80px !important; gap: unset !important;
+  justify-content: center !important; align-items: unset !important;
+  min-height: auto !important;
+  padding: clamp(120px,16vh,180px) 48px clamp(70px,9vh,110px) !important; gap: unset !important;
   grid-template-columns: unset !important; overflow: visible !important;
 }
 .hero-proof, .hero-scroll-cue, .hero-tag, .hero-stats,
@@ -5089,6 +5090,14 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   /* Session / movement */
   .session-detail-grid { grid-template-columns: 1fr !important; }
   .movement-content-grid { grid-template-columns: 1fr !important; }
+  /* Session detail hero — stack (was forcing a 280px sidebar that squeezed text) */
+  .session-detail-hero { grid-template-columns: 1fr !important; gap: 1rem !important; padding: 1.25rem !important; align-items: start !important; }
+  .session-detail-hero h2 { font-size: clamp(2rem,9vw,3.2rem) !important; }
+  .session-status-card { grid-template-columns: repeat(3,1fr) !important; }
+  .session-status-card strong { font-size: 1rem !important; }
+  .session-detail-wrap { padding: 1.25rem 1rem 3rem !important; }
+  .session-panel { padding: 1.1rem !important; }
+  .session-panel h3 { font-size: 1.4rem !important; }
   /* General */
   .hero-stats { flex-direction: column !important; gap: 1rem !important; }
   .program-detail-actions { flex-direction: column !important; gap: 8px !important; }
