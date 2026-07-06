@@ -4467,10 +4467,17 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 }
 .hero-proof, .hero-scroll-cue, .hero-tag, .hero-stats,
 .hero-mini-tags, .hero-actions, .hero-sub-old { display: none !important; }
+/* Hero background video */
+.hero-video {
+  position: absolute !important; inset: 0 !important; z-index: 0 !important;
+  width: 100% !important; height: 100% !important; object-fit: cover !important;
+  pointer-events: none !important;
+}
 .hero-bg {
+  z-index: 1 !important;
   background:
-    radial-gradient(ellipse 60% 50% at 70% 40%, rgba(200,75,17,.07) 0%, transparent 70%),
-    linear-gradient(180deg, transparent 40%, rgba(10,10,10,.85) 80%, var(--black) 100%) !important;
+    linear-gradient(90deg, rgba(8,8,8,.82) 0%, rgba(8,8,8,.5) 48%, rgba(8,8,8,.2) 100%),
+    linear-gradient(180deg, rgba(8,8,8,.35) 0%, transparent 45%, rgba(10,10,10,.9) 82%, var(--black) 100%) !important;
 }
 .hero-grid-lines {
   position: absolute !important; inset: 0 !important; z-index: 0 !important;
@@ -5383,6 +5390,9 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 
 <!-- HERO -->
 <section class="hero" id="sobre">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="/hero-poster.jpg">
+    <source src="/hero.mp4" type="video/mp4">
+  </video>
   <div class="hero-bg"></div>
   <div class="hero-grid-lines"></div>
   <div class="hero-content">
