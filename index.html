@@ -3628,6 +3628,11 @@ article.movement-library-card,
 /* Hide static "X interessados" counter — interest is now captured by email */
 .vote-count { display: none !important; }
 
+/* Session exercise video (YouTube embed) */
+.video-player-frame.has-yt { padding: 0 !important; display: block !important; min-height: 0 !important; border: none !important; background: #000 !important; overflow: hidden !important; }
+.video-player-frame.has-yt::before, .video-player-frame.has-yt::after { display: none !important; content: none !important; }
+.session-yt { width: 100% !important; aspect-ratio: 16 / 9 !important; height: auto !important; display: block !important; border: 0 !important; border-radius: var(--radius-md) !important; }
+
 /* ── Área de Atleta: tabs + PRs ── */
 .area-tabs { position: static !important; top: auto !important; left: auto !important; right: auto !important; width: auto !important; z-index: auto !important; backdrop-filter: none !important; background: transparent !important; display: flex !important; gap: .4rem !important; margin-bottom: 2.2rem !important; border-bottom: 1px solid var(--border) !important; }
 .area-tabs button { background: transparent !important; border: none !important; color: var(--muted) !important; font-family: var(--font-body) !important; font-size: .9rem !important; font-weight: 600 !important; padding: .7rem 1.1rem !important; cursor: pointer !important; border-bottom: 2px solid transparent !important; margin-bottom: -1px !important; transition: color .2s, border-color .2s !important; }
@@ -5278,7 +5283,9 @@ html.pf-soon-locked #pf-soon { display: flex; }
 .pf-soon-msg { font-size: .8rem; margin-top: .7rem; min-height: 1rem; }
 .pf-soon-msg.ok { color: #5bbf6a; }
 .pf-soon-msg.err { color: #e05555; }
-.pf-soon-social { margin-top: 2rem; font-size: .74rem; letter-spacing: .06em; color: rgba(245,242,238,.4); }
+.pf-soon-social { margin-top: 2rem; font-size: .8rem; letter-spacing: .04em; color: rgba(245,242,238,.5); }
+.pf-soon-social a { color: #C84B11; text-decoration: none; font-weight: 700; }
+.pf-soon-social a:hover { text-decoration: underline; }
 @media (max-width: 480px){ .pf-soon-count > div { min-width: 60px; padding: .7rem .25rem; } .pf-soon-count strong { font-size: 1.7rem; } }
 
 </style>
@@ -5740,6 +5747,7 @@ html.pf-soon-locked #pf-soon { display: flex; }
 <!-- FOOTER -->
 <footer class="site-footer" style="background:var(--surface);border-top:1px solid var(--border);padding:36px 48px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
   <div class="nav-logo" style="cursor:pointer" onclick="showPage('landing')">Peak<span>Form</span></div>
+  <a href="https://instagram.com/peak_form.pt" target="_blank" rel="noopener" style="color:var(--orange);font-size:13px;font-weight:700;text-decoration:none;letter-spacing:.04em">Instagram · @peak_form.pt</a>
   <div style="font-size:12px;color:var(--muted);line-height:1.8">
     PeakForm &middot; NIF 999999990 &middot; geral@peakform.pt &middot; +351 910 000 000<br>
     <a href="#" onclick="event.preventDefault();showPage('privacy')" style="color:var(--muted);text-decoration:underline">Política de Privacidade</a>
@@ -6632,7 +6640,7 @@ html.pf-soon-locked #pf-soon { display: flex; }
       </div>
       <div id="pf-soon-msg" class="pf-soon-msg" aria-live="polite"></div>
     </div>
-    <div class="pf-soon-social">PeakForm · Train. Evolve. Perform Better.</div>
+    <div class="pf-soon-social">Segue o lançamento no Instagram: <a href="https://instagram.com/peak_form.pt" target="_blank" rel="noopener">@peak_form.pt</a></div>
   </div>
 </div>
 
@@ -7859,8 +7867,9 @@ function openSessionDetail(program, index) {
       btn.className = 'exercise-video-btn';
       btn.type = 'button';
       const video = findVideoForExercise(ex, program);
-      btn.classList.add(video ? 'has-video' : 'no-video');
-      btn.innerHTML = '<span>' + ex + '<small>' + (video ? 'Vídeo técnico disponível' : 'Vídeo a associar') + '</small></span>'; 
+      const hasVid = !!(video && video.youtube);
+      btn.classList.add(hasVid ? 'has-video' : 'no-video');
+      btn.innerHTML = '<span>' + ex + '<small>' + (hasVid ? 'Vídeo técnico disponível' : 'Vídeo em breve') + '</small></span>';
       btn.onclick = () => selectSessionExercise(ex, program, btn);
       li.appendChild(btn);
       list.appendChild(li);
@@ -7890,11 +7899,17 @@ function selectSessionExercise(exercise, program, button) {
   const video = findVideoForExercise(exercise, program);
   const player = document.getElementById('session-video-player');
   if (!player) return;
-  const title = video ? video.name : exercise.split('—')[0].trim();
-  const desc = video ? video.desc : 'Este exercício ainda não tem vídeo associado no protótipo.';
+  const title = video ? video.name : exercise.split('-')[0].trim();
+  const desc = video ? video.desc : 'Este exercício ainda não tem vídeo associado.';
   const type = video ? video.type : 'A associar';
   const use = video ? video.use : 'Programa PeakForm';
-  player.innerHTML = '<div class="video-player-visual"><span class="video-player-badge">' + (video ? 'Vídeo técnico' : 'Placeholder') + '</span><span class="video-player-time">Demo</span></div><div class="video-player-copy"><strong>' + title + '</strong><p>' + desc + '</p><div class="video-player-actions"><span>' + type + '</span><span>' + use + '</span><span>Pontos-chave</span></div></div>';
+  if (video && video.youtube) {
+    player.classList.add('has-yt');
+    player.innerHTML = '<iframe class="session-yt" src="https://www.youtube-nocookie.com/embed/' + video.youtube + '?rel=0&modestbranding=1&playsinline=1" title="' + title + '" loading="lazy" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  } else {
+    player.classList.remove('has-yt');
+    player.innerHTML = '<div class="video-player-visual"><span class="video-player-badge">' + (video ? 'Vídeo técnico' : 'Placeholder') + '</span><span class="video-player-time">Demo</span></div><div class="video-player-copy"><strong>' + title + '</strong><p>' + desc + '</p><div class="video-player-actions"><span>' + type + '</span><span>' + use + '</span><span>Pontos-chave</span></div></div>';
+  }
 }
 
 function openNextDashboardSession() {
@@ -8371,7 +8386,7 @@ function submitCoachInterest(button) {
 
 let activeMovementFilter = 'all';
 const movementVideos = [
-  { name: 'Active Hang', category: 'Gymnastics', key: 'gymnastics', program: 'Pull-Up Program', programKey: 'pullup', type: 'Base técnica', use: 'Grip e ombro', desc: 'Posição ativa na barra para desenvolver estabilidade, grip e consciência escapular.' },
+  { name: 'Active Hang', youtube: 'SBfQe12QY5E', category: 'Gymnastics', key: 'gymnastics', program: 'Pull-Up Program', programKey: 'pullup', type: 'Base técnica', use: 'Grip e ombro', desc: 'Posição ativa na barra para desenvolver estabilidade, grip e consciência escapular.' },
   { name: 'Scap Pull-Up', category: 'Gymnastics', key: 'gymnastics', program: 'Pull-Up Program', programKey: 'pullup', type: 'Drill técnico', use: 'Pull-Up Program', desc: 'Controlo escapular na barra para iniciar pulling com ombros ativos e posição estável.' },
   { name: 'Inverted Row', category: 'Gymnastics', key: 'gymnastics', program: 'Pull-Up Program', programKey: 'pullup', type: 'Força específica', use: 'Pull-Up Program', desc: 'Puxada horizontal para construir base de força antes da strict pull-up.' },
   { name: 'Dead Hang', category: 'Gymnastics', key: 'gymnastics', program: 'Pull-Up Program', programKey: 'pullup', type: 'Grip', use: 'Pull-Up Program', desc: 'Tempo suspenso na barra para reforçar grip, tolerância e controlo dos ombros.' },
