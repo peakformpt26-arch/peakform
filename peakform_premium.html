@@ -3,6 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try {
+    var TARGET = new Date('2026-07-13T00:00:00+01:00').getTime();
+    var SECRET = 'pf-vip-9k27x';
+    var params = new URLSearchParams(location.search);
+    if (params.get('preview') === SECRET) { try { localStorage.setItem('pf-preview', SECRET); } catch(e){} }
+    var bypass = false;
+    try { bypass = localStorage.getItem('pf-preview') === SECRET; } catch(e){}
+    if (!bypass && Date.now() < TARGET) { document.documentElement.classList.add('pf-soon-locked'); }
+  } catch(e){}
+})();
+</script>
 <meta name="google-site-verification" content="omKKPbJ3_ZrO2AnFSnFzDW2NCWoFKwCWS-uhr_7ZDOQ" />
 <title>PeakForm · Programas de Treino CrossFit, Ginástica e Força</title>
 <meta name="description" content="PeakForm — programas de treino estruturados para atletas: pull-ups, bar muscle-up, ginástica, força e engine. Progressão semana a semana, acesso permanente, feito em Portugal.">
@@ -5240,6 +5253,35 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
 .pf-lead-submit:disabled { opacity: .6; cursor: default; }
 
 </style>
+<style>
+
+#pf-soon { display: none; }
+html.pf-soon-locked { overflow: hidden !important; }
+html.pf-soon-locked #pf-soon { display: flex; }
+#pf-soon { position: fixed; inset: 0; z-index: 100000; align-items: center; justify-content: center; text-align: center; padding: 2rem 1.25rem; overflow-y: auto; background: radial-gradient(ellipse 80% 60% at 50% 28%, #1a1108 0%, #0a0a0a 62%, #050505 100%); }
+.pf-soon-inner { max-width: 560px; width: 100%; font-family: 'Barlow', sans-serif; color: #f5f2ee; }
+.pf-soon-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; letter-spacing: -.01em; margin-bottom: 2rem; }
+.pf-soon-logo span { color: #C84B11; }
+.pf-soon-kicker { font-size: .72rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: #C84B11; margin-bottom: .8rem; }
+.pf-soon-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.2rem, 8vw, 3.6rem); font-weight: 800; line-height: 1; text-transform: uppercase; margin: 0 0 1rem; }
+.pf-soon-sub { font-size: .95rem; line-height: 1.6; color: rgba(245,242,238,.6); max-width: 440px; margin: 0 auto 2.2rem; }
+.pf-soon-count { display: flex; gap: .6rem; justify-content: center; margin-bottom: 2.4rem; }
+.pf-soon-count > div { background: rgba(245,242,238,.04); border: 1px solid rgba(245,242,238,.1); border-radius: 12px; padding: .9rem .4rem; min-width: 72px; }
+.pf-soon-count strong { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem; font-weight: 800; color: #f5f2ee; line-height: 1; }
+.pf-soon-count span { display: block; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(245,242,238,.45); margin-top: .35rem; }
+.pf-soon-notify p { font-size: .82rem; color: rgba(245,242,238,.55); margin: 0 0 .7rem; }
+.pf-soon-form { display: flex; gap: .5rem; max-width: 380px; margin: 0 auto; }
+.pf-soon-form input { flex: 1; min-width: 0; background: rgba(245,242,238,.05); border: 1px solid rgba(245,242,238,.14); border-radius: 50px; color: #f5f2ee; font-family: inherit; font-size: .9rem; padding: .7rem 1.1rem; }
+.pf-soon-form input:focus { outline: none; border-color: #C84B11; }
+.pf-soon-form button { background: #C84B11; border: none; border-radius: 50px; color: #fff; font-family: inherit; font-weight: 700; font-size: .82rem; padding: .7rem 1.3rem; cursor: pointer; white-space: nowrap; }
+.pf-soon-form button:hover { background: #e05515; }
+.pf-soon-msg { font-size: .8rem; margin-top: .7rem; min-height: 1rem; }
+.pf-soon-msg.ok { color: #5bbf6a; }
+.pf-soon-msg.err { color: #e05555; }
+.pf-soon-social { margin-top: 2rem; font-size: .74rem; letter-spacing: .06em; color: rgba(245,242,238,.4); }
+@media (max-width: 480px){ .pf-soon-count > div { min-width: 60px; padding: .7rem .25rem; } .pf-soon-count strong { font-size: 1.7rem; } }
+
+</style>
 </head>
 <body>
 <div class="pf-toast-container" id="pf-toast-container" aria-live="polite"></div>
@@ -6567,6 +6609,32 @@ body.pf-logged-in #pf-nav-athlete-btn { display: inline-flex !important; }
   </section>
 </div>
 <div id="pf-toast" class="pf-toast" aria-live="polite"></div>
+
+
+
+<div id="pf-soon" role="dialog" aria-label="Em breve">
+  <div class="pf-soon-inner">
+    <div class="pf-soon-logo">Peak<span>Form</span></div>
+    <div class="pf-soon-kicker">Em breve</div>
+    <h1 class="pf-soon-title">Algo grande<br>está a chegar.</h1>
+    <p class="pf-soon-sub">A plataforma de treino PeakForm abre em breve. Ginástica, força e engine, com progressão real, feita para atletas.</p>
+    <div class="pf-soon-count">
+      <div><strong id="pf-soon-d">00</strong><span>dias</span></div>
+      <div><strong id="pf-soon-h">00</strong><span>horas</span></div>
+      <div><strong id="pf-soon-m">00</strong><span>min</span></div>
+      <div><strong id="pf-soon-s">00</strong><span>seg</span></div>
+    </div>
+    <div class="pf-soon-notify">
+      <p>Sê dos primeiros a saber quando abrir:</p>
+      <div class="pf-soon-form">
+        <input id="pf-soon-email" type="email" placeholder="o teu email" autocomplete="email">
+        <button onclick="pfSoonNotify()">Avisa-me</button>
+      </div>
+      <div id="pf-soon-msg" class="pf-soon-msg" aria-live="polite"></div>
+    </div>
+    <div class="pf-soon-social">PeakForm · Train. Evolve. Perform Better.</div>
+  </div>
+</div>
 
 
 
@@ -9499,6 +9567,34 @@ window.addEventListener('scroll', () => {
   var ov = document.getElementById('pf-lead-overlay');
   if (ov) ov.addEventListener('click', function(e){ if (e.target === ov) closeLeadModal(); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeLeadModal(); });
+})();
+
+
+(function(){
+  var TARGET = new Date('2026-07-13T00:00:00+01:00').getTime();
+  function set(id,v){ var e=document.getElementById(id); if(e) e.textContent = String(v).padStart(2,'0'); }
+  var iv;
+  function tick(){
+    var diff = TARGET - Date.now();
+    if (diff <= 0) { document.documentElement.classList.remove('pf-soon-locked'); if (iv) clearInterval(iv); return; }
+    set('pf-soon-d', Math.floor(diff/86400000));
+    set('pf-soon-h', Math.floor(diff%86400000/3600000));
+    set('pf-soon-m', Math.floor(diff%3600000/60000));
+    set('pf-soon-s', Math.floor(diff%60000/1000));
+  }
+  if (document.getElementById('pf-soon')) { tick(); iv = setInterval(tick, 1000); }
+  window.pfSoonNotify = async function(){
+    var input = document.getElementById('pf-soon-email');
+    var msg = document.getElementById('pf-soon-msg');
+    var email = input ? input.value.trim() : '';
+    if (!email || email.indexOf('@') < 1) { if(msg){ msg.textContent='Introduz um email válido.'; msg.className='pf-soon-msg err'; } return; }
+    try {
+      var res = await _sb.from('interest_leads').insert({ email: email, program: 'Lançamento', newsletter_consent: true });
+      if (res.error) { if(msg){ msg.textContent='Não foi possível guardar. Tenta novamente.'; msg.className='pf-soon-msg err'; } return; }
+      if (input) input.value='';
+      if (msg){ msg.textContent='Registado! Avisamos-te quando abrir. 🔥'; msg.className='pf-soon-msg ok'; }
+    } catch(e){ if(msg){ msg.textContent='Erro de ligação. Tenta novamente.'; msg.className='pf-soon-msg err'; } }
+  };
 })();
 
 </script>
