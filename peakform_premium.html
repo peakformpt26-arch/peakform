@@ -5908,41 +5908,96 @@ html.pf-soon-locked #pf-soon { display: flex; }
       </section>
       <section class="native-program-shell">
         <div class="native-program-intro"><span>Estrutura do programa</span><h3>PeakForm Squat Vol. 1 · 8 semanas</h3><p>3 sessões por semana: Sessão 1 Back Squat pesado, Sessão 2 Front Squat, Sessão 3 variação com intensidade controlada. Cada sessão tem main lift, back-off e acessórios.</p></div>
+        <div class="squat-howto">
+          <div class="squat-tm-eyebrow">Antes de começar</div>
+          <h3>Como usar este programa</h3>
+          <div class="squat-howto-grid">
+            <div><strong>O que vais treinar</strong><p>8 semanas, 3 sessões por semana, focadas em Back Squat e Front Squat. Progrides por percentagens do teu Training Max até um reteste seguro na Semana 8.</p></div>
+            <div><strong>Como está montada cada sessão</strong><p>Main lift (o exercício principal, por percentagens), back-off sets (volume para consolidar) e acessórios (posterior chain, unilateral e core).</p></div>
+            <div><strong>Como ler a grelha</strong><p>Cada linha é: exercício - séries × reps · descanso. "Back Squat - 60% × 5" = 5 reps a 60% do Training Max. Usa a calculadora abaixo para o peso exato.</p></div>
+            <div><strong>O que esperar em cada fase</strong><p>Semanas 1-2 base, 3-4 build, 5-6 intensificação, 7 peak e 8 reteste. Se seguires o plano, testas mais forte no fim — sem te destruíres pelo caminho.</p></div>
+          </div>
+        </div>
         <div class="native-program-note"><strong>Intensidade:</strong> as percentagens usam o <strong>Training Max</strong> (90-95% do 1RM atual), não o 1RM real. Sem 1RM, estima com 3RM/5RM recente ou faz um top set técnico de 3-5 reps. Nunca abras o programa com um max-out real.</div>
         <style>
-          .squat-tm-card{background:linear-gradient(180deg,rgba(200,75,17,.09),rgba(245,242,238,.02));border:1px solid rgba(200,75,17,.28);border-radius:16px;padding:1.2rem 1.2rem 1.35rem;margin:1rem 0 1.3rem;}
+          .squat-tm-card{grid-column:1/-1;background:linear-gradient(180deg,rgba(200,75,17,.09),rgba(245,242,238,.02));border:1px solid rgba(200,75,17,.28);border-radius:16px;padding:1.2rem 1.4rem 1.35rem;margin:1rem 0 1.3rem;}
+          .squat-tm-top{display:grid;grid-template-columns:minmax(230px,300px) 1fr;gap:1rem 2rem;align-items:start;}
           .squat-tm-card .squat-tm-eyebrow{color:var(--orange,#c84b11);font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;}
           .squat-tm-card h3{margin:.35rem 0 .3rem;font-size:1.15rem;color:#f5f2ee;}
           .squat-tm-card .squat-tm-sub{margin:0;color:rgba(245,242,238,.6);font-size:.82rem;line-height:1.5;}
-          .squat-tm-inputs{display:flex;flex-wrap:wrap;gap:.9rem;margin:1rem 0 .4rem;}
-          .squat-tm-inputs label{flex:1;min-width:160px;display:flex;flex-direction:column;gap:.35rem;color:rgba(245,242,238,.75);font-size:.72rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;}
+          .squat-tm-inputs{display:flex;flex-direction:column;gap:.7rem;margin:1rem 0 0;}
+          .squat-tm-inputs label{display:flex;flex-direction:column;gap:.35rem;color:rgba(245,242,238,.75);font-size:.72rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;}
           .squat-tm-inwrap{display:flex;align-items:center;background:#0d0d0e;border:1px solid rgba(245,242,238,.14);border-radius:10px;padding:.15rem .8rem;}
           .squat-tm-inwrap:focus-within{border-color:var(--orange,#c84b11);}
           .squat-tm-inwrap input{flex:1;width:100%;background:none;border:none;outline:none;color:#f5f2ee;font-size:1.25rem;font-weight:700;padding:.5rem 0;}
           .squat-tm-inwrap span{color:rgba(245,242,238,.45);font-size:.85rem;font-weight:700;}
-          .squat-tm-empty{margin:.6rem 0 0;color:rgba(245,242,238,.4);font-size:.8rem;}
-          .squat-tm-table{margin-top:1rem;}
+          .squat-tm-empty{margin:0;color:rgba(245,242,238,.4);font-size:.8rem;align-self:center;}
+          #squat-tm-tables{display:grid;grid-template-columns:1fr 1fr;gap:.9rem 1.3rem;align-content:start;}
+          .squat-tm-table{min-width:0;}
           .squat-tm-table-title{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;flex-wrap:wrap;font-size:.85rem;font-weight:800;color:#f5f2ee;margin-bottom:.5rem;}
           .squat-tm-table-title em{font-style:normal;font-size:.72rem;font-weight:600;color:var(--orange,#c84b11);}
-          .squat-tm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:.4rem;}
+          .squat-tm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:.4rem;}
+          @media (max-width:860px){.squat-tm-top{grid-template-columns:1fr;}.squat-tm-inputs{flex-direction:row;flex-wrap:wrap;}.squat-tm-inputs label{flex:1;min-width:150px;}}
+          @media (max-width:520px){#squat-tm-tables{grid-template-columns:1fr;}}
           .squat-tm-cell{background:rgba(245,242,238,.04);border:1px solid rgba(245,242,238,.08);border-radius:9px;padding:.45rem .3rem;text-align:center;}
           .squat-tm-cell span{display:block;color:rgba(245,242,238,.5);font-size:.68rem;font-weight:700;}
           .squat-tm-cell strong{display:block;color:#f5f2ee;font-size:1rem;margin-top:.1rem;}
           .squat-tm-cell strong::after{content:' kg';font-size:.62rem;font-weight:600;color:rgba(245,242,238,.4);}
+          .session-coach-note{margin:.7rem 0 0;padding:.55rem .75rem;background:rgba(200,75,17,.07);border-left:2px solid var(--orange,#c84b11);border-radius:0 8px 8px 0;color:rgba(245,242,238,.72);font-size:.78rem;line-height:1.5;}
+          .session-coach-note strong{color:var(--orange,#c84b11);font-weight:700;}
+          .squat-howto{grid-column:1/-1;background:rgba(245,242,238,.03);border:1px solid rgba(245,242,238,.1);border-radius:16px;padding:1.2rem 1.4rem;margin:.2rem 0 1.3rem;}
+          .squat-howto .squat-tm-eyebrow{color:var(--orange,#c84b11);font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;}
+          .squat-howto h3{margin:.35rem 0 .6rem;font-size:1.15rem;color:#f5f2ee;}
+          .squat-howto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.9rem 1.4rem;}
+          .squat-howto-grid > div{background:rgba(245,242,238,.03);border-radius:10px;padding:.7rem .85rem;}
+          .squat-howto-grid strong{display:block;color:#f5f2ee;font-size:.85rem;margin-bottom:.25rem;}
+          .squat-howto-grid p{margin:0;color:rgba(245,242,238,.62);font-size:.8rem;line-height:1.5;}
+          .squat-week0{grid-column:1/-1;background:linear-gradient(180deg,rgba(200,75,17,.07),rgba(245,242,238,.02));border:1px dashed rgba(200,75,17,.35);border-radius:16px;padding:1.2rem 1.4rem;margin:0 0 1.3rem;}
+          .squat-week0 .squat-tm-eyebrow{color:var(--orange,#c84b11);font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;}
+          .squat-week0 h3{margin:.35rem 0 .5rem;font-size:1.1rem;color:#f5f2ee;}
+          .squat-week0 p{margin:.2rem 0;color:rgba(245,242,238,.66);font-size:.82rem;line-height:1.55;}
+          .squat-week0 ul{margin:.4rem 0;padding-left:1.1rem;color:rgba(245,242,238,.72);font-size:.82rem;line-height:1.6;}
+          .squat-week0 .squat-week0-calc{margin-top:.6rem;padding:.6rem .8rem;background:rgba(200,75,17,.09);border-radius:9px;color:#f5f2ee;font-size:.82rem;font-weight:600;}
+          .squat-faq{grid-column:1/-1;margin:.4rem 0 1.1rem;}
+          .squat-faq h3{font-size:1.15rem;color:#f5f2ee;margin:0 0 .1rem;}
+          .squat-faq > p{color:rgba(245,242,238,.55);font-size:.82rem;margin:0 0 .8rem;}
+          .squat-faq details{border:1px solid rgba(245,242,238,.1);border-radius:10px;margin-bottom:.5rem;background:rgba(245,242,238,.02);overflow:hidden;}
+          .squat-faq summary{cursor:pointer;list-style:none;padding:.75rem 1rem;color:#f5f2ee;font-size:.86rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+          .squat-faq summary::-webkit-details-marker{display:none;}
+          .squat-faq summary::after{content:'+';color:var(--orange,#c84b11);font-size:1.2rem;font-weight:700;flex-shrink:0;}
+          .squat-faq details[open] summary::after{content:'\2212';}
+          .squat-faq details[open] summary{border-bottom:1px solid rgba(245,242,238,.08);}
+          .squat-faq .squat-faq-a{padding:.7rem 1rem .9rem;color:rgba(245,242,238,.66);font-size:.82rem;line-height:1.6;}
         </style>
         <div class="squat-tm-card">
-          <div class="squat-tm-eyebrow">Ferramenta · Pesos do programa</div>
-          <h3>Calcula os teus pesos</h3>
-          <p class="squat-tm-sub">Mete o teu Training Max e vês logo o peso de cada série do programa. Valores arredondados a 2.5 kg. Se subires de Training Max, atualiza aqui.</p>
-          <div class="squat-tm-inputs">
-            <label>Back Squat · Training Max
-              <div class="squat-tm-inwrap"><input id="tm-back" type="number" inputmode="decimal" min="0" step="2.5" placeholder="ex: 100" oninput="renderSquatLoads()"><span>kg</span></div>
-            </label>
-            <label>Front Squat · Training Max
-              <div class="squat-tm-inwrap"><input id="tm-front" type="number" inputmode="decimal" min="0" step="2.5" placeholder="ex: 80" oninput="renderSquatLoads()"><span>kg</span></div>
-            </label>
+          <div class="squat-tm-top">
+            <div class="squat-tm-left">
+              <div class="squat-tm-eyebrow">Ferramenta · Pesos do programa</div>
+              <h3>Calcula os teus pesos</h3>
+              <p class="squat-tm-sub">Mete o teu Training Max e vês logo o peso de cada série do programa. Valores arredondados a 2.5 kg. Se subires de Training Max, atualiza aqui.</p>
+              <div class="squat-tm-inputs">
+                <label>Back Squat · Training Max
+                  <div class="squat-tm-inwrap"><input id="tm-back" type="number" inputmode="decimal" min="0" step="2.5" placeholder="ex: 100" oninput="renderSquatLoads()"><span>kg</span></div>
+                </label>
+                <label>Front Squat · Training Max
+                  <div class="squat-tm-inwrap"><input id="tm-front" type="number" inputmode="decimal" min="0" step="2.5" placeholder="ex: 80" oninput="renderSquatLoads()"><span>kg</span></div>
+                </label>
+              </div>
+            </div>
+            <div id="squat-tm-tables"><p class="squat-tm-empty">Insere os teus valores para veres o peso de cada percentagem.</p></div>
           </div>
-          <div id="squat-tm-tables"><p class="squat-tm-empty">Insere os teus valores acima para veres o peso de cada percentagem.</p></div>
+        </div>
+        <div class="squat-week0">
+          <div class="squat-tm-eyebrow">Antes da Semana 1 · Opcional</div>
+          <h3>Sessão 0 · Encontra o teu Training Max</h3>
+          <p>Se não tens um 1RM recente, faz esta sessão para calibrar o programa. Nunca comeces com um max-out real.</p>
+          <p><strong>Back Squat — sobe até um top set de 5 reps sólido:</strong></p>
+          <ul>
+            <li>~60% × 5 · ~70% × 5 · ~80% × 3</li>
+            <li>Carga pesada mas limpa × 5 (deixa 1-2 reps na reserva)</li>
+          </ul>
+          <div class="squat-week0-calc">1RM estimado = top set de 5 reps × 1.15 · Training Max = 1RM estimado × 0.90</div>
+          <p style="margin-top:.6rem;">Repete para o Front Squat 1 a 2 dias depois. Descansa 2-3 dias antes de arrancar a Semana 1 e mete os dois valores na calculadora acima.</p>
         </div>
         <div class="native-program-note"><strong>Warm-up técnico (12-18 min) antes de cada sessão:</strong> Bloco 1 geral 5-7 min (bike/row/ski fácil) · Bloco 2 mobilidade (ankle rocks, 90/90 hip switches, world's greatest stretch, dead bug, squat pry) · Bloco 3 squat prep (air squat tempo 3211, cossack squat, glute bridge, empty bar good morning, empty bar squat). Cues: tripod foot, joelhos acompanham dedos, brace antes de descer, controla a descida.</div>
         <div class="native-phase-grid"><div><strong>Fase 1</strong><span>Semanas 1-2 · Base</span></div><div><strong>Fase 2</strong><span>Semanas 3-4 · Build</span></div><div><strong>Fase 3</strong><span>Semanas 5-8 · Intensificação e Reteste</span></div></div>
@@ -5998,6 +6053,20 @@ html.pf-soon-locked #pf-soon { display: flex; }
         </div></article>
 
 
+        <div class="squat-faq">
+          <h3>Perguntas frequentes</h3>
+          <p>Dúvidas comuns antes e durante o programa.</p>
+          <details><summary>Posso fazer as 3 sessões em dias seguidos?</summary><div class="squat-faq-a">É possível, mas não é o ideal para as pernas. Tenta espaçar (ex: segunda, quarta, sexta/sábado). Se tiver mesmo de ser seguido, prioriza sono e hidratos e corta os acessórios pela metade.</div></details>
+          <details><summary>E se só posso treinar 2x por semana?</summary><div class="squat-faq-a">Faz sempre a Sessão 1 (Back Squat) e a Sessão 2 (Front Squat) e alterna a Sessão 3 semana sim, semana não. O ciclo estica um pouco no tempo mas mantém-se válido.</div></details>
+          <details><summary>Posso combinar com CrossFit ou Hybrid Race?</summary><div class="squat-faq-a">Sim. Em semanas com WODs pesados de pernas corta os acessórios pela metade e evita thrusters, wall balls, box jumps de muitas reps e lunges pesados no dia a seguir às sessões de squat.</div></details>
+          <details><summary>E se tiver dor no joelho, lombar ou anca?</summary><div class="squat-faq-a">Dor ativa é sinal de parar, não de continuar. Não treines através de dor: troca por uma regressão, corta volume e, se persistir, procura um profissional de saúde antes de retomar.</div></details>
+          <details><summary>Tenho de fazer os acessórios ou só o main lift?</summary><div class="squat-faq-a">O main lift é a prioridade. Se recuperas mal ou tens pouco tempo, mantém main lift + 1 exercício de posterior chain + 1 de core. Os acessórios servem o squat, não são o objetivo.</div></details>
+          <details><summary>E se saltar uma sessão?</summary><div class="squat-faq-a">Apanha onde ficaste — não comprimas duas sessões pesadas no mesmo dia. Perder uma sessão pontual não estraga o ciclo.</div></details>
+          <details><summary>Posso trocar o Front Squat por Goblet Squat?</summary><div class="squat-faq-a">Se ainda não consegues a rack position, sim, temporariamente. Trabalha a mobilidade de punho e t-spine em paralelo para voltares ao Front Squat o mais cedo possível.</div></details>
+          <details><summary>Preciso de cinto ou sapatilhas de squat?</summary><div class="squat-faq-a">Não são obrigatórios. Ajudam nas cargas altas (semanas 5-8), mas técnica primeiro. Usa o cinto só quando já não consegues manter o brace sozinho.</div></details>
+          <details><summary>Vou perder músculo por não treinar upper body?</summary><div class="squat-faq-a">Em 8 semanas, não. Se quiseres, acrescenta 1-2 exercícios leves de puxar/empurrar no fim das sessões, desde que não interfiram com a recuperação das pernas.</div></details>
+          <details><summary>Preciso de creatina ou proteína em pó?</summary><div class="squat-faq-a">Não são obrigatórios. A creatina é dos suplementos mais estudados e ajuda na força; proteína suficiente (comida ou whey) ajuda a recuperar. O programa funciona sem eles.</div></details>
+        </div>
         <div class="native-program-note"><strong>Progressão:</strong> se completares os sets com técnica limpa e RPE ≤ 8.5, mantém a progressão. Se falhares reps ou a técnica quebrar, repete a carga ou reduz 2.5-5%. Nunca sacrifiques profundidade, bracing ou controlo por percentagem. Se recuperas mal, mantém só main lift + 1 posterior chain + 1 core.</div>
         <div class="program-question-card"><div><span>Suporte</span><strong>Tens dúvidas sobre o programa?</strong><p>Fala connosco diretamente no Instagram — respondemos por mensagem a dúvidas de execução, cargas e progressão.</p></div><button onclick="window.open('https://instagram.com/peak_form.pt','_blank','noopener')">Falar no Instagram</button></div>
       </section>
@@ -7916,6 +7985,47 @@ function renderSquatLoads() {
   try { updateStoredState('squatTM', { back: backEl ? backEl.value : '', front: frontEl ? frontEl.value : '' }); } catch (e) {}
 }
 
+const squatCoachNotes = [
+  'hoje é encontrar o teu ritmo com percentagens moderadas. Não vais falhar reps. Se sentes que podias fazer mais, ótimo — o Training Max está bem calibrado.',
+  'o Front Squat vive da posição. Cotovelos altos, tronco direito. Se a barra rola para a frente, baixa a carga antes de baixar a qualidade.',
+  'volume com técnica. Os saltos servem para acordar o sistema nervoso — explosivos e sem pressa entre reps.',
+  'sobe o volume mantendo as reps limpas. O back-off a 75% deve ser desafiante, mas controlado do primeiro ao último set.',
+  'a pausa de 2s no fundo é para sentires a posição, não para descansar. Mantém o brace durante a pausa toda.',
+  'velocidade máxima em cada rep. Se a barra abrandar, para a série — hoje treina-se intenção, não fadiga.',
+  'primeira vez perto dos 90%. Respeita o descanso completo e ataca cada single com confiança.',
+  'cargas mais altas no Front. Se o cotovelo cair, é o sinal para parares a série. Qualidade acima de número.',
+  'semana de mais volume. Gere o esforço — deixa 1-2 reps na reserva no último set pesado.',
+  'toca em cargas pesadas em single, sem grinding. Se o 92% for lento, fica por aí. Não é dia de PR.',
+  'consolida a técnica do Front com o tempo controlado. Nada de heroísmos hoje.',
+  'isto não é descanso — é consolidar. Corta o volume, mantém a intenção na velocidade.',
+  'menos reps, mais carga. Aquece bem e ataca cada single com confiança.',
+  'pico de Front Squat. Foca no drive inicial — a saída do fundo define a rep.',
+  'a pausa constrói força no ponto mais fraco. 2s reais, sem perder tensão no fundo.',
+  '95% hoje. Não é PR, é exposição. Se voar, ótimo; se for duro, é informação para calibrar.',
+  'Front perto do máximo. Mantém a barra na posição e confia no que treinaste.',
+  'começa o taper. Velocidade fresca, sem acumular fadiga. A partir de agora, menos é mais.',
+  'afia sem cansar. Singles rápidos e limpos. O 97% é opcional — só se o 95% voar.',
+  'última afinação do Front antes do reteste. Qualidade acima de tudo.',
+  'descarrega a sério. Move pouco peso, com boa técnica, e recupera para o teste.',
+  'se seguiste o programa, tens quase de certeza um PR. Faz o setup como treinaste. E se falhares, é só informação para o próximo ciclo.',
+  'mesmo protocolo, cabeça fria. Para quando a velocidade cair ou a posição falhar.',
+  'escolhe a opção que fizer sentido para o teu dia. Fecha o ciclo com qualidade, não te destruas.'
+];
+
+function injectSquatCoachNotes() {
+  const pg = document.getElementById('page-program-squat');
+  if (!pg) return;
+  pg.querySelectorAll('.native-session-card').forEach((card, i) => {
+    if (card.querySelector('.session-coach-note')) return;
+    const note = squatCoachNotes[i];
+    if (!note) return;
+    const p = document.createElement('p');
+    p.className = 'session-coach-note';
+    p.innerHTML = '<strong>Nota do coach:</strong> ' + note;
+    card.appendChild(p);
+  });
+}
+
 function restoreSquatTM() {
   const s = (peakFormState && peakFormState.squatTM) || {};
   const backEl = document.getElementById('tm-back');
@@ -8886,7 +8996,7 @@ function showPage(page, _fromHistory) {
   const target = document.getElementById(`page-${page}`);
   if (target) target.classList.add('active');
   if (page === 'program-pullup' || page === 'program-bmu' || page === 'program-squat') setTimeout(initNativeSessionChecks, 0);
-  if (page === 'program-squat') setTimeout(restoreSquatTM, 0);
+  if (page === 'program-squat') { setTimeout(restoreSquatTM, 0); setTimeout(injectSquatCoachNotes, 0); }
   if (page === 'area') { setTimeout(loadUserPrograms, 0); setTimeout(function(){ switchAreaTab('programas'); }, 0); }
   if (page === 'admin') setTimeout(loadAdminData, 0);
   setTimeout(() => animateActivePage(page), 20);
