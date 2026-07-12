@@ -5605,13 +5605,14 @@ html.pf-soon-locked #pf-soon { display: flex; }
       <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
     <article class="public-program-card" data-category="strength">
-      <div class="program-badge">Brevemente · €15</div>
+      <div class="program-badge">Disponível agora</div>
       <h3>Squat Vol. 1</h3>
       <p>Queres subir os números no squat? É isso. 8 semanas de Back Squat e Front Squat com progressão em Training Max, acessórios de suporte e reteste seguro.</p>
       <div class="program-meta-public"><span>8 semanas</span><span>Strength</span><span>Intermédio</span></div>
       <div class="program-card-footer">
-        <button id="squat-card-btn" onclick="openProgram('squat')" class="pf-prog-btn-soon">Em breve</button>
-        <small id="squat-card-sub">Back Squat + Front Squat · progressão em % · reteste na Semana 8</small>
+        <div class="pf-prog-price-tag">€15 <span>· pagamento único</span></div>
+        <button id="squat-card-btn" onclick="openProgram('squat')">Comprar · €15</button>
+        <small id="squat-card-sub">Acesso imediato após pagamento</small>
       </div>
     </article>
     <article class="public-program-card locked" data-category="strength">
@@ -7703,7 +7704,7 @@ function openProgram(program) {
     return;
   }
   if (slug === 'squat') {
-    showPeakFormToast('Em breve', 'PeakForm Squat Vol. 1 estará disponível para compra brevemente.', '⏳');
+    if (typeof window.openCheckoutModal === 'function') window.openCheckoutModal('squat');
     return;
   }
   /* bmu ou outros sem acesso */
@@ -7731,10 +7732,16 @@ function refreshProgramCards() {
     bmuBtn.classList.remove('pf-prog-btn-soon');
   }
   var squatBtn = document.getElementById('squat-card-btn');
-  if (squatBtn && userPrograms.includes('squat')) {
-    squatBtn.textContent = 'Ver programa';
-    squatBtn.disabled = false;
+  var squatSub = document.getElementById('squat-card-sub');
+  if (squatBtn) {
     squatBtn.classList.remove('pf-prog-btn-soon');
+    if (userPrograms.includes('squat')) {
+      squatBtn.textContent = 'Ver programa';
+      if (squatSub) squatSub.textContent = 'Acesso pela Área do Atleta';
+    } else {
+      squatBtn.textContent = 'Comprar · €15';
+      if (squatSub) squatSub.textContent = 'Acesso imediato após pagamento';
+    }
   }
 }
 
@@ -9698,7 +9705,9 @@ window.addEventListener('scroll', () => {
   });
 
   window.openCheckoutModal = function(program) {
-    _overlay.setAttribute('data-program', program || 'pullup');
+    program = program || 'pullup';
+    _overlay.setAttribute('data-program', program);
+    pfApplyProgramInfo(program);
     var main = _overlay.querySelector('.pf-co-main-state');
     var soon = _overlay.querySelector('.pf-co-soon-state');
     if (main) main.classList.remove('hidden');
@@ -9714,8 +9723,48 @@ window.addEventListener('scroll', () => {
 
   /* Stripe payment links por programa */
   var PF_STRIPE_LINKS = {
-    pullup: 'https://buy.stripe.com/6oU6oz2Txbxs6YLdjz63K00'
+    pullup: 'https://buy.stripe.com/6oU6oz2Txbxs6YLdjz63K00',
+    squat: 'https://buy.stripe.com/9B628jfGj0SO4QDbbr63K01'
   };
+
+  /* Conteúdo do modal por programa */
+  var PF_PROGRAM_INFO = {
+    pullup: {
+      badge: 'Gymnastics · Iniciante / Intermédio',
+      title: 'Pull-Up <em>Program</em>',
+      meta: ['6 semanas', '18 sessões', '3× por semana'],
+      includes: [
+        'Progressão estruturada semana a semana',
+        'Registo de RPE, notas e sessões concluídas',
+        'Vídeos técnicos e notas de coaching',
+        'Suporte técnico pontual sobre o programa'
+      ],
+      price: '€15'
+    },
+    squat: {
+      badge: 'Strength · Intermédio',
+      title: 'PeakForm <em>Squat Vol. 1</em>',
+      meta: ['8 semanas', '24 sessões', '3× por semana'],
+      includes: [
+        'Progressão por percentagens do Training Max',
+        'Calculadora automática de pesos por sessão',
+        'Sessão 0, notas de coach em cada sessão e FAQ',
+        'Registo de RPE, notas e sessões concluídas'
+      ],
+      price: '€15'
+    }
+  };
+
+  function pfApplyProgramInfo(program) {
+    var info = PF_PROGRAM_INFO[program] || PF_PROGRAM_INFO.pullup;
+    var main = _overlay.querySelector('.pf-co-main-state');
+    if (!main) return;
+    var badge = main.querySelector('.pf-co-badge'); if (badge) badge.textContent = info.badge;
+    var h3 = main.querySelector('h3'); if (h3) h3.innerHTML = info.title;
+    var meta = main.querySelector('.pf-co-meta'); if (meta) meta.innerHTML = info.meta.map(function(m){ return '<span>' + m + '</span>'; }).join('');
+    var inc = main.querySelector('.pf-co-includes'); if (inc) inc.innerHTML = info.includes.map(function(x){ return '<li>' + x + '</li>'; }).join('');
+    var strong = main.querySelector('.pf-co-price-row strong'); if (strong) strong.textContent = info.price;
+  }
 
   window.handleCheckoutCTA = async function() {
     var program = _overlay.getAttribute('data-program') || 'pullup';
