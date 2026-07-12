@@ -5604,12 +5604,15 @@ html.pf-soon-locked #pf-soon { display: flex; }
       <div class="program-meta-public"><span>Strength</span><span>Geral</span><span class="vote-count" data-votes="0">0 interessados</span></div>
       <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
     </article>
-    <article class="public-program-card locked" data-category="strength">
-      <div class="program-badge">Em breve</div>
-      <h3>Squat Vol.1</h3>
-      <p>Queres subir os números no squat? É isso. Progressão de carga, frequência e acessório para um squat mais forte.</p>
-      <div class="program-meta-public"><span>Strength</span><span>Squat</span><span class="vote-count" data-votes="0">0 interessados</span></div>
-      <div class="program-card-footer"><button onclick="openLeadFromCard(this)">Tenho interesse</button><small>Ajuda-nos a definir prioridade</small></div>
+    <article class="public-program-card" data-category="strength">
+      <div class="program-badge">Brevemente · €15</div>
+      <h3>Squat Vol. 1</h3>
+      <p>Queres subir os números no squat? É isso. 8 semanas de Back Squat e Front Squat com progressão em Training Max, acessórios de suporte e reteste seguro.</p>
+      <div class="program-meta-public"><span>8 semanas</span><span>Strength</span><span>Intermédio</span></div>
+      <div class="program-card-footer">
+        <button id="squat-card-btn" onclick="openProgram('squat')" class="pf-prog-btn-soon">Em breve</button>
+        <small id="squat-card-sub">Back Squat + Front Squat · progressão em % · reteste na Semana 8</small>
+      </div>
     </article>
     <article class="public-program-card locked" data-category="strength">
       <div class="program-badge">Em breve</div>
@@ -5887,6 +5890,93 @@ html.pf-soon-locked #pf-soon { display: flex; }
         <div class="feedback-checkpoint-card"><div><span>Checkpoint · Fim da Semana 6</span><strong>Feedback final</strong><p>No final do programa, regista se já conseguiste fazer o primeiro Bar Muscle-Up, o que mais ajudou, o que bloqueou a evolução e se recomendarias o programa.</p></div><button onclick="openFeedbackForm('week6','bmu')">Preencher feedback final</button></div>
         <div class="native-program-note"><strong>Regras gerais:</strong> ajustar a escala se a técnica quebrar, respeitar descanso, manter reps limpas e evitar acumular falhas desnecessárias.</div>
 <div class="program-question-card"><div><span>Suporte pontual</span><strong>Tens dúvidas sobre o programa?</strong><p>Usa este botão para enviar uma dúvida pontual sobre execução técnica, timing do kip, transição, escolha da banda ou bloqueios no programa Bar Muscle-Up.</p></div><button onclick="openSupportForm('bmu')">Enviar dúvida</button></div>
+      </section>
+    </main>
+  </section>
+</div>
+
+<div id="page-program-squat" class="pf-page">
+  <section class="program-detail-page">
+    <header class="dash-nav">
+      <div class="dash-brand" onclick="showPage('area')">Peak<span>Form</span></div>
+      <div class="dash-nav-right"><span>Squat Vol. 1</span><button onclick="showPage('area')">Voltar à Área do Atleta</button></div>
+    </header>
+    <main class="program-detail-wrap">
+      <section class="program-detail-hero">
+        <div>
+          <div class="dash-eyebrow">PeakForm · Strength · Programa completo</div>
+          <h2>PeakForm <em>Squat Vol. 1</em></h2>
+          <p>Programa de 8 semanas, 3 sessões por semana, para construir um Back Squat e Front Squat mais fortes e sólidos, com progressão estruturada por percentagens, acessórios de suporte, warm-up técnico e reteste seguro.</p>
+          <div class="program-detail-actions"><button onclick="showPage('area')">Voltar à Área do Atleta</button></div>
+        </div>
+        <div class="program-stats-card">
+          <div><strong>8</strong><span>Semanas</span></div>
+          <div><strong>3×</strong><span>Por semana</span></div>
+          <div><strong>45-60'</strong><span>Por sessão</span></div>
+          <div><strong>Strength</strong><span>Squat</span></div>
+        </div>
+      </section>
+      <section class="native-program-shell">
+        <div class="native-program-intro"><span>Estrutura do programa</span><h3>PeakForm Squat Vol. 1 · 8 semanas</h3><p>3 sessões por semana: Sessão 1 Back Squat pesado, Sessão 2 Front Squat, Sessão 3 variação com intensidade controlada. Cada sessão tem main lift, back-off e acessórios.</p></div>
+        <div class="native-program-note"><strong>Intensidade:</strong> as percentagens usam o <strong>Training Max</strong> (90-95% do 1RM atual), não o 1RM real. Sem 1RM, estima com 3RM/5RM recente ou faz um top set técnico de 3-5 reps. Nunca abras o programa com um max-out real.</div>
+        <div class="native-program-note"><strong>Warm-up técnico (12-18 min) antes de cada sessão:</strong> Bloco 1 geral 5-7 min (bike/row/ski fácil) · Bloco 2 mobilidade (ankle rocks, 90/90 hip switches, world's greatest stretch, dead bug, squat pry) · Bloco 3 squat prep (air squat tempo 3211, cossack squat, glute bridge, empty bar good morning, empty bar squat). Cues: tripod foot, joelhos acompanham dedos, brace antes de descer, controla a descida.</div>
+        <div class="native-phase-grid"><div><strong>Fase 1</strong><span>Semanas 1-2 · Base</span></div><div><strong>Fase 2</strong><span>Semanas 3-4 · Build</span></div><div><strong>Fase 3</strong><span>Semanas 5-8 · Intensificação e Reteste</span></div></div>
+        <div class="native-program-progress" id="squat-progress-box"><div><h3>Progresso do <em>programa</em></h3><div class="native-progress-meta"><span id="squat-progress-label">0/24 sessões concluídas</span><span id="squat-progress-percent">0%</span></div><div class="native-progress-bar"><div class="native-progress-fill" id="squat-progress-fill"></div></div></div><div class="native-progress-count" id="squat-progress-count">0/24</div></div>
+
+        <article class="native-week-card"><div class="native-week-head" onclick="toggleNativeWeek(this)"><div><span>Fase 1 · Base</span><h3>Semana 1 · Entrar no volume e consolidar técnica</h3><p>Objetivo: entrar no volume de squat com percentagens moderadas, consolidar técnica e reencontrar os padrões. Não vais falhar reps.</p></div><div class="native-week-toggle">Ver sessões</div></div><div class="native-week-body">
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 1 · Back Squat Base</span><strong>Back Squat · Back-off · Romanian Deadlift · Split Squat · Core</strong></div><ul class="native-session-list"><li>Back Squat - 60% × 5 · 70% × 4 · 80% × 3 · 85% × 2 · descanso 3-5 min</li><li>Back-off Back Squat - 3 séries × 5 @ 70% · descanso 2-3 min</li><li>Romanian Deadlift - 3 séries × 8 · descanso 90-120s</li><li>Split Squat - 3 séries × 8/lado · descanso 90s</li><li>Dead Bug ou Hollow Hold - 3 séries × 30s · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 2 · Front Squat Volume</span><strong>Front Squat · Goblet Squat tempo · Hip Thrust · Back Extension · Side Plank</strong></div><ul class="native-session-list"><li>Front Squat - 55% × 8 · 60% × 8 · 65% × 6 · 70% × 6 · descanso 2-3 min</li><li>Goblet Squat tempo 3211 - 3 séries × 8 · descanso 2-3 min</li><li>Hip Thrust - 4 séries × 8 · descanso 90-120s</li><li>Back Extension - 3 séries × 12 · descanso 60-90s</li><li>Side Plank - 3 séries × 30s/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 3 · Back Squat Volume</span><strong>Back Squat · Box Jump · Good Morning · Walking Lunge · Calf Raise</strong></div><ul class="native-session-list"><li>Back Squat - 65% × 8 · 70% × 6 · 75% × 5 · 75% × 5 · descanso 2-3 min</li><li>Box Jump ou Vertical Jump - 5 séries × 3 · descanso 60-90s</li><li>Good Morning leve - 3 séries × 10 · descanso 60-90s</li><li>Walking Lunge - 3 séries × 10/lado · descanso 90s</li><li>Calf Raise - 3 séries × 15 · descanso 60s</li></ul></div>
+        </div></article>
+
+        <article class="native-week-card"><div class="native-week-head" onclick="toggleNativeWeek(this)"><div><span>Fase 1 · Base</span><h3>Semana 2 · Aumentar volume sem fadiga excessiva</h3><p>Objetivo: subir o volume mantendo qualidade, introduzir speed squat e pausa no Front Squat.</p></div><div class="native-week-toggle">Ver sessões</div></div><div class="native-week-body">
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 1 · Back Squat Volume Progressivo</span><strong>Back Squat · Back-off · Romanian Deadlift · Bulgarian Split Squat · Pallof Press</strong></div><ul class="native-session-list"><li>Back Squat - 60% × 5 · 70% × 5 · 80% × 4 · 85% × 3 · descanso 3-5 min</li><li>Back-off Back Squat - 4 séries × 4 @ 75% · descanso 2-3 min</li><li>Romanian Deadlift - 4 séries × 6 · descanso 90-120s</li><li>Bulgarian Split Squat - 3 séries × 8/lado · descanso 90s</li><li>Pallof Press - 3 séries × 12/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 2 · Front Squat Posição</span><strong>Front Squat · Paused Front Squat · Hip Thrust · Hamstring Curl · Copenhagen Plank</strong></div><ul class="native-session-list"><li>Front Squat - 60% × 6 · 65% × 6 · 70% × 5 · 75% × 4 · descanso 2-3 min</li><li>Paused Front Squat - 3 séries × 3 @ 60% · pausa 2s no fundo · descanso 2-3 min</li><li>Hip Thrust - 4 séries × 8 · descanso 90-120s</li><li>Hamstring Curl - 3 séries × 10 · descanso 60-90s</li><li>Copenhagen Plank - 2 séries × 20s/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 3 · Speed + Volume</span><strong>Speed Back Squat · Front Squat · Sled Push/Pull · Step-up · Back Extension</strong></div><ul class="native-session-list"><li>Speed Back Squat - 6 séries × 3 @ 55-60% · intenção máxima de velocidade · descanso 60-90s</li><li>Front Squat - 3 séries × 5 @ 65% · descanso 2-3 min</li><li>Sled Push/Pull (opcional) - 6-8 min · 20m push + 20m pull · descanso 45-75s · RPE 7</li><li>Step-up - 3 séries × 10/lado · descanso 75-90s</li><li>Back Extension - 3 séries × 12 · descanso 60-90s</li></ul></div>
+        </div></article>
+
+        <article class="native-week-card"><div class="native-week-head" onclick="toggleNativeWeek(this)"><div><span>Fase 2 · Build</span><h3>Semana 3 · Subir intensidade e manter volume</h3><p>Objetivo: começar a expor o corpo a cargas mais altas mantendo trabalho de volume.</p></div><div class="native-week-toggle">Ver sessões</div></div><div class="native-week-body">
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 1 · Back Squat Intensidade</span><strong>Back Squat · Back-off · Deficit Romanian Deadlift · Split Squat · Weighted Plank</strong></div><ul class="native-session-list"><li>Back Squat - 60% × 4 · 70% × 3 · 80% × 3 · 87% × 3 · 90% × 2 · descanso 3-5 min</li><li>Back-off Back Squat - 3 séries × 4 @ 80% · descanso 2-3 min</li><li>Deficit Romanian Deadlift - 3 séries × 6 · descanso 90-120s</li><li>Split Squat - 4 séries × 6/lado · descanso 90s</li><li>Weighted Plank - 3 séries × 30s · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 2 · Front Squat Build</span><strong>Front Squat · Paused Front Squat · Hip Thrust · Good Morning · Hanging Knee Raise</strong></div><ul class="native-session-list"><li>Front Squat - 60% × 5 · 70% × 4 · 80% × 3 · 85% × 2 · descanso 2-3 min</li><li>Paused Front Squat - 4 séries × 2 @ 70% · descanso 2-3 min</li><li>Hip Thrust - 5 séries × 5 · descanso 90-120s</li><li>Good Morning leve/moderado - 3 séries × 8 · descanso 60-90s</li><li>Hanging Knee Raise - 3 séries × 10 · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 3 · Back Squat Volume Forte</span><strong>Back Squat · Box Jump · Walking Lunge · Back Extension · Calf Raise</strong></div><ul class="native-session-list"><li>Back Squat - 65% × 8 · 70% × 8 · 75% × 6 · 80% × 4 · descanso 2-3 min</li><li>Box Jump - 6 séries × 2 · descanso 60-90s</li><li>Walking Lunge - 3 séries × 12/lado · descanso 90s</li><li>Back Extension - 3 séries × 15 · descanso 60-90s</li><li>Calf Raise - 3 séries × 15 · descanso 60s</li></ul></div>
+        </div></article>
+
+        <div class="feedback-checkpoint-card"><div><span>Checkpoint · Fim da Semana 4</span><strong>Feedback intermédio</strong><p>Depois de completares a primeira metade do programa, envia uma atualização rápida sobre a plataforma, o programa, dificuldades técnicas e dúvidas que tenham surgido.</p></div><button onclick="openFeedbackForm('week3','squat')">Preencher feedback</button></div>
+
+        <article class="native-week-card"><div class="native-week-head" onclick="toggleNativeWeek(this)"><div><span>Fase 2 · Build</span><h3>Semana 4 · Primeiros singles técnicos, sem max-out</h3><p>Objetivo: tocar cargas pesadas em single técnico e consolidar o volume acumulado. Esta semana não é descanso: cortamos ~20% do trabalho e mantemos a intensidade.</p></div><div class="native-week-toggle">Ver sessões</div></div><div class="native-week-body">
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 1 · Back Squat Single Técnico</span><strong>Back Squat · Back-off · Romanian Deadlift · Bulgarian Split Squat · Dead Bug</strong></div><ul class="native-session-list"><li>Back Squat - 60% × 4 · 70% × 3 · 80% × 2 · 87% × 1 · 92% × 1 · descanso 3-5 min</li><li>Back-off Back Squat - 3 séries × 3 @ 80% · descanso 2-3 min</li><li>Romanian Deadlift - 3 séries × 6 · descanso 90-120s</li><li>Bulgarian Split Squat - 3 séries × 6/lado · descanso 90s</li><li>Dead Bug - 3 séries × 8/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 2 · Front Squat Volume Médio</span><strong>Front Squat · Tempo Front Squat · Hip Thrust · Hamstring Curl · Side Plank</strong></div><ul class="native-session-list"><li>Front Squat - 65% × 6 · 70% × 5 · 75% × 4 · 80% × 3 · descanso 2-3 min</li><li>Tempo Front Squat - 3 séries × 3 @ 60% · tempo 3211 · descanso 2-3 min</li><li>Hip Thrust - 4 séries × 6 · descanso 90-120s</li><li>Hamstring Curl - 3 séries × 10 · descanso 60-90s</li><li>Side Plank - 3 séries × 30s/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 3 · Redução de Volume</span><strong>Speed Back Squat · Front Squat · Sled Push/Pull · Back Extension · Mobility</strong></div><ul class="native-session-list"><li>Speed Back Squat - 8 séries × 2 @ 60% · descanso 60-90s</li><li>Front Squat - 3 séries × 3 @ 70% · descanso 2-3 min</li><li>Sled Push/Pull (opcional) - 6 min · 20m push + 20m pull · descanso 45-75s · RPE 7</li><li>Back Extension - 2 séries × 12 · descanso 60-90s</li><li>Mobility cooldown - 8-10 min</li></ul></div>
+        </div></article>
+
+        <article class="native-week-card"><div class="native-week-head" onclick="toggleNativeWeek(this)"><div><span>Fase 3 · Intensificação</span><h3>Semana 5 · Menos reps, cargas mais altas</h3><p>Objetivo: reduzir reps e subir carga. Trabalho neural com back-off de qualidade.</p></div><div class="native-week-toggle">Ver sessões</div></div><div class="native-week-body">
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 1 · Back Squat Intensificação</span><strong>Back Squat · Back-off · Deficit Romanian Deadlift · Split Squat · Pallof Press</strong></div><ul class="native-session-list"><li>Back Squat - 65% × 4 · 75% × 4 · 85% × 3 · 90% × 2 · 92% × 2 · descanso 3-5 min</li><li>Back-off Back Squat - 3 séries × 3 @ 82% · descanso 2-3 min</li><li>Deficit Romanian Deadlift - 4 séries × 5 · descanso 90-120s</li><li>Split Squat - 3 séries × 6/lado · descanso 90s</li><li>Pallof Press - 3 séries × 12/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 2 · Front Squat Forte</span><strong>Front Squat · Back-off · Hip Thrust · Good Morning · Hanging Knee Raise</strong></div><ul class="native-session-list"><li>Front Squat - 60% × 4 · 70% × 3 · 80% × 2 · 87% × 2 · 90% × 1 · descanso 3-5 min</li><li>Back-off Front Squat - 3 séries × 3 @ 75% · descanso 2-3 min</li><li>Hip Thrust - 4 séries × 6 · descanso 90-120s</li><li>Good Morning - 3 séries × 8 · descanso 60-90s</li><li>Hanging Knee Raise - 3 séries × 10 · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 3 · Pause Squat</span><strong>Pause Back Squat · Back Squat · Walking Lunge · Back Extension · Box Jump</strong></div><ul class="native-session-list"><li>Pause Back Squat - 3 séries × 4 @ 65% · pausa 2s no fundo · descanso 2-3 min</li><li>Back Squat - 3 séries × 5 @ 72% · descanso 2-3 min</li><li>Walking Lunge - 3 séries × 10/lado · descanso 90s</li><li>Back Extension - 3 séries × 12 · descanso 60-90s</li><li>Box Jump - 5 séries × 2 · descanso 60-90s</li></ul></div>
+        </div></article>
+
+        <article class="native-week-card"><div class="native-week-head" onclick="toggleNativeWeek(this)"><div><span>Fase 3 · Intensificação</span><h3>Semana 6 · Exposição a 90-95% sem grinder</h3><p>Objetivo: tocar cargas muito altas com velocidade, sem reps grinder. Início do taper.</p></div><div class="native-week-toggle">Ver sessões</div></div><div class="native-week-body">
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 1 · Back Squat Heavy Exposure</span><strong>Back Squat · Back-off · Romanian Deadlift · Bulgarian Split Squat · Weighted Plank</strong></div><ul class="native-session-list"><li>Back Squat - 60% × 3 · 70% × 3 · 80% × 2 · 90% × 2 · 95% × 1 · descanso 3-5 min</li><li>Back-off Back Squat - 2 séries × 3 @ 82% · descanso 2-3 min</li><li>Romanian Deadlift - 3 séries × 5 · descanso 90-120s</li><li>Bulgarian Split Squat - 2 séries × 8/lado · descanso 90s</li><li>Weighted Plank - 3 séries × 30s · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 2 · Front Squat Intensificação</span><strong>Front Squat · Back-off · Hip Thrust · Hamstring Curl · Copenhagen Plank</strong></div><ul class="native-session-list"><li>Front Squat - 60% × 3 · 70% × 3 · 80% × 2 · 85% × 2 · 90% × 1 · descanso 3-5 min</li><li>Back-off Front Squat - 3 séries × 2 @ 80% · descanso 2-3 min</li><li>Hip Thrust - 3 séries × 6 · descanso 90-120s</li><li>Hamstring Curl - 3 séries × 8 · descanso 60-90s</li><li>Copenhagen Plank - 2 séries × 20s/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 3 · Speed / Taper Inicial</span><strong>Speed Back Squat · Front Squat · Sled Push/Pull · Back Extension · Mobility</strong></div><ul class="native-session-list"><li>Speed Back Squat - 6 séries × 2 @ 60% · descanso 60-90s</li><li>Front Squat - 3 séries × 3 @ 70% · descanso 2-3 min</li><li>Sled Push/Pull (opcional) - 5-8 min · 20m push + 20m pull · descanso 45-75s · RPE 7</li><li>Back Extension - 2 séries × 12 · descanso 60-90s</li><li>Mobility cooldown</li></ul></div>
+        </div></article>
+
+        <article class="native-week-card"><div class="native-week-head" onclick="toggleNativeWeek(this)"><div><span>Fase 3 · Peak</span><h3>Semana 7 · Preparar reteste, volume reduzido</h3><p>Objetivo: afiar com singles de qualidade e reduzir volume. Chegar à Semana 8 fresco.</p></div><div class="native-week-toggle">Ver sessões</div></div><div class="native-week-body">
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 1 · Back Squat Peak Técnico</span><strong>Back Squat · Back-off · Romanian Deadlift · Split Squat · Dead Bug</strong></div><ul class="native-session-list"><li>Back Squat - 60% × 3 · 70% × 2 · 80% × 2 · 87% × 1 · 92% × 1 · 95% × 1 · descanso 3-5 min</li><li>Opcional - se 95% for rápido e limpo, 97% × 1</li><li>Back-off Back Squat - 2 séries × 2 @ 80% · descanso 2-3 min</li><li>Romanian Deadlift - 2 séries × 5 · descanso 90-120s</li><li>Split Squat - 2 séries × 6/lado · descanso 90s</li><li>Dead Bug - 2 séries × 8/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 2 · Front Squat Peak Técnico</span><strong>Front Squat · Back-off · Hip Thrust · Back Extension · Side Plank</strong></div><ul class="native-session-list"><li>Front Squat - 60% × 3 · 70% × 2 · 80% × 2 · 87% × 1 · 92% × 1 · descanso 3-5 min</li><li>Opcional - se 92% for rápido e limpo, 95% × 1</li><li>Back-off Front Squat - 2 séries × 2 @ 75% · descanso 2-3 min</li><li>Hip Thrust - 2 séries × 6 · descanso 90-120s</li><li>Back Extension - 2 séries × 10 · descanso 60-90s</li><li>Side Plank - 2 séries × 30s/lado · descanso 30-60s</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 3 · Deload Ativo</span><strong>Back Squat leve · Goblet Squat tempo · Box Jump · Mobility · Breathing</strong></div><ul class="native-session-list"><li>Back Squat - 5 séries × 2 @ 60% · descanso 2 min</li><li>Goblet Squat tempo 3211 - 3 séries × 6 · descanso 60-90s</li><li>Box Jump leve - 4 séries × 2 · descanso 60-90s</li><li>Mobility - 12 min</li><li>Breathing reset - 3 min</li></ul></div>
+        </div></article>
+
+        <article class="native-week-card"><div class="native-week-head" onclick="toggleNativeWeek(this)"><div><span>Fase 3 · Reteste</span><h3>Semana 8 · Reteste seguro · e1RM / top single técnico</h3><p>Objetivo: encontrar um top single técnico sem grinder. Se seguiste o programa, tens quase de certeza um PR. O teste acaba quando a velocidade cai, a profundidade falha, o tronco colapsa ou aparece dor.</p></div><div class="native-week-toggle">Ver sessões</div></div><div class="native-week-body">
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 1 · Reteste Back Squat</span><strong>Aquecimento progressivo · Back Squat top single · Back-off · Acessórios leves</strong></div><ul class="native-session-list"><li>Aquecimento - barra × 8 · 40% × 5 · 55% × 3 · 70% × 2 · 80% × 1 · 87% × 1 · 92% × 1</li><li>Back Squat top single - 97% × 1 se limpo · 100-103% × 1 opcional se 97% voou</li><li>Back-off opcional - Back Squat 2 séries × 3 @ 75%</li><li>Back Extension - 2 séries × 10 · descanso 60-90s</li><li>Dead Bug - 2 séries × 8/lado</li><li>Mobility cooldown</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 2 · Reteste Front Squat</span><strong>Aquecimento progressivo · Front Squat top single · Back-off · Acessórios leves</strong></div><ul class="native-session-list"><li>Aquecimento - barra × 8 · 40% × 5 · 55% × 3 · 70% × 2 · 80% × 1 · 87% × 1 · 92% × 1</li><li>Front Squat top single - 97-100% × 1 opcional se limpo</li><li>Back-off opcional - Front Squat 2 séries × 2 @ 75%</li><li>Hip Thrust - 2 séries × 8 · descanso 90-120s</li><li>Side Plank - 2 séries × 30s/lado</li><li>Mobility cooldown</li></ul></div>
+          <div class="native-session-card"><div class="native-session-head"><span>Sessão 3 · Consolidação / Benchmark</span><strong>Escolher uma opção · 1RM técnico · Quality Test · Deload final</strong></div><ul class="native-session-list"><li>Opção A · 1RM técnico - Back Squat 80% × max reps (cap 8) · Front Squat 75% × max reps (cap 8)</li><li>Opção B · Squat Quality Test - EMOM 10 min · 2 Back Squats @ 70% · score = qualidade média dos 10 sets</li><li>Opção C · Deload final - Back Squat 3 × 3 @ 60% · Front Squat 3 × 2 @ 60% · Mobility 15 min</li></ul></div>
+        </div></article>
+
+        <div class="feedback-checkpoint-card"><div><span>Checkpoint · Fim da Semana 8</span><strong>Feedback final</strong><p>No final do programa, regista os teus novos valores de Back Squat e Front Squat, o que mais ajudou, o que bloqueou a evolução e se recomendarias o programa.</p></div><button onclick="openFeedbackForm('week6','squat')">Preencher feedback final</button></div>
+
+        <div class="native-program-note"><strong>Progressão:</strong> se completares os sets com técnica limpa e RPE ≤ 8.5, mantém a progressão. Se falhares reps ou a técnica quebrar, repete a carga ou reduz 2.5-5%. Nunca sacrifiques profundidade, bracing ou controlo por percentagem. Se recuperas mal, mantém só main lift + 1 posterior chain + 1 core.</div>
+        <div class="program-question-card"><div><span>Suporte pontual</span><strong>Tens dúvidas sobre o programa?</strong><p>Usa este botão para enviar uma dúvida pontual sobre execução técnica, escolha de carga, cálculo do Training Max, acessórios ou adaptação do Squat Vol. 1.</p></div><button onclick="openSupportForm('squat')">Enviar dúvida</button></div>
       </section>
     </main>
   </section>
@@ -6515,6 +6605,14 @@ html.pf-soon-locked #pf-soon { display: flex; }
                 <div class="program-row-meta"><small>6 semanas</small><small>18 sessões</small><small>Nível 2</small></div>
               </div>
               <button onclick="event.stopPropagation(); openProgram('bmu')">Abrir</button>
+            </div>
+            <div class="program-row" data-program-slug="squat" onclick="openProgram('squat')" style="display:none">
+              <div>
+                <strong>Squat Vol. 1</strong>
+                <span>Strength · Disponível</span>
+                <div class="program-row-meta"><small>8 semanas</small><small>24 sessões</small><small>Intermédio</small></div>
+              </div>
+              <button onclick="event.stopPropagation(); openProgram('squat')">Abrir</button>
             </div>
             <div id="dashboard-programs-empty" style="display:none; grid-column:1/-1; padding:1.5rem 0;">
               <p style="color:var(--warm-gray);font-size:.85rem;margin-bottom:.75rem;">Ainda não tens nenhum programa ativo.</p>
@@ -7229,7 +7327,7 @@ async function loadAdminData() {
     const feedbackList = el('admin-feedback-list');
     if (feedbackList) {
       const delStyle = 'background:rgba(180,30,30,.12);border:1px solid rgba(180,30,30,.3);border-radius:4px;color:#e05555;font-size:.65rem;padding:.2rem .5rem;cursor:pointer;flex-shrink:0;';
-      const programLabel = p => p === 'bmu' ? 'Bar Muscle-Up' : 'Pull-Up';
+      const programLabel = p => p === 'bmu' ? 'Bar Muscle-Up' : p === 'squat' ? 'Squat Vol. 1' : 'Pull-Up';
       const checkpointLabel = c => c === 'week6' ? 'Semana 6 · Final' : 'Semana 3 · Intermédio';
       feedbackList.innerHTML = (feedbackData || []).length
         ? (feedbackData || []).map(r => {
@@ -7280,8 +7378,8 @@ async function loadAdminData() {
       accessMap[r.user_id].push({ slug: r.program_slug, id: r.id });
     });
 
-    const progNames = { pullup: 'Pull-Up', bmu: 'Bar Muscle-Up' };
-    const allSlugs  = ['pullup', 'bmu'];
+    const progNames = { pullup: 'Pull-Up', bmu: 'Bar Muscle-Up', squat: 'Squat Vol. 1' };
+    const allSlugs  = ['pullup', 'bmu', 'squat'];
     const usersList = el('admin-users-list');
     if (usersList) {
       usersList.innerHTML = (allProfiles || []).length
@@ -7501,15 +7599,19 @@ async function adminDeleteLead(id) {
 }
 
 function openProgram(program) {
-  const slug = program === 'bmu' ? 'bmu' : 'pullup';
+  const slug = program === 'bmu' ? 'bmu' : program === 'squat' ? 'squat' : 'pullup';
   if (userPrograms.includes(slug)) {
     activeDashboardProgram = slug;
     updateStoredState('activeDashboardProgram', activeDashboardProgram);
-    showPage(slug === 'bmu' ? 'program-bmu' : 'program-pullup');
+    showPage(getBackPage(slug));
     return;
   }
   if (slug === 'pullup') {
     if (typeof window.openCheckoutModal === 'function') window.openCheckoutModal('pullup');
+    return;
+  }
+  if (slug === 'squat') {
+    showPeakFormToast('Em breve', 'PeakForm Squat Vol. 1 estará disponível para compra brevemente.', '⏳');
     return;
   }
   /* bmu ou outros sem acesso */
@@ -7535,6 +7637,12 @@ function refreshProgramCards() {
     bmuBtn.textContent = 'Ver programa';
     bmuBtn.disabled = false;
     bmuBtn.classList.remove('pf-prog-btn-soon');
+  }
+  var squatBtn = document.getElementById('squat-card-btn');
+  if (squatBtn && userPrograms.includes('squat')) {
+    squatBtn.textContent = 'Ver programa';
+    squatBtn.disabled = false;
+    squatBtn.classList.remove('pf-prog-btn-soon');
   }
 }
 
@@ -7612,7 +7720,7 @@ function initNativeSessionChecks() {
   document.querySelectorAll('.pf-page.active .native-session-card').forEach((card, index) => {
     const head = card.querySelector('.native-session-head');
     const activePage = card.closest('.pf-page');
-    const program = activePage && activePage.id === 'page-program-bmu' ? 'bmu' : 'pullup';
+    const program = activePage && activePage.id === 'page-program-bmu' ? 'bmu' : activePage && activePage.id === 'page-program-squat' ? 'squat' : 'pullup';
     card.dataset.program = program;
     card.dataset.sessionIndex = String(index);
     card.onclick = () => openSessionDetail(program, index);
@@ -7666,6 +7774,7 @@ function toggleSessionComplete(card) {
 function updateAllProgramProgress() {
   updateProgramProgressByPage('page-program-pullup', 'pullup');
   updateProgramProgressByPage('page-program-bmu', 'bmu');
+  updateProgramProgressByPage('page-program-squat', 'squat');
   updateDashboardProgress();
 }
 
@@ -7735,8 +7844,37 @@ function getBmuSessionData() {
   ];
 }
 
+function getSquatSessionData() {
+  return [
+    { week: 1, title: 'Semana 1 · Sessão 1 · Back Squat Base', phase: 'Base', desc: 'Objetivo: entrar no volume e consolidar técnica com percentagens moderadas.', items: ['Back Squat pesado', 'Back-off 3×5 @ 70%', 'Romanian Deadlift', 'Split Squat', 'Core'] },
+    { week: 1, title: 'Semana 1 · Sessão 2 · Front Squat Volume', phase: 'Base', desc: 'Objetivo: acumular volume de Front Squat e trabalhar posição com tempo.', items: ['Front Squat', 'Goblet Squat tempo 3211', 'Hip Thrust', 'Back Extension', 'Side Plank'] },
+    { week: 1, title: 'Semana 1 · Sessão 3 · Back Squat Volume', phase: 'Base', desc: 'Objetivo: volume de Back Squat com trabalho de potência.', items: ['Back Squat', 'Box Jump', 'Good Morning', 'Walking Lunge', 'Calf Raise'] },
+    { week: 2, title: 'Semana 2 · Sessão 1 · Back Squat Volume Progressivo', phase: 'Base', desc: 'Objetivo: aumentar volume sem fadiga excessiva.', items: ['Back Squat', 'Back-off 4×4 @ 75%', 'Romanian Deadlift', 'Bulgarian Split Squat', 'Pallof Press'] },
+    { week: 2, title: 'Semana 2 · Sessão 2 · Front Squat Posição', phase: 'Base', desc: 'Objetivo: reforçar posição de Front Squat com pausa.', items: ['Front Squat', 'Paused Front Squat', 'Hip Thrust', 'Hamstring Curl', 'Copenhagen Plank'] },
+    { week: 2, title: 'Semana 2 · Sessão 3 · Speed + Volume', phase: 'Base', desc: 'Objetivo: velocidade na barra e volume complementar.', items: ['Speed Back Squat', 'Front Squat 3×5 @ 65%', 'Sled Push/Pull', 'Step-up', 'Back Extension'] },
+    { week: 3, title: 'Semana 3 · Sessão 1 · Back Squat Intensidade', phase: 'Build', desc: 'Objetivo: subir intensidade e manter volume.', items: ['Back Squat', 'Back-off 3×4 @ 80%', 'Deficit Romanian Deadlift', 'Split Squat', 'Weighted Plank'] },
+    { week: 3, title: 'Semana 3 · Sessão 2 · Front Squat Build', phase: 'Build', desc: 'Objetivo: aproximar cargas altas em Front Squat.', items: ['Front Squat', 'Paused Front Squat', 'Hip Thrust', 'Good Morning', 'Hanging Knee Raise'] },
+    { week: 3, title: 'Semana 3 · Sessão 3 · Back Squat Volume Forte', phase: 'Build', desc: 'Objetivo: volume forte com potência.', items: ['Back Squat', 'Box Jump', 'Walking Lunge', 'Back Extension', 'Calf Raise'] },
+    { week: 4, title: 'Semana 4 · Sessão 1 · Back Squat Single Técnico', phase: 'Build', desc: 'Objetivo: primeiros singles técnicos, sem max-out.', items: ['Back Squat até 92% × 1', 'Back-off 3×3 @ 80%', 'Romanian Deadlift', 'Bulgarian Split Squat', 'Dead Bug'] },
+    { week: 4, title: 'Semana 4 · Sessão 2 · Front Squat Volume Médio', phase: 'Build', desc: 'Objetivo: consolidar Front Squat com tempo.', items: ['Front Squat', 'Tempo Front Squat', 'Hip Thrust', 'Hamstring Curl', 'Side Plank'] },
+    { week: 4, title: 'Semana 4 · Sessão 3 · Redução de Volume', phase: 'Build', desc: 'Objetivo: consolidar volume, manter intensidade, entrar fresco na Semana 5.', items: ['Speed Back Squat', 'Front Squat 3×3 @ 70%', 'Sled Push/Pull', 'Back Extension', 'Mobility'] },
+    { week: 5, title: 'Semana 5 · Sessão 1 · Back Squat Intensificação', phase: 'Intensificação', desc: 'Objetivo: menos reps, cargas mais altas.', items: ['Back Squat até 92% × 2', 'Back-off 3×3 @ 82%', 'Deficit Romanian Deadlift', 'Split Squat', 'Pallof Press'] },
+    { week: 5, title: 'Semana 5 · Sessão 2 · Front Squat Forte', phase: 'Intensificação', desc: 'Objetivo: exposição a cargas altas em Front Squat.', items: ['Front Squat até 90% × 1', 'Back-off 3×3 @ 75%', 'Hip Thrust', 'Good Morning', 'Hanging Knee Raise'] },
+    { week: 5, title: 'Semana 5 · Sessão 3 · Pause Squat', phase: 'Intensificação', desc: 'Objetivo: força no fundo com pausa e volume complementar.', items: ['Pause Back Squat', 'Back Squat 3×5 @ 72%', 'Walking Lunge', 'Back Extension', 'Box Jump'] },
+    { week: 6, title: 'Semana 6 · Sessão 1 · Back Squat Heavy Exposure', phase: 'Intensificação', desc: 'Objetivo: exposição a 90-95% sem grinder.', items: ['Back Squat até 95% × 1', 'Back-off 2×3 @ 82%', 'Romanian Deadlift', 'Bulgarian Split Squat', 'Weighted Plank'] },
+    { week: 6, title: 'Semana 6 · Sessão 2 · Front Squat Intensificação', phase: 'Intensificação', desc: 'Objetivo: pico de Front Squat até 90%.', items: ['Front Squat até 90% × 1', 'Back-off 3×2 @ 80%', 'Hip Thrust', 'Hamstring Curl', 'Copenhagen Plank'] },
+    { week: 6, title: 'Semana 6 · Sessão 3 · Speed / Taper Inicial', phase: 'Intensificação', desc: 'Objetivo: manter velocidade e iniciar o taper.', items: ['Speed Back Squat', 'Front Squat 3×3 @ 70%', 'Sled Push/Pull', 'Back Extension', 'Mobility'] },
+    { week: 7, title: 'Semana 7 · Sessão 1 · Back Squat Peak Técnico', phase: 'Peak', desc: 'Objetivo: preparar reteste, volume reduzido.', items: ['Back Squat até 95% × 1', 'Back-off 2×2 @ 80%', 'Romanian Deadlift', 'Split Squat', 'Dead Bug'] },
+    { week: 7, title: 'Semana 7 · Sessão 2 · Front Squat Peak Técnico', phase: 'Peak', desc: 'Objetivo: afiar o Front Squat antes do reteste.', items: ['Front Squat até 92% × 1', 'Back-off 2×2 @ 75%', 'Hip Thrust', 'Back Extension', 'Side Plank'] },
+    { week: 7, title: 'Semana 7 · Sessão 3 · Deload Ativo', phase: 'Peak', desc: 'Objetivo: descarregar e chegar fresco ao reteste.', items: ['Back Squat 5×2 @ 60%', 'Goblet Squat tempo 3211', 'Box Jump leve', 'Mobility', 'Breathing reset'] },
+    { week: 8, title: 'Semana 8 · Sessão 1 · Reteste Back Squat', phase: 'Reteste', desc: 'Objetivo: encontrar top single técnico ou 1RM, sem grinder.', items: ['Aquecimento progressivo', 'Back Squat top single', 'Back-off opcional', 'Back Extension', 'Mobility'] },
+    { week: 8, title: 'Semana 8 · Sessão 2 · Reteste Front Squat', phase: 'Reteste', desc: 'Objetivo: confirmar melhoria no Front Squat.', items: ['Aquecimento progressivo', 'Front Squat top single', 'Back-off opcional', 'Hip Thrust', 'Mobility'] },
+    { week: 8, title: 'Semana 8 · Sessão 3 · Consolidação / Benchmark', phase: 'Reteste', desc: 'Objetivo: escolher 1RM técnico, quality test ou deload final.', items: ['Opção A · 1RM técnico', 'Opção B · Squat Quality Test EMOM', 'Opção C · Deload final'] }
+  ];
+}
+
 function applyStoredCompletionToAllProgramPages() {
-  ['pullup', 'bmu'].forEach(program => {
+  ['pullup', 'bmu', 'squat'].forEach(program => {
     const page = document.getElementById(getProgramPageId(program));
     if (!page) return;
     page.querySelectorAll('.native-session-card').forEach((card, index) => {
@@ -7749,45 +7887,54 @@ function applyStoredCompletionToAllProgramPages() {
   });
 }
 
+function getProgramMeta(program) {
+  if (program === 'bmu') return { title: 'Bar Muscle-Up', category: 'Gymnastics', weeks: 6, duration: '15-18 min',
+    desc: 'Programa de 6 semanas para desenvolver pulling power, kip timing, transição e consistência no Bar Muscle-Up.' };
+  if (program === 'squat') return { title: 'PeakForm Squat Vol. 1', category: 'Strength', weeks: 8, duration: '45-60 min',
+    desc: 'Programa de 8 semanas para construir um Back Squat e Front Squat mais fortes, com progressão estruturada, acessórios e reteste seguro.' };
+  return { title: 'Pull-Up', category: 'Gymnastics', weeks: 6, duration: '15-18 min',
+    desc: 'Programa de 6 semanas para construir força específica, controlo e volume progressivo até à primeira pull-up consistente.' };
+}
+
 function updateDashboardProgress() {
   applyStoredCompletionToAllProgramPages();
-  const program = activeDashboardProgram === 'bmu' ? 'bmu' : 'pullup';
-  const page = document.getElementById(program === 'bmu' ? 'page-program-bmu' : 'page-program-pullup');
+  const program = ['bmu', 'squat'].includes(activeDashboardProgram) ? activeDashboardProgram : 'pullup';
+  const page = document.getElementById(getProgramPageId(program));
   if (!page) return;
 
+  const meta = getProgramMeta(program);
+  const totalWeeks = meta.weeks;
   const sessions = page.querySelectorAll('.native-session-card');
   const completed = page.querySelectorAll('.native-session-card.completed');
-  const total = sessions.length || 18;
+  const total = sessions.length || (totalWeeks * 3);
   const done = completed.length;
   const left = Math.max(0, total - done);
   const percent = total ? Math.round((done / total) * 100) : 0;
   const currentIndex = Math.min(done, total -1);
-  const sessionData = program === 'bmu' ? getBmuSessionData() : getPullupSessionData();
+  const sessionData = program === 'bmu' ? getBmuSessionData() : program === 'squat' ? getSquatSessionData() : getPullupSessionData();
   const next = sessionData[currentIndex] || sessionData[sessionData.length - 1];
-  const week = done >= total ? 6 : next.week;
+  const week = done >= total ? totalWeeks : next.week;
   const phase = done >= total ? 'Completo' : next.phase;
-  const programTitle = program === 'bmu' ? 'Bar Muscle-Up' : 'Pull-Up';
-  const programDesc = program === 'bmu'
-    ? 'Programa de 6 semanas para desenvolver pulling power, kip timing, transição e consistência no Bar Muscle-Up.'
-    : 'Programa de 6 semanas para construir força específica, controlo e volume progressivo até à primeira pull-up consistente.';
-  const duration = program === 'bmu' ? '15-18 min' : '15-18 min';
+  const programTitle = meta.title;
+  const programDesc = meta.desc;
+  const duration = meta.duration;
 
   const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
   const heroTitle = document.getElementById('dashboard-hero-title');
   if (heroTitle) heroTitle.innerHTML = `Continua o teu programa <em>${programTitle}</em>`;
   setText('dashboard-active-program-title', programTitle);
   setText('dashboard-active-program-description', programDesc);
-  setText('dashboard-active-category', 'Gymnastics');
+  setText('dashboard-active-category', meta.category);
   setText('dashboard-hero-text', done >= total
     ? `Programa ${programTitle} concluído · ${done}/${total} sessões completas. Preenche o feedback final e regista o teu resultado.`
-    : `Semana ${week} de 6 · Categoria Gymnastics · ${done}/${total} sessões concluídas. Próximo passo: ${next.title}.`);
+    : `Semana ${week} de ${totalWeeks} · Categoria ${meta.category} · ${done}/${total} sessões concluídas. Próximo passo: ${next.title}.`);
   setText('dashboard-progress-percent', `${percent}%`);
-  setText('dashboard-week', `${week}/6`);
+  setText('dashboard-week', `${week}/${totalWeeks}`);
   setText('dashboard-sessions', `${done}/${total}`);
   setText('dashboard-phase', phase);
   setText('dashboard-summary-done', done);
   setText('dashboard-summary-left', left);
-  setText('dashboard-checkpoint', done >= 18 ? 'Final' : done >= 9 ? 'Semana 6' : 'Semana 3');
+  setText('dashboard-checkpoint', done >= total ? 'Final' : done >= Math.round(total / 2) ? 'Metade' : 'Início');
   setText('dashboard-status', done >= total ? 'Concluído' : 'Em curso');
   setText('dashboard-next-title', done >= total ? 'Programa concluído' : next.title);
   setText('dashboard-next-description', done >= total ? 'Preenche o feedback final e usa o resultado como baseline para o próximo ciclo.' : next.desc);
@@ -7809,15 +7956,15 @@ function updateDashboardProgress() {
 }
 
 function getProgramPageId(program) {
-  return program === 'bmu' ? 'page-program-bmu' : 'page-program-pullup';
+  return program === 'bmu' ? 'page-program-bmu' : program === 'squat' ? 'page-program-squat' : 'page-program-pullup';
 }
 
 function getProgramShortName(program) {
-  return program === 'bmu' ? 'Bar Muscle-Up' : 'Pull-Up';
+  return program === 'bmu' ? 'Bar Muscle-Up' : program === 'squat' ? 'Squat Vol. 1' : 'Pull-Up';
 }
 
 function getBackPage(program) {
-  return program === 'bmu' ? 'program-bmu' : 'program-pullup';
+  return program === 'bmu' ? 'program-bmu' : program === 'squat' ? 'program-squat' : 'program-pullup';
 }
 
 function getSessionCard(program, index) {
@@ -8009,13 +8156,13 @@ function openFeedbackForm(type, program = 'pullup') {
   const resultLabel = document.querySelector('label[for="feedback-pullup-result"]');
   const whyLabel = document.querySelector('label[for="feedback-why-not"]');
   const backButtons = document.querySelectorAll('#page-feedback button.secondary, #page-feedback .dash-nav-right button');
-  const backPage = program === 'bmu' ? 'program-bmu' : 'program-pullup';
+  const backPage = getBackPage(program);
 
   backButtons.forEach(btn => btn.setAttribute('onclick', `showPage('${backPage}')`));
   if (success) success.classList.remove('active');
 
-  const movement = program === 'bmu' ? 'Bar Muscle-Up' : 'strict pull-up';
-  const programName = program === 'bmu' ? 'Bar Muscle-Up' : 'Pull-Up';
+  const movement = program === 'bmu' ? 'Bar Muscle-Up' : program === 'squat' ? 'novo PR de Back/Front Squat' : 'strict pull-up';
+  const programName = program === 'bmu' ? 'Bar Muscle-Up' : program === 'squat' ? 'Squat Vol. 1' : 'Pull-Up';
 
   if (type === 'week6') {
     if (navLabel) navLabel.textContent = 'Feedback final';
@@ -8107,7 +8254,7 @@ function openSupportForm(program = 'general') {
   const isBmu = program === 'bmu';
   const isPullup = program === 'pullup';
   const isPublic = program === 'public' || isLoggedIn !== true;
-  const backPage = isPublic ? 'landing' : isBmu ? 'program-bmu' : isPullup ? 'program-pullup' : 'area';
+  const backPage = isPublic ? 'landing' : ['pullup','bmu','squat'].includes(program) ? getBackPage(program) : 'area';
 
   if (formCard) {
     formCard.classList.toggle('public-mode', isPublic);
@@ -8672,7 +8819,7 @@ function animateActivePage(page) {
 }
 
 function showPage(page, _fromHistory) {
-  const protectedPages = ['area', 'admin', 'program-pullup', 'program-bmu', 'session', 'feedback'];
+  const protectedPages = ['area', 'admin', 'program-pullup', 'program-bmu', 'program-squat', 'session', 'feedback'];
   const publicPages = ['landing', 'login', 'register', 'support', 'forgot', 'reset-password', 'privacy', 'terms'];
 
   if (protectedPages.includes(page) && isLoggedIn !== true) {
@@ -8686,7 +8833,7 @@ function showPage(page, _fromHistory) {
   document.querySelectorAll('.pf-page').forEach(section => section.classList.remove('active'));
   const target = document.getElementById(`page-${page}`);
   if (target) target.classList.add('active');
-  if (page === 'program-pullup' || page === 'program-bmu') setTimeout(initNativeSessionChecks, 0);
+  if (page === 'program-pullup' || page === 'program-bmu' || page === 'program-squat') setTimeout(initNativeSessionChecks, 0);
   if (page === 'area') { setTimeout(loadUserPrograms, 0); setTimeout(function(){ switchAreaTab('programas'); }, 0); }
   if (page === 'admin') setTimeout(loadAdminData, 0);
   setTimeout(() => animateActivePage(page), 20);
@@ -8738,7 +8885,7 @@ _sb.auth.getSession().then(({ data: { session } }) => {
     const active = document.querySelector('.pf-page.active');
     if (active) {
       const pageId = active.id.replace('page-', '');
-      const protectedPages = ['area','program-pullup','program-bmu','session','feedback'];
+      const protectedPages = ['area','program-pullup','program-bmu','program-squat','session','feedback'];
       if (protectedPages.includes(pageId)) showPage('login');
     }
   }
