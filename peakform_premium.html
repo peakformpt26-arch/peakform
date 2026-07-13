@@ -5909,16 +5909,15 @@ html.pf-soon-locked #pf-soon { display: flex; }
       </section>
       <section class="native-program-shell">
         <div class="native-program-intro"><span>Estrutura do programa</span><h3>PeakForm Squat Vol. 1 · 8 semanas</h3><p>3 sessões por semana: Sessão 1 Back Squat pesado, Sessão 2 Front Squat, Sessão 3 variação com intensidade controlada. Cada sessão tem main lift, back-off e acessórios.</p></div>
-        <div class="squat-howto">
-          <div class="squat-tm-eyebrow">Antes de começar</div>
-          <h3>Como usar este programa</h3>
+        <details class="squat-howto">
+          <summary><span class="squat-tm-eyebrow">Antes de começar</span><strong>Como usar este programa</strong></summary>
           <div class="squat-howto-grid">
             <div><strong>O que vais treinar</strong><p>8 semanas, 3 sessões por semana, focadas em Back Squat e Front Squat. Progrides por percentagens do teu Training Max até um reteste seguro na Semana 8.</p></div>
             <div><strong>Como está montada cada sessão</strong><p>Main lift (o exercício principal, por percentagens), back-off sets (volume para consolidar) e acessórios (posterior chain, unilateral e core).</p></div>
             <div><strong>Como ler a grelha</strong><p>Cada linha é: exercício - séries × reps · descanso. "Back Squat - 60% × 5" = 5 reps a 60% do Training Max. Usa a calculadora abaixo para o peso exato.</p></div>
             <div><strong>O que esperar em cada fase</strong><p>Semanas 1-2 base, 3-4 build, 5-6 intensificação, 7 peak e 8 reteste. Se seguires o plano, testas mais forte no fim — sem te destruíres pelo caminho.</p></div>
           </div>
-        </div>
+        </details>
         <div class="native-program-note"><strong>Intensidade:</strong> as percentagens usam o <strong>Training Max</strong> (90-95% do 1RM atual), não o 1RM real. Sem 1RM, estima com 3RM/5RM recente ou faz um top set técnico de 3-5 reps. Nunca abras o programa com um max-out real.</div>
         <style>
           .squat-tm-card{grid-column:1/-1;background:linear-gradient(180deg,rgba(200,75,17,.09),rgba(245,242,238,.02));border:1px solid rgba(200,75,17,.28);border-radius:16px;padding:1.2rem 1.4rem 1.35rem;margin:1rem 0 1.3rem;}
@@ -5946,10 +5945,14 @@ html.pf-soon-locked #pf-soon { display: flex; }
           .squat-tm-cell strong::after{content:' kg';font-size:.62rem;font-weight:600;color:rgba(245,242,238,.4);}
           .session-coach-note{margin:.7rem 0 0;padding:.55rem .75rem;background:rgba(200,75,17,.07);border-left:2px solid var(--orange,#c84b11);border-radius:0 8px 8px 0;color:rgba(245,242,238,.72);font-size:.78rem;line-height:1.5;}
           .session-coach-note strong{color:var(--orange,#c84b11);font-weight:700;}
-          .squat-howto{grid-column:1/-1;background:rgba(245,242,238,.03);border:1px solid rgba(245,242,238,.1);border-radius:16px;padding:1.2rem 1.4rem;margin:.2rem 0 1.3rem;}
+          .squat-howto{grid-column:1/-1;background:rgba(245,242,238,.03);border:1px solid rgba(245,242,238,.1);border-radius:16px;margin:.2rem 0 1.3rem;overflow:hidden;}
+          .squat-howto > summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .6rem;padding:1.05rem 1.4rem;}
+          .squat-howto > summary::-webkit-details-marker{display:none;}
+          .squat-howto > summary strong{font-size:1.12rem;color:#f5f2ee;font-weight:800;flex-basis:100%;}
+          .squat-howto > summary::after{content:'+';margin-left:auto;align-self:center;color:var(--orange,#c84b11);font-size:1.4rem;font-weight:700;line-height:1;}
+          .squat-howto[open] > summary::after{content:'\2212';}
           .squat-howto .squat-tm-eyebrow{color:var(--orange,#c84b11);font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;}
-          .squat-howto h3{margin:.35rem 0 .6rem;font-size:1.15rem;color:#f5f2ee;}
-          .squat-howto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.9rem 1.4rem;}
+          .squat-howto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.9rem 1.4rem;padding:0 1.4rem 1.3rem;}
           .squat-howto-grid > div{background:rgba(245,242,238,.03);border-radius:10px;padding:.7rem .85rem;}
           .squat-howto-grid strong{display:block;color:#f5f2ee;font-size:.85rem;margin-bottom:.25rem;}
           .squat-howto-grid p{margin:0;color:rgba(245,242,238,.62);font-size:.8rem;line-height:1.5;}
@@ -7990,6 +7993,7 @@ function renderSquatLoads() {
   const html = build(back, 'Back Squat') + build(front, 'Front Squat');
   wrap.innerHTML = html || '<p class="squat-tm-empty">Insere os teus valores acima para veres o peso de cada percentagem.</p>';
   try { updateStoredState('squatTM', { back: backEl ? backEl.value : '', front: frontEl ? frontEl.value : '' }); } catch (e) {}
+  applySquatTMToProgram();
 }
 
 const squatCoachNotes = [
@@ -8030,6 +8034,45 @@ function injectSquatCoachNotes() {
     p.className = 'session-coach-note';
     p.innerHTML = '<strong>Nota do coach:</strong> ' + note;
     card.appendChild(p);
+  });
+}
+
+function annotateSquatLine(text, mainLift, back, front) {
+  const round = v => Math.round(v / 2.5) * 2.5;
+  const fmt = v => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+  const lower = text.toLowerCase();
+  const tmAt = idx => {
+    const b = lower.lastIndexOf('back', idx);
+    const f = lower.lastIndexOf('front', idx);
+    let lift = (f < 0 && b < 0) ? mainLift : (f > b ? 'front' : 'back');
+    return lift === 'front' ? front : back;
+  };
+  return text.replace(/(\d+(?:[.,]\d+)?)(?:\s*-\s*(\d+(?:[.,]\d+)?))?\s*%/g, function (m, p1, p2, offset) {
+    const tm = tmAt(offset);
+    if (!(tm > 0)) return m;
+    const k1 = round(tm * parseFloat(p1.replace(',', '.')) / 100);
+    if (p2 !== undefined) {
+      const k2 = round(tm * parseFloat(p2.replace(',', '.')) / 100);
+      return fmt(k1) + '-' + fmt(k2) + ' kg (' + p1 + '-' + p2 + '%)';
+    }
+    return fmt(k1) + ' kg (' + p1 + '%)';
+  });
+}
+
+function applySquatTMToProgram() {
+  const pg = document.getElementById('page-program-squat');
+  if (!pg) return;
+  const back = parseFloat((document.getElementById('tm-back') || {}).value);
+  const front = parseFloat((document.getElementById('tm-front') || {}).value);
+  const hasTM = (back > 0) || (front > 0);
+  pg.querySelectorAll('.native-session-list li').forEach(li => {
+    if (li.dataset.tmpl === undefined) li.dataset.tmpl = li.textContent;
+    const orig = li.dataset.tmpl;
+    if (!hasTM) { li.textContent = orig; return; }
+    const card = li.closest('.native-session-card');
+    const head = card ? card.querySelector('.native-session-head') : null;
+    const mainLift = head && /front/i.test(head.textContent) ? 'front' : 'back';
+    li.textContent = annotateSquatLine(orig, mainLift, back, front);
   });
 }
 
