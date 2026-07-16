@@ -5542,7 +5542,7 @@ html.pf-soon-locked #pf-soon { display: flex; }
       <div class="card-content">
         <div class="card-tag">Programação PeakForm</div>
         <div class="card-name">PeakForm Program</div>
-        <div class="card-desc">A programação diária PeakForm e acompanhamento 1:1 para quem quer algo mais específico.</div>
+        <div class="card-desc">Programação diária para treino funcional ou provas híbridas, e acompanhamento 1:1 personalizado.</div>
       </div>
     </div>
   </div>
@@ -5663,9 +5663,9 @@ html.pf-soon-locked #pf-soon { display: flex; }
     </article>
     <article class="public-program-card locked" data-category="coaching">
       <div class="program-badge">Em breve · Setembro</div>
-      <h3>PeakForm <em>Program</em></h3>
-      <p>A programação diária da PeakForm. Cada dia tens o treino completo, estruturado e pronto a seguir no teu local de treino. Um plano que evolui contigo, sem teres de pensar no que fazer a seguir.</p>
-      <div class="program-meta-public"><span>Programação diária</span><span>Todas as modalidades</span><span>Atualizada ao dia</span></div>
+      <h3>PeakForm <em>Performance</em></h3>
+      <p>A programação diária da PeakForm para atletas de treino funcional. Cada dia tens o treino completo, estruturado e pronto a seguir no teu local de treino. Um plano que evolui contigo, sem teres de pensar no que fazer a seguir.</p>
+      <div class="program-meta-public"><span>Programação diária</span><span>Treino funcional</span><span>Atualizada ao dia</span></div>
       <div class="program-card-footer"><button onclick="toggleCoachInterest(this)">Notifica-me no lançamento</button><small>Lançamento em setembro</small></div>
       <div class="coach-interest-form">
         <label>Insere o teu email</label>
@@ -5674,6 +5674,20 @@ html.pf-soon-locked #pf-soon { display: flex; }
         <div class="coach-form-message">Insere um email válido para te avisarmos no lançamento.</div>
       </div>
       <div class="coach-interest-success">Registado! Avisamos-te assim que a programação diária lançar.</div>
+    </article>
+    <article class="public-program-card locked" data-category="coaching">
+      <div class="program-badge">Em breve</div>
+      <h3>PeakForm <em>Hybrid</em></h3>
+      <p>A programação diária para quem corre provas híbridas. Corrida intercalada com sled, carries, wall balls e burpees, com o pacing e as transições que decidem o tempo final. Do atleta recreativo ao mais avançado.</p>
+      <div class="program-meta-public"><span>Programação diária</span><span>Corrida e estações</span><span>Recreativo a avançado</span></div>
+      <div class="program-card-footer"><button onclick="toggleCoachInterest(this)">Notifica-me no lançamento</button><small>Em preparação</small></div>
+      <div class="coach-interest-form">
+        <label>Insere o teu email</label>
+        <input type="email" placeholder="o-teu-email@exemplo.pt" />
+        <button class="coach-submit" onclick="submitCoachInterest(this)">Enviar</button>
+        <div class="coach-form-message">Insere um email válido para te avisarmos no lançamento.</div>
+      </div>
+      <div class="coach-interest-success">Registado! Avisamos-te assim que a PeakForm Hybrid lançar.</div>
     </article>
     <article class="public-program-card locked" data-category="coaching">
       <div class="program-badge">Vagas limitadas</div>
@@ -9274,7 +9288,7 @@ window.addEventListener('scroll', () => {
     strength:   { name:'Strength',          desc:'Ciclos de força para squat, upper body e base estrutural com métricas simples e progressão controlada.', tags:['Squat','Upper Body','Progressão','Ciclos'] },
     engine:     { name:'Engine',            desc:'Capacidade aeróbia, pacing, intervals e consistência em row, bike e run.', tags:['Row','Bike','Run','Capacity','Pacing'] },
     competition:{ name:'Competition',       desc:'Preparação para workouts competitivos, Open e gestão de pacing em ambiente de prova.', tags:['Open Prep','Pacing','Standards','Performance'] },
-    coaching:   { name:'PeakForm Program',  desc:'A programação diária da PeakForm e acompanhamento individual. Segue o plano diário ou trabalha 1:1 com um coach para algo mais específico.', tags:['Programação diária','1:1 personalizado','Em breve · Setembro'] },
+    coaching:   { name:'PeakForm Program',  desc:'A programação diária da PeakForm. Escolhe o teu caminho: treino funcional, provas híbridas ou acompanhamento 1:1 totalmente personalizado.', tags:['Performance','Hybrid','1:1 personalizado','Em breve'] },
     merch:      { name:'Merch',             desc:'Equipamento e vestuário PeakForm para atletas que treinam a sério.', tags:['Gear','PeakForm'] },
     all:        { name:'Todos os programas',desc:'Explora todos os programas e categorias disponíveis.', tags:['Gymnastics','Strength','Engine','Competition'] }
   };
