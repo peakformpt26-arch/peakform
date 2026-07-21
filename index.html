@@ -8057,7 +8057,7 @@ function normalizeExerciseName(text) {
 
 function findVideoForExercise(exercise, program) {
   const clean = normalizeExerciseName(exercise);
-  const programKey = program === 'bmu' ? 'bmu' : 'pullup';
+  const programKey = program === 'bmu' ? 'bmu' : program === 'squat' ? 'squat' : 'pullup';
   return movementVideos.find(video => {
     return video.programKey === programKey && clean.includes(normalizeExerciseName(video.name));
   }) || movementVideos.find(video => clean.includes(normalizeExerciseName(video.name))) || null;
@@ -8601,7 +8601,28 @@ const movementVideos = [
   { name: 'Chest-to-Bar Pull-up', category: 'Gymnastics', key: 'gymnastics', program: 'Bar Muscle-Up Program', programKey: 'bmu', type: 'Pulling power', use: 'Bar Muscle-Up', desc: 'Puxada alta para desenvolver altura suficiente para a transição.' },
   { name: 'Tempo Front Squat', category: 'Strength', key: 'strength', program: '6 Semanas Squat', programKey: 'squat', type: 'Strength', use: 'Squat cycle', desc: 'Variação com tempo para reforçar posições, controlo e força específica no squat.' },
   { name: 'Row Pacing', category: 'Engine', key: 'engine', program: 'Engine Builder', programKey: 'engine-builder', type: 'Pacing', use: 'Row intervals', desc: 'Referências de ritmo, stroke rate e controlo de esforço no remo.' },
-  { name: 'Shoulder Prep', category: 'Mobility / Prep', key: 'mobility', program: 'Preparação Geral', programKey: 'prep', type: 'Prep', use: 'Overhead e gymnastics', desc: 'Ativação e mobilidade de ombro para posições overhead e trabalho na barra.' }
+  { name: 'Shoulder Prep', category: 'Mobility / Prep', key: 'mobility', program: 'Preparação Geral', programKey: 'prep', type: 'Prep', use: 'Overhead e gymnastics', desc: 'Ativação e mobilidade de ombro para posições overhead e trabalho na barra.' },
+  { name: 'Speed Back Squat', youtube: 'HRQzm8_CelM', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Potência', use: 'Squat Vol. 1', desc: 'Back squat com intenção máxima de velocidade para desenvolver potência e taxa de produção de força.' },
+  { name: 'Deficit Romanian Deadlift', youtube: 'LdlSJ57EisA', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Posterior chain', use: 'Squat Vol. 1', desc: 'RDL com défice para maior amplitude e tensão nos isquiotibiais e glúteos.' },
+  { name: 'Romanian Deadlift', youtube: 'oZuFB-E5nao', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Posterior chain', use: 'Squat Vol. 1', desc: 'Dobra de anca com joelhos ligeiramente fletidos para isquiotibiais e glúteos.' },
+  { name: 'Bulgarian Split Squat', youtube: 'tMWDyO1Kz_U', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Unilateral', use: 'Squat Vol. 1', desc: 'Agachamento unilateral com pé de trás elevado para força e estabilidade de cada perna.' },
+  { name: 'Split Squat', youtube: 'JASsyeLEZq0', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Unilateral', use: 'Squat Vol. 1', desc: 'Agachamento unilateral estático para força e equilíbrio de cada perna.' },
+  { name: 'Walking Lunge', youtube: 'YCHaJQVm9Fs', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Unilateral', use: 'Squat Vol. 1', desc: 'Afundos a andar para força unilateral, controlo e resistência de pernas.' },
+  { name: 'Step-up', youtube: '0ms1NjENlas', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Unilateral', use: 'Squat Vol. 1', desc: 'Subida a caixa com controlo unilateral de quadricípite e glúteo.' },
+  { name: 'Good Morning', youtube: '0isDNK8DLAs', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Posterior chain', use: 'Squat Vol. 1', desc: 'Dobra de anca com barra nas costas para cadeia posterior e bracing.' },
+  { name: 'Back Extension', youtube: 'aamP76ferMI', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Posterior chain', use: 'Squat Vol. 1', desc: 'Extensão da lombar e cadeia posterior para reforçar as costas e proteger a coluna.' },
+  { name: 'Hamstring Curl', youtube: 'jIAH5smdZ1U', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Posterior chain', use: 'Squat Vol. 1', desc: 'Flexão de joelho para isquiotibiais, a equilibrar a força posterior da coxa.' },
+  { name: 'Ring Hamstring Curl', youtube: '-LN_LxO7X2M', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Posterior chain', use: 'Squat Vol. 1', desc: 'Curl de isquiotibiais nas argolas, força posterior com o teu peso corporal.' },
+  { name: 'Sled Push', youtube: 'VGKAYInbSsI', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Força-resistência', use: 'Squat Vol. 1', desc: 'Empurrar o trenó para força-resistência de pernas com baixa componente excêntrica.' },
+  { name: 'Sled Pull', youtube: 'v-_nLhU3vTc', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Força-resistência', use: 'Squat Vol. 1', desc: 'Puxar o trenó para trás, trabalho de quadricípite e joelhos com passos constantes.' },
+  { name: 'Box Jump', youtube: 'ICsTQ0kqPso', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Potência', use: 'Squat Vol. 1', desc: 'Salto para caixa com aterragem controlada e extensão tripla explosiva.' },
+  { name: 'Vertical Jump', youtube: 'zord6KSyvW8', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Potência', use: 'Squat Vol. 1', desc: 'Salto vertical máximo para potência de extensão de anca e joelho.' },
+  { name: 'Broad Jump', youtube: 'tf6ak0Kiyz4', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Potência', use: 'Squat Vol. 1', desc: 'Salto horizontal máximo para potência de extensão de anca.' },
+  { name: 'Dead Bug', youtube: 'eXypfg3TaH4', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Core', use: 'Squat Vol. 1', desc: 'Controlo anti-extensão do core com movimento oposto de braço e perna.' },
+  { name: 'Pallof Press', youtube: 'dVXio4pKTsM', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Core', use: 'Squat Vol. 1', desc: 'Anti-rotação do core com banda ou cabo para estabilidade do tronco.' },
+  { name: 'Copenhagen Plank', youtube: 'OcQZBq85TME', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Core', use: 'Squat Vol. 1', desc: 'Prancha lateral com apoio na perna de cima para adutores e core lateral.' },
+  { name: 'Side Plank', youtube: 'dBt9_Y1LpzM', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Core', use: 'Squat Vol. 1', desc: 'Prancha lateral para core lateral e estabilidade anti-flexão lateral.' },
+  { name: 'Hanging Knee Raise', youtube: '5iZU8G52Rh4', category: 'Strength', key: 'strength', program: 'Squat Vol. 1', programKey: 'squat', type: 'Core', use: 'Squat Vol. 1', desc: 'Elevação de joelhos suspenso na barra para core e controlo pélvico.' }
 ];
 
 const dashboardMovementHighlights = {
