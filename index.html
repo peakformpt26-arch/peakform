@@ -7704,6 +7704,28 @@ async function adminDeleteLead(id) {
   loadAdminData();
 }
 
+async function loadProtectedProgram(slug, pageId) {
+  const page = document.getElementById(pageId);
+  if (!page) return;
+  const shell = page.querySelector('.native-program-shell');
+  if (!shell) return;
+  if (shell.dataset.pfReady === '1') return;
+  const hasInline = !!shell.querySelector('.native-session-card');
+  const loadingHTML = '<div style="padding:3rem 1rem;text-align:center;color:rgba(245,242,238,.55);font-size:.9rem;">A carregar o teu programa…</div>';
+  const lockedHTML = '<div style="padding:3rem 1.2rem;text-align:center;color:rgba(245,242,238,.6);font-size:.9rem;line-height:1.6;">Não foi possível carregar este programa.<br>Confirma que tens acesso na tua Área do Atleta e recarrega a página.</div>';
+  if (!hasInline) shell.innerHTML = loadingHTML;
+  let loaded = false;
+  try {
+    const { data, error } = await _sb.from('program_content').select('body').eq('program_slug', slug).maybeSingle();
+    if (!error && data && data.body) { shell.innerHTML = data.body; loaded = true; }
+  } catch (e) {}
+  if (!loaded && !hasInline) { shell.innerHTML = lockedHTML; return; }
+  /* loaded from DB, or keeping inline content during the migration window */
+  shell.dataset.pfReady = '1';
+  initNativeSessionChecks();
+  if (slug === 'squat') { restoreSquatTM(); injectSquatCoachNotes(); }
+}
+
 function openProgram(program) {
   const slug = program === 'bmu' ? 'bmu' : program === 'squat' ? 'squat' : 'pullup';
   if (userPrograms.includes(slug)) {
@@ -9055,8 +9077,9 @@ function showPage(page, _fromHistory) {
   document.querySelectorAll('.pf-page').forEach(section => section.classList.remove('active'));
   const target = document.getElementById(`page-${page}`);
   if (target) target.classList.add('active');
-  if (page === 'program-pullup' || page === 'program-bmu' || page === 'program-squat') setTimeout(initNativeSessionChecks, 0);
-  if (page === 'program-squat') { setTimeout(restoreSquatTM, 0); setTimeout(injectSquatCoachNotes, 0); }
+  if (page === 'program-pullup') setTimeout(function(){ loadProtectedProgram('pullup', 'page-program-pullup'); }, 0);
+  else if (page === 'program-bmu') setTimeout(function(){ loadProtectedProgram('bmu', 'page-program-bmu'); }, 0);
+  else if (page === 'program-squat') setTimeout(function(){ loadProtectedProgram('squat', 'page-program-squat'); }, 0);
   if (page === 'area') { setTimeout(loadUserPrograms, 0); setTimeout(function(){ switchAreaTab('programas'); }, 0); }
   if (page === 'admin') setTimeout(loadAdminData, 0);
   setTimeout(() => animateActivePage(page), 20);
